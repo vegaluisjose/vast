@@ -60,8 +60,14 @@ impl fmt::Display for Expr {
 }
 
 #[derive(Clone, Debug)]
-pub struct GenericModule<T> {
-    pub par_stmt: Vec<T>,
+pub enum GenericStmt<T, U> {
+    Decl(T),
+    Par(U),
+}
+
+#[derive(Clone, Debug)]
+pub struct GenericModule<T, U> {
+    pub stmt: Vec<GenericStmt<T, U>>,
 }
 
 #[cfg(test)]
