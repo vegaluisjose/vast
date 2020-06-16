@@ -4,20 +4,27 @@ use pretty::RcDoc;
 use std::fmt;
 use std::rc::Rc;
 
+pub use common::Id;
 pub use common::Unop;
 pub use common::Expr;
+pub use common::Width;
+
 
 #[derive(Clone, Debug)]
 pub enum Decl {
-    Wire,
-    Reg,
+    Wire(Id, Width),
+    Reg(Id, Width),
 }
 
 impl PrettyPrinter for Decl {
     fn to_doc(&self) -> RcDoc<()> {
         match self {
-            Decl::Wire => RcDoc::text("wire"),
-            Decl::Reg => RcDoc::text("reg"),
+            Decl::Wire(name, width) => RcDoc::text("wire")
+                    .append(RcDoc::space())
+                    .append(width.to_doc())
+                    .append(RcDoc::space())
+                    .append(RcDoc::as_string(name)),
+            Decl::Reg(name, width) => RcDoc::text("reg"),
         }
     }
 }

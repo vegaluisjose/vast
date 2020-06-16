@@ -5,6 +5,22 @@ use std::rc::Rc;
 
 pub type Id = String;
 
+pub type Width = u64;
+
+impl PrettyPrinter for Width {
+    fn to_doc(&self) -> RcDoc<()> {
+        match self {
+            0 => panic!("Error: width must be greater than zero"),
+            1 => RcDoc::nil(),
+            n => RcDoc::text("[")
+                .append(RcDoc::as_string(n - 1))
+                .append(RcDoc::text(":"))
+                .append(RcDoc::text("0"))
+                .append(RcDoc::text("]")),
+        }
+    }
+}
+
 #[derive(Clone, Debug)]
 pub enum Unop {
     LogicalNegation,
