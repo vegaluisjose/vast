@@ -59,6 +59,11 @@ impl fmt::Display for Expr {
     }
 }
 
+#[derive(Clone, Debug)]
+pub struct GenericModule<T> {
+    pub par_stmt: Vec<T>,
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -68,4 +73,3 @@ mod tests {
         assert_eq!("!".to_string(), Unop::LogicalNegation.to_string());
     }
 }
-
