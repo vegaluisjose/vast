@@ -91,7 +91,7 @@ mod tests {
     use super::*;
 
     #[test]
-    fn logical_negation() {
+    fn test_logical_negation() {
         assert_eq!("!".to_string(), Unop::LogicalNegation.to_string());
     }
 }

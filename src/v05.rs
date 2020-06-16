@@ -2,13 +2,11 @@ use crate::common::{self, GenericModule, GenericStmt};
 use crate::pretty::PrettyPrinter;
 use pretty::RcDoc;
 use std::fmt;
-use std::rc::Rc;
 
 pub use common::Id;
+pub use common::Width;
 pub use common::Unop;
 pub use common::Expr;
-pub use common::Width;
-
 
 #[derive(Clone, Debug)]
 pub enum Decl {
@@ -19,12 +17,26 @@ pub enum Decl {
 impl PrettyPrinter for Decl {
     fn to_doc(&self) -> RcDoc<()> {
         match self {
-            Decl::Wire(name, width) => RcDoc::text("wire")
+            Decl::Wire(name, width) => {
+                let ty = match width {
+                    1 => RcDoc::nil(),
+                    _ => width.to_doc().append(RcDoc::space()),
+                };
+                RcDoc::text("wire")
                     .append(RcDoc::space())
-                    .append(width.to_doc())
+                    .append(ty)
+                    .append(RcDoc::as_string(name))
+            },
+            Decl::Reg(name, width) => {
+                let ty = match width {
+                    1 => RcDoc::nil(),
+                    _ => width.to_doc().append(RcDoc::space()),
+                };
+                RcDoc::text("reg")
                     .append(RcDoc::space())
-                    .append(RcDoc::as_string(name)),
-            Decl::Reg(name, width) => RcDoc::text("reg"),
+                    .append(ty)
+                    .append(RcDoc::as_string(name))
+            },
         }
     }
 }
@@ -84,5 +96,30 @@ impl PrettyPrinter for Module {
 impl fmt::Display for Module {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         write!(f, "{}", self.to_pretty())
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_wire_width_32() {
+        assert_eq!("wire [31:0] foo".to_string(), Decl::Wire("foo".to_string(), 32).to_string());
+    }
+
+    #[test]
+    fn test_wire_width_1() {
+        assert_eq!("wire foo".to_string(), Decl::Wire("foo".to_string(), 1).to_string());
+    }
+
+    #[test]
+    fn test_reg_width_32() {
+        assert_eq!("reg [31:0] foo".to_string(), Decl::Reg("foo".to_string(), 32).to_string());
+    }
+
+    #[test]
+    fn test_reg_width_1() {
+        assert_eq!("reg foo".to_string(), Decl::Reg("foo".to_string(), 1).to_string());
     }
 }

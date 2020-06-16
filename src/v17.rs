@@ -2,21 +2,37 @@ use crate::common::{self, GenericModule, GenericStmt};
 use crate::pretty::PrettyPrinter;
 use pretty::RcDoc;
 use std::fmt;
-use std::rc::Rc;
 
+pub use common::Id;
+pub use common::Width;
 pub use common::Unop;
 pub use common::Expr;
 
 #[derive(Clone, Debug)]
 pub enum Decl {
-    Logic,
+    Logic(Id, Width),
 }
 
 impl PrettyPrinter for Decl {
     fn to_doc(&self) -> RcDoc<()> {
         match self {
-            Decl::Logic => RcDoc::text("logic"),
+            Decl::Logic(name, width) => {
+                let ty = match width {
+                    1 => RcDoc::nil(),
+                    _ => width.to_doc().append(RcDoc::space()),
+                };
+                RcDoc::text("logic")
+                    .append(RcDoc::space())
+                    .append(ty)
+                    .append(RcDoc::as_string(name))
+            }
         }
+    }
+}
+
+impl fmt::Display for Decl {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        write!(f, "{}", self.to_pretty())
     }
 }
 
@@ -34,6 +50,12 @@ impl PrettyPrinter for Par {
             Par::AlwaysComb => RcDoc::text("always_comb"),
             Par::AlwaysFF => RcDoc::text("always_ff"),
         }
+    }
+}
+
+impl fmt::Display for Par {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        write!(f, "{}", self.to_pretty())
     }
 }
 
@@ -65,5 +87,20 @@ impl PrettyPrinter for Module {
 impl fmt::Display for Module {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         write!(f, "{}", self.to_pretty())
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_logic_width_32() {
+        assert_eq!("logic [31:0] foo".to_string(), Decl::Logic("foo".to_string(), 32).to_string());
+    }
+
+    #[test]
+    fn test_logic_width_1() {
+        assert_eq!("logic foo".to_string(), Decl::Logic("foo".to_string(), 1).to_string());
     }
 }
