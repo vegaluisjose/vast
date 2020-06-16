@@ -1,6 +1,6 @@
-use crate::subset;
+use crate::common;
 
-pub use subset::Unop;
-pub use subset::Expr;
+pub use common::Unop;
+pub use common::Expr;
 
-pub type Module = subset::GenericModule<String>;
+pub type Module = common::GenericModule<String>;
