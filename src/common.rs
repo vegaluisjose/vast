@@ -102,6 +102,12 @@ impl fmt::Display for Expr {
 }
 
 #[derive(Clone, Debug)]
+pub enum GenericPort<T> {
+    Input(T),
+    Output(T),
+}
+
+#[derive(Clone, Debug)]
 pub enum GenericStmt<T, U> {
     Decl(T),
     Par(U),
@@ -109,6 +115,7 @@ pub enum GenericStmt<T, U> {
 
 #[derive(Clone, Debug)]
 pub struct GenericModule<T, U> {
+    pub ports: Vec<GenericPort<T>>,
     pub stmt: Vec<GenericStmt<T, U>>,
 }
 

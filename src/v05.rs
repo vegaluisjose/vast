@@ -1,4 +1,4 @@
-use crate::common::{self, GenericModule, GenericStmt};
+use crate::common::{self, GenericModule, GenericStmt, GenericPort};
 use crate::pretty::PrettyPrinter;
 use pretty::RcDoc;
 use std::fmt;
@@ -79,6 +79,27 @@ impl PrettyPrinter for Stmt {
 }
 
 impl fmt::Display for Stmt {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        write!(f, "{}", self.to_pretty())
+    }
+}
+
+pub type Port = GenericPort<Decl>;
+
+impl PrettyPrinter for Port {
+    fn to_doc(&self) -> RcDoc<()> {
+        match self {
+            Port::Input(decl) => RcDoc::text("input")
+                .append(RcDoc::space())
+                .append(decl.to_doc()),
+            Port::Output(decl) => RcDoc::text("output")
+                .append(RcDoc::space())
+                .append(decl.to_doc()),
+        }
+    }
+}
+
+impl fmt::Display for Port {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         write!(f, "{}", self.to_pretty())
     }
