@@ -5,7 +5,6 @@ use std::fmt;
 
 pub use common::Id;
 pub use common::Width;
-pub use common::Unop;
 pub use common::Expr;
 
 #[derive(Clone, Debug)]
@@ -104,22 +103,22 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_wire_width_32() {
+    fn test_decl_wire_width_32() {
         assert_eq!("wire [31:0] foo".to_string(), Decl::Wire("foo".to_string(), 32).to_string());
     }
 
     #[test]
-    fn test_wire_width_1() {
+    fn test_decl_wire_width_1() {
         assert_eq!("wire foo".to_string(), Decl::Wire("foo".to_string(), 1).to_string());
     }
 
     #[test]
-    fn test_reg_width_32() {
+    fn test_decl_reg_width_32() {
         assert_eq!("reg [31:0] foo".to_string(), Decl::Reg("foo".to_string(), 32).to_string());
     }
 
     #[test]
-    fn test_reg_width_1() {
+    fn test_decl_reg_width_1() {
         assert_eq!("reg foo".to_string(), Decl::Reg("foo".to_string(), 1).to_string());
     }
 }

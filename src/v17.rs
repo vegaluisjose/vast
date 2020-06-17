@@ -5,7 +5,6 @@ use std::fmt;
 
 pub use common::Id;
 pub use common::Width;
-pub use common::Unop;
 pub use common::Expr;
 
 #[derive(Clone, Debug)]

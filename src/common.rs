@@ -21,34 +21,54 @@ impl PrettyPrinter for Width {
     }
 }
 
+// Reduce ops
 #[derive(Clone, Debug)]
-pub enum Unop {
-    LogicalNegation,
-    BitwiseNegation,
-    BitwiseAnd,
-    BitwiseNand,
-    BitwiseOr,
-    BitwiseNor,
-    BitwiseXor,
-    BitwiseXnor,
+pub enum RedOp {
+    LogNot,
+    Not,
+    And,
+    Nand,
+    Or,
+    Nor,
+    Xor,
+    Xnor,
 }
 
-impl PrettyPrinter for Unop {
+impl PrettyPrinter for RedOp {
     fn to_doc(&self) -> RcDoc<()> {
         match self {
-            Unop::LogicalNegation => RcDoc::text("!"),
-            Unop::BitwiseNegation => RcDoc::text("~"),
-            Unop::BitwiseAnd => RcDoc::text("&"),
-            Unop::BitwiseNand => RcDoc::text("~&"),
-            Unop::BitwiseOr => RcDoc::text("|"),
-            Unop::BitwiseNor => RcDoc::text("~|"),
-            Unop::BitwiseXor => RcDoc::text("^"),
-            Unop::BitwiseXnor => RcDoc::text("~^"),
+            RedOp::LogNot => RcDoc::text("!"),
+            RedOp::Not => RcDoc::text("~"),
+            RedOp::And => RcDoc::text("&"),
+            RedOp::Nand => RcDoc::text("~&"),
+            RedOp::Or => RcDoc::text("|"),
+            RedOp::Nor => RcDoc::text("~|"),
+            RedOp::Xor => RcDoc::text("^"),
+            RedOp::Xnor => RcDoc::text("~^"),
         }
     }
 }
 
-impl fmt::Display for Unop {
+impl fmt::Display for RedOp {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        write!(f, "{}", self.to_pretty())
+    }
+}
+
+#[derive(Clone, Debug)]
+pub enum Binop {
+    Add,
+}
+
+impl PrettyPrinter for Binop {
+    fn to_doc(&self) -> RcDoc<()> {
+        match self {
+            Binop::Add => RcDoc::text("+"),
+        }
+    }
+}
+
+impl fmt::Display for Binop {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         write!(f, "{}", self.to_pretty())
     }
@@ -57,14 +77,20 @@ impl fmt::Display for Unop {
 #[derive(Clone, Debug)]
 pub enum Expr {
     Ref(Id),
-    Unop(Unop, Rc<Expr>),
+    Unop(RedOp, Rc<Expr>),
+    Binop(Binop, Rc<Expr>, Rc<Expr>),
 }
 
 impl PrettyPrinter for Expr {
     fn to_doc(&self) -> RcDoc<()> {
         match self {
             Expr::Ref(name) => RcDoc::as_string(name),
-            Expr::Unop(op, name) => op.to_doc().append(name.to_doc()),
+            Expr::Unop(op, input) => op.to_doc().append(input.to_doc()),
+            Expr::Binop(op, lhs, rhs) => lhs.to_doc()
+                .append(RcDoc::space())
+                .append(op.to_doc())
+                .append(RcDoc::space())
+                .append(rhs.to_doc()),
         }
     }
 }
@@ -91,7 +117,12 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_logical_negation() {
-        assert_eq!("!".to_string(), Unop::LogicalNegation.to_string());
+    fn test_unop_lognot() {
+        assert_eq!("!".to_string(), RedOp::LogNot.to_string());
+    }
+
+    #[test]
+    fn test_expr_binop_add_two_ref() {
+        assert_eq!("a + b".to_string(), Expr::Binop(Binop::Add, Rc::new(Expr::Ref("a".to_string())), Rc::new(Expr::Ref("b".to_string()))).to_string());
     }
 }
