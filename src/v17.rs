@@ -9,12 +9,14 @@ pub use common::Expr;
 
 #[derive(Clone, Debug)]
 pub enum Decl {
+    Int,
     Logic(Id, Width),
 }
 
 impl PrettyPrinter for Decl {
     fn to_doc(&self) -> RcDoc<()> {
         match self {
+            Decl::Int => RcDoc::text("int"),
             Decl::Logic(name, width) => {
                 let ty = match width {
                     1 => RcDoc::nil(),
@@ -127,5 +129,10 @@ mod tests {
     #[test]
     fn test_port_input_width_1() {
         assert_eq!("input logic foo".to_string(), Port::Input(Decl::Logic("foo".to_string(), 1)).to_string());
+    }
+
+    #[test]
+    fn test_decl_int() {
+        assert_eq!("int".to_string(), Decl::Int.to_string());
     }
 }
