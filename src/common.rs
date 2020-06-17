@@ -23,7 +23,7 @@ impl PrettyPrinter for Width {
 
 // Reduce ops
 #[derive(Clone, Debug)]
-pub enum RedOp {
+pub enum Rop {
     LogNot,
     Not,
     And,
@@ -34,22 +34,22 @@ pub enum RedOp {
     Xnor,
 }
 
-impl PrettyPrinter for RedOp {
+impl PrettyPrinter for Rop {
     fn to_doc(&self) -> RcDoc<()> {
         match self {
-            RedOp::LogNot => RcDoc::text("!"),
-            RedOp::Not => RcDoc::text("~"),
-            RedOp::And => RcDoc::text("&"),
-            RedOp::Nand => RcDoc::text("~&"),
-            RedOp::Or => RcDoc::text("|"),
-            RedOp::Nor => RcDoc::text("~|"),
-            RedOp::Xor => RcDoc::text("^"),
-            RedOp::Xnor => RcDoc::text("~^"),
+            Rop::LogNot => RcDoc::text("!"),
+            Rop::Not => RcDoc::text("~"),
+            Rop::And => RcDoc::text("&"),
+            Rop::Nand => RcDoc::text("~&"),
+            Rop::Or => RcDoc::text("|"),
+            Rop::Nor => RcDoc::text("~|"),
+            Rop::Xor => RcDoc::text("^"),
+            Rop::Xnor => RcDoc::text("~^"),
         }
     }
 }
 
-impl fmt::Display for RedOp {
+impl fmt::Display for Rop {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         write!(f, "{}", self.to_pretty())
     }
@@ -77,7 +77,7 @@ impl fmt::Display for Binop {
 #[derive(Clone, Debug)]
 pub enum Expr {
     Ref(Id),
-    Unop(RedOp, Rc<Expr>),
+    Unop(Rop, Rc<Expr>),
     Binop(Binop, Rc<Expr>, Rc<Expr>),
 }
 
@@ -118,7 +118,7 @@ mod tests {
 
     #[test]
     fn test_unop_lognot() {
-        assert_eq!("!".to_string(), RedOp::LogNot.to_string());
+        assert_eq!("!".to_string(), Rop::LogNot.to_string());
     }
 
     #[test]
