@@ -1,41 +1,48 @@
-use crate::common::{self, GenericModule, GenericStmt, GenericPort};
+use crate::common::{self, GenericModule, GenericPort, GenericStmt};
 use crate::pretty::PrettyPrinter;
 use pretty::RcDoc;
 use std::fmt;
 
-pub use common::Id;
-pub use common::Width;
 pub use common::Expr;
+pub use common::Id;
+pub use common::Ty;
 
 #[derive(Clone, Debug)]
 pub enum Decl {
-    Wire(Id, Width),
-    Reg(Id, Width),
+    Int(Id, Ty),
+    Wire(Id, Ty),
+    Reg(Id, Ty),
 }
 
 impl PrettyPrinter for Decl {
     fn to_doc(&self) -> RcDoc<()> {
         match self {
-            Decl::Wire(name, width) => {
-                let ty = match width {
+            Decl::Int(name, ty) => ty
+                .to_doc()
+                .append(RcDoc::space())
+                .append(RcDoc::as_string(name)),
+            Decl::Wire(name, ty) => {
+                let extra_space = match ty.width() {
                     1 => RcDoc::nil(),
-                    _ => width.to_doc().append(RcDoc::space()),
+                    _ => RcDoc::space(),
                 };
                 RcDoc::text("wire")
                     .append(RcDoc::space())
-                    .append(ty)
+                    .append(ty.to_doc())
+                    .append(extra_space)
                     .append(RcDoc::as_string(name))
-            },
-            Decl::Reg(name, width) => {
-                let ty = match width {
+            }
+            Decl::Reg(name, ty) => {
+                let extra_space = match ty.width() {
                     1 => RcDoc::nil(),
-                    _ => width.to_doc().append(RcDoc::space()),
+                    _ => RcDoc::space(),
                 };
                 RcDoc::text("reg")
                     .append(RcDoc::space())
-                    .append(ty)
+                    .append(ty.to_doc())
+                    .append(extra_space)
                     .append(RcDoc::as_string(name))
-            },
+            }
         }
     }
 }
@@ -125,21 +132,33 @@ mod tests {
 
     #[test]
     fn test_decl_wire_width_32() {
-        assert_eq!("wire [31:0] foo".to_string(), Decl::Wire("foo".to_string(), 32).to_string());
+        assert_eq!(
+            "wire [31:0] foo".to_string(),
+            Decl::Wire("foo".to_string(), Ty::Width(32)).to_string()
+        );
     }
 
     #[test]
     fn test_decl_wire_width_1() {
-        assert_eq!("wire foo".to_string(), Decl::Wire("foo".to_string(), 1).to_string());
+        assert_eq!(
+            "wire foo".to_string(),
+            Decl::Wire("foo".to_string(), Ty::Width(1)).to_string()
+        );
     }
 
     #[test]
     fn test_decl_reg_width_32() {
-        assert_eq!("reg [31:0] foo".to_string(), Decl::Reg("foo".to_string(), 32).to_string());
+        assert_eq!(
+            "reg [31:0] foo".to_string(),
+            Decl::Reg("foo".to_string(), Ty::Width(32)).to_string()
+        );
     }
 
     #[test]
     fn test_decl_reg_width_1() {
-        assert_eq!("reg foo".to_string(), Decl::Reg("foo".to_string(), 1).to_string());
+        assert_eq!(
+            "reg foo".to_string(),
+            Decl::Reg("foo".to_string(), Ty::Width(1)).to_string()
+        );
     }
 }

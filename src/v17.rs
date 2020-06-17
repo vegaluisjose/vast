@@ -1,30 +1,34 @@
-use crate::common::{self, GenericModule, GenericStmt, GenericPort};
+use crate::common::{self, GenericModule, GenericPort, GenericStmt};
 use crate::pretty::PrettyPrinter;
 use pretty::RcDoc;
 use std::fmt;
 
-pub use common::Id;
-pub use common::Width;
 pub use common::Expr;
+pub use common::Id;
+pub use common::Ty;
 
 #[derive(Clone, Debug)]
 pub enum Decl {
-    Int,
-    Logic(Id, Width),
+    Int(Id, Ty),
+    Logic(Id, Ty),
 }
 
 impl PrettyPrinter for Decl {
     fn to_doc(&self) -> RcDoc<()> {
         match self {
-            Decl::Int => RcDoc::text("int"),
-            Decl::Logic(name, width) => {
-                let ty = match width {
+            Decl::Int(name, ty) => ty
+                .to_doc()
+                .append(RcDoc::space())
+                .append(RcDoc::as_string(name)),
+            Decl::Logic(name, ty) => {
+                let extra_space = match ty.width() {
                     1 => RcDoc::nil(),
-                    _ => width.to_doc().append(RcDoc::space()),
+                    _ => RcDoc::space(),
                 };
                 RcDoc::text("logic")
                     .append(RcDoc::space())
-                    .append(ty)
+                    .append(ty.to_doc())
+                    .append(extra_space)
                     .append(RcDoc::as_string(name))
             }
         }
@@ -118,21 +122,30 @@ mod tests {
 
     #[test]
     fn test_decl_logic_width_32() {
-        assert_eq!("logic [31:0] foo".to_string(), Decl::Logic("foo".to_string(), 32).to_string());
+        assert_eq!(
+            "logic [31:0] foo".to_string(),
+            Decl::Logic("foo".to_string(), Ty::Width(32)).to_string()
+        );
     }
 
     #[test]
     fn test_decl_logic_width_1() {
-        assert_eq!("logic foo".to_string(), Decl::Logic("foo".to_string(), 1).to_string());
+        assert_eq!(
+            "logic foo".to_string(),
+            Decl::Logic("foo".to_string(), Ty::Width(1)).to_string()
+        );
     }
 
     #[test]
     fn test_port_input_width_1() {
-        assert_eq!("input logic foo".to_string(), Port::Input(Decl::Logic("foo".to_string(), 1)).to_string());
+        assert_eq!(
+            "input logic foo".to_string(),
+            Port::Input(Decl::Logic("foo".to_string(), Ty::Width(1))).to_string()
+        );
     }
 
     #[test]
     fn test_decl_int() {
-        assert_eq!("int".to_string(), Decl::Int.to_string());
+        assert_eq!("int a".to_string(), Decl::Int("a".to_string(), Ty::Int).to_string());
     }
 }
