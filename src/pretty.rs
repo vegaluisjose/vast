@@ -1,6 +1,7 @@
 use pretty::RcDoc;
 
-pub const PRETTY_DEFAULT_WIDTH: usize = 100;
+pub const PRETTY_WIDTH: usize = 100;
+pub const PRETTY_INDENT: isize = 4;
 
 pub trait PrettyPrinter {
     fn to_doc(&self) -> RcDoc<()>;
@@ -12,6 +13,6 @@ pub trait PrettyPrinter {
     }
 
     fn to_pretty(&self) -> String {
-        self.to_pretty_with_width(PRETTY_DEFAULT_WIDTH)
+        self.to_pretty_with_width(PRETTY_WIDTH)
     }
 }

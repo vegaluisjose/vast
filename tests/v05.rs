@@ -1,4 +1,4 @@
-use vast::v05::{Decl, Ty};
+use vast::v05::{Module, Decl, Ty};
 
 #[test]
 fn test_decl_wire_width_32() {
@@ -29,5 +29,13 @@ fn test_decl_reg_width_1() {
     assert_eq!(
         "reg foo".to_string(),
         Decl::Reg("foo".to_string(), Ty::Width(1)).to_string()
+    );
+}
+
+#[test]
+fn test_module_with_name() {
+    assert_eq!(
+        "module foo ();\nendmodule".to_string(),
+        Module::new_with_name("foo").to_string(),
     );
 }

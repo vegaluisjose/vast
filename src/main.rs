@@ -1,3 +1,5 @@
+use vast::v05::Module;
 fn main() {
-    println!("Hello");
+    let m = Module::new_with_name("some");
+    println!("{}", m);
 }

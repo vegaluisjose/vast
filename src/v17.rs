@@ -1,5 +1,5 @@
 use crate::common::{self, GenericModule, GenericPort, GenericStmt};
-use crate::pretty::PrettyPrinter;
+use crate::pretty::{PrettyPrinter, PRETTY_INDENT};
 use pretty::RcDoc;
 use std::fmt;
 
@@ -104,9 +104,35 @@ impl fmt::Display for Port {
 
 pub type Module = GenericModule<Decl, Parallel>;
 
+impl Module {
+    pub fn new_with_name(name: &str) -> Module {
+        Module {
+            name: name.to_string(),
+            ports: Vec::new(),
+            body: Vec::new(),
+        }
+    }
+}
+
 impl PrettyPrinter for Module {
     fn to_doc(&self) -> RcDoc<()> {
-        RcDoc::text("WIP")
+        let mut body_doc = RcDoc::nil();
+        for decl in self.body.iter() {
+            body_doc = body_doc.append(RcDoc::hardline())
+                .append(decl.to_doc())
+                .append(RcDoc::text(";"));
+        }
+        body_doc = body_doc.nest(PRETTY_INDENT).group();
+        RcDoc::text("module")
+            .append(RcDoc::space())
+            .append(RcDoc::as_string(&self.name))
+            .append(RcDoc::space())
+            .append(RcDoc::text("("))
+            .append(RcDoc::text(")"))
+            .append(RcDoc::text(";"))
+            .append(body_doc)
+            .append(RcDoc::hardline())
+            .append(RcDoc::text("endmodule"))
     }
 }
 

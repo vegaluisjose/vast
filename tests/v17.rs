@@ -1,4 +1,4 @@
-use vast::v17::{Decl, Ty, Port};
+use vast::v17::{Module, Decl, Ty, Port};
 
 #[test]
 fn test_decl_logic_width_32() {
@@ -27,4 +27,12 @@ fn test_port_input_width_1() {
 #[test]
 fn test_decl_int() {
     assert_eq!("int a".to_string(), Decl::Int("a".to_string(), Ty::Int).to_string());
+}
+
+#[test]
+fn test_module_with_name() {
+    assert_eq!(
+        "module foo ();\nendmodule".to_string(),
+        Module::new_with_name("foo").to_string(),
+    );
 }
