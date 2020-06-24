@@ -135,26 +135,3 @@ pub struct GenericModule<T, U> {
     pub ports: Vec<GenericPort<T>>,
     pub stmt: Vec<GenericStmt<T, U>>,
 }
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    #[test]
-    fn test_unop_lognot() {
-        assert_eq!("!".to_string(), Rop::LogNot.to_string());
-    }
-
-    #[test]
-    fn test_expr_binop_add_two_ref() {
-        assert_eq!(
-            "a + b".to_string(),
-            Expr::Binop(
-                Binop::Add,
-                Rc::new(Expr::Ref("a".to_string())),
-                Rc::new(Expr::Ref("b".to_string()))
-            )
-            .to_string()
-        );
-    }
-}
