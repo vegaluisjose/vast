@@ -54,33 +54,33 @@ impl fmt::Display for Decl {
 }
 
 #[derive(Clone, Debug)]
-pub enum Par {
+pub enum Parallel {
     Assign,
     Always,
 }
 
-impl PrettyPrinter for Par {
+impl PrettyPrinter for Parallel {
     fn to_doc(&self) -> RcDoc<()> {
         match self {
-            Par::Assign => RcDoc::text("assign"),
-            Par::Always => RcDoc::text("always"),
+            Parallel::Assign => RcDoc::text("assign"),
+            Parallel::Always => RcDoc::text("always"),
         }
     }
 }
 
-impl fmt::Display for Par {
+impl fmt::Display for Parallel {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         write!(f, "{}", self.to_pretty())
     }
 }
 
-pub type Stmt = GenericStmt<Decl, Par>;
+pub type Stmt = GenericStmt<Decl, Parallel>;
 
 impl PrettyPrinter for Stmt {
     fn to_doc(&self) -> RcDoc<()> {
         match self {
             Stmt::Decl(decl) => decl.to_doc(),
-            Stmt::Par(par) => par.to_doc(),
+            Stmt::Parallel(par) => par.to_doc(),
         }
     }
 }
@@ -112,7 +112,7 @@ impl fmt::Display for Port {
     }
 }
 
-pub type Module = GenericModule<Decl, Par>;
+pub type Module = GenericModule<Decl, Parallel>;
 
 impl PrettyPrinter for Module {
     fn to_doc(&self) -> RcDoc<()> {

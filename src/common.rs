@@ -127,7 +127,7 @@ pub enum GenericPort<T> {
 #[derive(Clone, Debug)]
 pub enum GenericStmt<T, U> {
     Decl(T),
-    Par(U),
+    Parallel(U),
 }
 
 #[derive(Clone, Debug)]
