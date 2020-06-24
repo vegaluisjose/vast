@@ -6,7 +6,6 @@ use std::fmt;
 pub use common::EventTy;
 pub use common::Expr;
 pub use common::Id;
-pub use common::Sequential;
 pub use common::Ty;
 
 #[derive(Clone, Debug)]
@@ -50,6 +49,34 @@ impl PrettyPrinter for Decl {
 }
 
 impl fmt::Display for Decl {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        write!(f, "{}", self.to_pretty())
+    }
+}
+
+#[derive(Clone, Debug)]
+pub enum Sequential {
+    Wildcard,
+    Event(EventTy, Expr),
+    If(Expr, Vec<Sequential>, Vec<Sequential>),
+}
+
+impl PrettyPrinter for Sequential {
+    fn to_doc(&self) -> RcDoc<()> {
+        match self {
+            // wildcard for sensitivity list
+            Sequential::Wildcard => RcDoc::text("*"),
+            Sequential::Event(ty, expr) => ty.to_doc().append(RcDoc::space()).append(expr.to_doc()),
+            Sequential::If(expr, _, _) => RcDoc::text("if")
+                .append(RcDoc::space())
+                .append(RcDoc::text("("))
+                .append(expr.to_doc())
+                .append(RcDoc::text(")")),
+        }
+    }
+}
+
+impl fmt::Display for Sequential {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         write!(f, "{}", self.to_pretty())
     }

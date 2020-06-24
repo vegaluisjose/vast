@@ -2,11 +2,11 @@ use crate::common::{self, GenericModule, GenericPort, GenericStmt};
 use crate::pretty::{PrettyPrinter, PRETTY_INDENT};
 use pretty::RcDoc;
 use std::fmt;
+use std::rc::Rc;
 
 pub use common::EventTy;
 pub use common::Expr;
 pub use common::Id;
-pub use common::Sequential;
 pub use common::Ty;
 
 #[derive(Clone, Debug)]
@@ -44,18 +44,49 @@ impl fmt::Display for Decl {
 }
 
 #[derive(Clone, Debug)]
+pub enum Sequential {
+    Event(EventTy, Expr),
+    If(Expr, Vec<Sequential>, Vec<Sequential>),
+    Assert(Expr, Option<Rc<Sequential>>),
+}
+
+impl PrettyPrinter for Sequential {
+    fn to_doc(&self) -> RcDoc<()> {
+        match self {
+            Sequential::Event(ty, expr) => ty.to_doc().append(RcDoc::space()).append(expr.to_doc()),
+            Sequential::Assert(expr, _) => RcDoc::text("assert")
+                .append(RcDoc::space())
+                .append(RcDoc::text("("))
+                .append(expr.to_doc())
+                .append(RcDoc::text(")")),
+            Sequential::If(expr, _, _) => RcDoc::text("if")
+                .append(RcDoc::space())
+                .append(RcDoc::text("("))
+                .append(expr.to_doc())
+                .append(RcDoc::text(")")),
+        }
+    }
+}
+
+impl fmt::Display for Sequential {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        write!(f, "{}", self.to_pretty())
+    }
+}
+
+#[derive(Clone, Debug)]
 pub enum Parallel {
     Assign,
-    AlwaysComb,
-    AlwaysFF,
+    AlwaysComb(Vec<Sequential>),
+    AlwaysFF(Sequential, Vec<Sequential>),
 }
 
 impl PrettyPrinter for Parallel {
     fn to_doc(&self) -> RcDoc<()> {
         match self {
             Parallel::Assign => RcDoc::text("assign"),
-            Parallel::AlwaysComb => RcDoc::text("always_comb"),
-            Parallel::AlwaysFF => RcDoc::text("always_ff"),
+            Parallel::AlwaysComb(_) => RcDoc::text("always_comb"),
+            Parallel::AlwaysFF(_, _) => RcDoc::text("always_ff"),
         }
     }
 }
