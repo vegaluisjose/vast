@@ -1,4 +1,4 @@
-use vast::v17::{Module, Decl, Ty, Port};
+use vast::v17::{Module, Decl, Ty, Port, EventTy, Sequential, Expr};
 
 #[test]
 fn test_decl_logic_width_32() {
@@ -27,6 +27,30 @@ fn test_port_input_width_1() {
 #[test]
 fn test_decl_int() {
     assert_eq!("int a".to_string(), Decl::Int("a".to_string(), Ty::Int).to_string());
+}
+
+#[test]
+fn test_event_ty_posedge() {
+    assert_eq!(
+        "posedge".to_string(),
+        EventTy::Posedge.to_string(),
+    );
+}
+
+#[test]
+fn test_event_ty_negedge() {
+    assert_eq!(
+        "negedge".to_string(),
+        EventTy::Negedge.to_string(),
+    );
+}
+
+#[test]
+fn test_sequential_event_posedge_clock() {
+    assert_eq!(
+        "posedge clock".to_string(),
+        Sequential::Event(EventTy::Posedge, Expr::Ref("clock".to_string())).to_string(),
+    );
 }
 
 #[test]

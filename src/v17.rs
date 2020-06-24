@@ -6,6 +6,8 @@ use std::fmt;
 pub use common::Expr;
 pub use common::Id;
 pub use common::Ty;
+pub use common::EventTy;
+pub use common::Sequential;
 
 #[derive(Clone, Debug)]
 pub enum Decl {

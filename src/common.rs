@@ -119,6 +119,48 @@ impl fmt::Display for Expr {
 }
 
 #[derive(Clone, Debug)]
+pub enum EventTy {
+    Posedge,
+    Negedge,
+}
+
+impl PrettyPrinter for EventTy {
+    fn to_doc(&self) -> RcDoc<()> {
+        match self {
+            EventTy::Posedge => RcDoc::text("posedge"),
+            EventTy::Negedge => RcDoc::text("negedge"),
+        }
+    }
+}
+
+impl fmt::Display for EventTy {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        write!(f, "{}", self.to_pretty())
+    }
+}
+
+#[derive(Clone, Debug)]
+pub enum Sequential {
+    Event(EventTy, Expr),
+}
+
+impl PrettyPrinter for Sequential {
+    fn to_doc(&self) -> RcDoc<()> {
+        match self {
+            Sequential::Event(ty, expr) => ty.to_doc()
+                .append(RcDoc::space())
+                .append(expr.to_doc())
+        }
+    }
+}
+
+impl fmt::Display for Sequential {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        write!(f, "{}", self.to_pretty())
+    }
+}
+
+#[derive(Clone, Debug)]
 pub enum GenericPort<T> {
     Input(T),
     Output(T),
