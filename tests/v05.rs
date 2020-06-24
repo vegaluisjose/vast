@@ -1,4 +1,4 @@
-use vast::v05::{Module, Decl, Ty, EventTy, Sequential, Expr};
+use vast::v05::{Decl, EventTy, Expr, Module, Sequential, Ty};
 
 #[test]
 fn test_decl_wire_width_32() {
@@ -34,18 +34,12 @@ fn test_decl_reg_width_1() {
 
 #[test]
 fn test_event_ty_posedge() {
-    assert_eq!(
-        "posedge".to_string(),
-        EventTy::Posedge.to_string(),
-    );
+    assert_eq!("posedge".to_string(), EventTy::Posedge.to_string(),);
 }
 
 #[test]
 fn test_event_ty_negedge() {
-    assert_eq!(
-        "negedge".to_string(),
-        EventTy::Negedge.to_string(),
-    );
+    assert_eq!("negedge".to_string(), EventTy::Negedge.to_string(),);
 }
 
 #[test]

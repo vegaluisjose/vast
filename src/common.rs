@@ -147,9 +147,7 @@ pub enum Sequential {
 impl PrettyPrinter for Sequential {
     fn to_doc(&self) -> RcDoc<()> {
         match self {
-            Sequential::Event(ty, expr) => ty.to_doc()
-                .append(RcDoc::space())
-                .append(expr.to_doc())
+            Sequential::Event(ty, expr) => ty.to_doc().append(RcDoc::space()).append(expr.to_doc()),
         }
     }
 }

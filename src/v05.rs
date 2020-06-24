@@ -3,11 +3,11 @@ use crate::pretty::{PrettyPrinter, PRETTY_INDENT};
 use pretty::RcDoc;
 use std::fmt;
 
+pub use common::EventTy;
 pub use common::Expr;
 pub use common::Id;
-pub use common::Ty;
-pub use common::EventTy;
 pub use common::Sequential;
+pub use common::Ty;
 
 #[derive(Clone, Debug)]
 pub enum Decl {
@@ -130,7 +130,8 @@ impl PrettyPrinter for Module {
     fn to_doc(&self) -> RcDoc<()> {
         let mut body_doc = RcDoc::nil();
         for decl in self.body.iter() {
-            body_doc = body_doc.append(RcDoc::hardline())
+            body_doc = body_doc
+                .append(RcDoc::hardline())
                 .append(decl.to_doc())
                 .append(RcDoc::text(";"));
         }
