@@ -6,7 +6,38 @@ use std::fmt;
 pub use common::EventTy;
 pub use common::Expr;
 pub use common::Id;
-pub use common::Ty;
+
+#[derive(Clone, Debug)]
+pub enum Ty {
+    Int,
+    Width(u64),
+}
+
+impl Ty {
+    pub fn width(&self) -> u64 {
+        match self {
+            Ty::Width(w) => w.clone(),
+            _ => panic!("Error: type does not support width"),
+        }
+    }
+}
+
+impl PrettyPrinter for Ty {
+    fn to_doc(&self) -> RcDoc<()> {
+        match self {
+            Ty::Int => RcDoc::text("int"),
+            Ty::Width(w) => match w {
+                0 => panic!("Error: width must be greater than zero"),
+                1 => RcDoc::nil(),
+                n => RcDoc::text("[")
+                    .append(RcDoc::as_string(n - 1))
+                    .append(RcDoc::text(":"))
+                    .append(RcDoc::text("0"))
+                    .append(RcDoc::text("]")),
+            },
+        }
+    }
+}
 
 #[derive(Clone, Debug)]
 pub enum Decl {

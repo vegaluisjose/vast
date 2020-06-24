@@ -7,12 +7,46 @@ use std::rc::Rc;
 pub use common::EventTy;
 pub use common::Expr;
 pub use common::Id;
-pub use common::Ty;
+
+#[derive(Clone, Debug)]
+pub enum Ty {
+    Void,
+    Int,
+    Width(u64),
+}
+
+impl Ty {
+    pub fn width(&self) -> u64 {
+        match self {
+            Ty::Width(w) => w.clone(),
+            _ => panic!("Error: type does not support width"),
+        }
+    }
+}
+
+impl PrettyPrinter for Ty {
+    fn to_doc(&self) -> RcDoc<()> {
+        match self {
+            Ty::Void => RcDoc::text("void"),
+            Ty::Int => RcDoc::text("int"),
+            Ty::Width(w) => match w {
+                0 => panic!("Error: width must be greater than zero"),
+                1 => RcDoc::nil(),
+                n => RcDoc::text("[")
+                    .append(RcDoc::as_string(n - 1))
+                    .append(RcDoc::text(":"))
+                    .append(RcDoc::text("0"))
+                    .append(RcDoc::text("]")),
+            },
+        }
+    }
+}
 
 #[derive(Clone, Debug)]
 pub enum Decl {
     Int(Id, Ty),
     Logic(Id, Ty),
+    Function(Id, Ty, Vec<Port>, Vec<Decl>, Vec<Sequential>),
 }
 
 impl PrettyPrinter for Decl {
@@ -33,6 +67,11 @@ impl PrettyPrinter for Decl {
                     .append(extra_space)
                     .append(RcDoc::as_string(name))
             }
+            Decl::Function(name, retty, _, _, _) => RcDoc::text("function")
+                .append(RcDoc::space())
+                .append(RcDoc::as_string(name))
+                .append(RcDoc::space())
+                .append(retty.to_doc()),
         }
     }
 }
