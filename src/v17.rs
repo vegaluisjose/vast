@@ -1,5 +1,5 @@
 use crate::common::{self, GenericModule, GenericPort, GenericStmt};
-use crate::pretty::{PrettyPrinter, PRETTY_INDENT};
+use crate::util::pretty_print::{PrettyPrint, PRETTY_INDENT};
 use pretty::RcDoc;
 use std::fmt;
 use std::rc::Rc;
@@ -24,7 +24,7 @@ impl Ty {
     }
 }
 
-impl PrettyPrinter for Ty {
+impl PrettyPrint for Ty {
     fn to_doc(&self) -> RcDoc<()> {
         match self {
             Ty::Void => RcDoc::text("void"),
@@ -49,7 +49,7 @@ pub enum Decl {
     Function(Id, Ty, Vec<Port>, Vec<Decl>, Vec<Sequential>),
 }
 
-impl PrettyPrinter for Decl {
+impl PrettyPrint for Decl {
     fn to_doc(&self) -> RcDoc<()> {
         match self {
             Decl::Int(name, ty) => ty
@@ -89,7 +89,7 @@ pub enum Sequential {
     Assert(Expr, Option<Rc<Sequential>>),
 }
 
-impl PrettyPrinter for Sequential {
+impl PrettyPrint for Sequential {
     fn to_doc(&self) -> RcDoc<()> {
         match self {
             Sequential::Event(ty, expr) => ty.to_doc().append(RcDoc::space()).append(expr.to_doc()),
@@ -120,7 +120,7 @@ pub enum Parallel {
     AlwaysFF(Sequential, Vec<Sequential>),
 }
 
-impl PrettyPrinter for Parallel {
+impl PrettyPrint for Parallel {
     fn to_doc(&self) -> RcDoc<()> {
         match self {
             Parallel::Assign => RcDoc::text("assign"),
@@ -138,7 +138,7 @@ impl fmt::Display for Parallel {
 
 pub type Stmt = GenericStmt<Decl, Parallel>;
 
-impl PrettyPrinter for Stmt {
+impl PrettyPrint for Stmt {
     fn to_doc(&self) -> RcDoc<()> {
         match self {
             Stmt::Decl(decl) => decl.to_doc(),
@@ -155,7 +155,7 @@ impl fmt::Display for Stmt {
 
 pub type Port = GenericPort<Decl>;
 
-impl PrettyPrinter for Port {
+impl PrettyPrint for Port {
     fn to_doc(&self) -> RcDoc<()> {
         match self {
             Port::Input(decl) => RcDoc::text("input")
@@ -186,7 +186,7 @@ impl Module {
     }
 }
 
-impl PrettyPrinter for Module {
+impl PrettyPrint for Module {
     fn to_doc(&self) -> RcDoc<()> {
         let mut body_doc = RcDoc::nil();
         for decl in self.body.iter() {

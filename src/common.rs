@@ -1,4 +1,4 @@
-use crate::pretty::PrettyPrinter;
+use crate::util::pretty_print::PrettyPrint;
 use pretty::RcDoc;
 use std::fmt;
 use std::rc::Rc;
@@ -18,7 +18,7 @@ pub enum Rop {
     Xnor,
 }
 
-impl PrettyPrinter for Rop {
+impl PrettyPrint for Rop {
     fn to_doc(&self) -> RcDoc<()> {
         match self {
             Rop::LogNot => RcDoc::text("!"),
@@ -44,7 +44,7 @@ pub enum Binop {
     Add,
 }
 
-impl PrettyPrinter for Binop {
+impl PrettyPrint for Binop {
     fn to_doc(&self) -> RcDoc<()> {
         match self {
             Binop::Add => RcDoc::text("+"),
@@ -65,7 +65,7 @@ pub enum Expr {
     Binop(Binop, Rc<Expr>, Rc<Expr>),
 }
 
-impl PrettyPrinter for Expr {
+impl PrettyPrint for Expr {
     fn to_doc(&self) -> RcDoc<()> {
         match self {
             Expr::Ref(name) => RcDoc::as_string(name),
@@ -92,7 +92,7 @@ pub enum EventTy {
     Negedge,
 }
 
-impl PrettyPrinter for EventTy {
+impl PrettyPrint for EventTy {
     fn to_doc(&self) -> RcDoc<()> {
         match self {
             EventTy::Posedge => RcDoc::text("posedge"),
