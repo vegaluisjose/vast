@@ -1,27 +1,6 @@
-use crate::subset;
-use crate::subset::ast::{GenericModule, GenericPort, GenericStmt};
 use crate::util::pretty_print::{PrettyPrint, PRETTY_INDENT};
+use crate::v05::ast::*;
 use pretty::RcDoc;
-use std::fmt;
-
-pub use subset::ast::EventTy;
-pub use subset::ast::Expr;
-pub use subset::ast::Id;
-
-#[derive(Clone, Debug)]
-pub enum Ty {
-    Int,
-    Width(u64),
-}
-
-impl Ty {
-    pub fn width(&self) -> u64 {
-        match self {
-            Ty::Width(w) => w.clone(),
-            _ => panic!("Error: type does not support width"),
-        }
-    }
-}
 
 impl PrettyPrint for Ty {
     fn to_doc(&self) -> RcDoc<()> {
@@ -38,13 +17,6 @@ impl PrettyPrint for Ty {
             },
         }
     }
-}
-
-#[derive(Clone, Debug)]
-pub enum Decl {
-    Int(Id, Ty),
-    Wire(Id, Ty),
-    Reg(Id, Ty),
 }
 
 impl PrettyPrint for Decl {
@@ -80,19 +52,6 @@ impl PrettyPrint for Decl {
     }
 }
 
-impl fmt::Display for Decl {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        write!(f, "{}", self.to_pretty())
-    }
-}
-
-#[derive(Clone, Debug)]
-pub enum Sequential {
-    Wildcard,
-    Event(EventTy, Expr),
-    If(Expr, Vec<Sequential>, Vec<Sequential>),
-}
-
 impl PrettyPrint for Sequential {
     fn to_doc(&self) -> RcDoc<()> {
         match self {
@@ -108,18 +67,6 @@ impl PrettyPrint for Sequential {
     }
 }
 
-impl fmt::Display for Sequential {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        write!(f, "{}", self.to_pretty())
-    }
-}
-
-#[derive(Clone, Debug)]
-pub enum Parallel {
-    Assign,
-    Always,
-}
-
 impl PrettyPrint for Parallel {
     fn to_doc(&self) -> RcDoc<()> {
         match self {
@@ -128,14 +75,6 @@ impl PrettyPrint for Parallel {
         }
     }
 }
-
-impl fmt::Display for Parallel {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        write!(f, "{}", self.to_pretty())
-    }
-}
-
-pub type Stmt = GenericStmt<Decl, Parallel>;
 
 impl PrettyPrint for Stmt {
     fn to_doc(&self) -> RcDoc<()> {
@@ -146,14 +85,6 @@ impl PrettyPrint for Stmt {
     }
 }
 
-impl fmt::Display for Stmt {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        write!(f, "{}", self.to_pretty())
-    }
-}
-
-pub type Port = GenericPort<Decl>;
-
 impl PrettyPrint for Port {
     fn to_doc(&self) -> RcDoc<()> {
         match self {
@@ -163,24 +94,6 @@ impl PrettyPrint for Port {
             Port::Output(decl) => RcDoc::text("output")
                 .append(RcDoc::space())
                 .append(decl.to_doc()),
-        }
-    }
-}
-
-impl fmt::Display for Port {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        write!(f, "{}", self.to_pretty())
-    }
-}
-
-pub type Module = GenericModule<Decl, Parallel>;
-
-impl Module {
-    pub fn new_with_name(name: &str) -> Module {
-        Module {
-            name: name.to_string(),
-            ports: Vec::new(),
-            body: Vec::new(),
         }
     }
 }
@@ -205,11 +118,5 @@ impl PrettyPrint for Module {
             .append(body_doc)
             .append(RcDoc::hardline())
             .append(RcDoc::text("endmodule"))
-    }
-}
-
-impl fmt::Display for Module {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        write!(f, "{}", self.to_pretty())
     }
 }

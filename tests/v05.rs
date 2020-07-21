@@ -1,4 +1,4 @@
-use vast::v05::{Decl, EventTy, Expr, Module, Sequential, Ty};
+use vast::v05::ast::{Decl, EventTy, Expr, Module, Sequential, Ty};
 
 #[test]
 fn test_decl_wire_width_32() {
