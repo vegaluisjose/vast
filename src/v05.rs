@@ -1,11 +1,12 @@
-use crate::common::{self, GenericModule, GenericPort, GenericStmt};
+use crate::subset;
+use crate::subset::ast::{GenericModule, GenericPort, GenericStmt};
 use crate::util::pretty_print::{PrettyPrint, PRETTY_INDENT};
 use pretty::RcDoc;
 use std::fmt;
 
-pub use common::EventTy;
-pub use common::Expr;
-pub use common::Id;
+pub use subset::ast::EventTy;
+pub use subset::ast::Expr;
+pub use subset::ast::Id;
 
 #[derive(Clone, Debug)]
 pub enum Ty {
