@@ -18,6 +18,20 @@ impl Ty {
     }
 }
 
+impl Decl {
+    pub fn new_int(name: &str) -> Decl {
+        Decl::Int(name.to_string(), Ty::new_int())
+    }
+
+    pub fn new_wire(name: &str, width: u64) -> Decl {
+        Decl::Wire(name.to_string(), Ty::new_width(width))
+    }
+
+    pub fn new_reg(name: &str, width: u64) -> Decl {
+        Decl::Reg(name.to_string(), Ty::new_width(width))
+    }
+}
+
 impl Module {
     pub fn new_with_name(name: &str) -> Module {
         Module {
