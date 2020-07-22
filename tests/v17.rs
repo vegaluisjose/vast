@@ -1,4 +1,4 @@
-use vast::v17::{Decl, EventTy, Expr, Module, Port, Sequential, Ty};
+use vast::v17::ast::{Decl, EventTy, Expr, Module, Port, Sequential, Ty};
 
 #[test]
 fn test_decl_logic_width_32() {
