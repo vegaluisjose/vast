@@ -9,6 +9,7 @@ pub type Id = subset::ast::Id;
 pub enum Ty {
     Void,
     Int,
+    // maybe use nonzero64?
     Width(u64),
 }
 

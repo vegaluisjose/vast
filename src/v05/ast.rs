@@ -7,6 +7,7 @@ pub type Id = subset::ast::Id;
 #[derive(Clone, Debug)]
 pub enum Ty {
     Int,
+    // maybe use nonzero64?
     Width(u64),
 }
 
