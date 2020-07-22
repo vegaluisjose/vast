@@ -1,4 +1,5 @@
 use vast::v17::ast::{Decl, EventTy, Expr, Module, Port, Sequential, Ty};
+use vast::util::file::read_to_string;
 
 #[test]
 fn test_decl_logic_width_32() {
@@ -51,9 +52,8 @@ fn test_sequential_event_posedge_clock() {
 }
 
 #[test]
-fn test_module_with_name() {
-    assert_eq!(
-        "module foo ();\nendmodule".to_string(),
-        Module::new_with_name("foo").to_string(),
-    );
+fn test_empty_module() {
+    let exp = read_to_string("regression/v17/empty_module.v");
+    let res = Module::new_with_name("bar").to_string();
+    assert_eq!(exp, res);
 }
