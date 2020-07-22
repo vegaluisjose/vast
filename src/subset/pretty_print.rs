@@ -1,5 +1,5 @@
-use crate::util::pretty_print::PrettyPrint;
 use crate::subset::ast::*;
+use crate::util::pretty_print::PrettyPrint;
 use pretty::RcDoc;
 
 impl PrettyPrint for Rop {

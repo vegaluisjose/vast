@@ -1,5 +1,5 @@
-use crate::util::pretty_print::PrettyPrint;
 use crate::subset::ast::*;
+use crate::util::pretty_print::PrettyPrint;
 use std::fmt;
 
 impl fmt::Display for Rop {

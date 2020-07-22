@@ -15,7 +15,6 @@ pub enum Rop {
     Xnor,
 }
 
-
 #[derive(Clone, Debug)]
 pub enum Binop {
     Add,
