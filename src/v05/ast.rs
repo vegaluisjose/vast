@@ -1,9 +1,8 @@
 use crate::subset;
-use crate::subset::ast::{GenericModule, GenericPort, GenericStmt};
 
-pub use subset::ast::EventTy;
-pub use subset::ast::Expr;
-pub use subset::ast::Id;
+pub type EventTy = subset::ast::EventTy;
+pub type Expr = subset::ast::Expr;
+pub type Id = subset::ast::Id;
 
 #[derive(Clone, Debug)]
 pub enum Ty {
@@ -31,6 +30,6 @@ pub enum Parallel {
     Always,
 }
 
-pub type Stmt = GenericStmt<Decl, Parallel>;
-pub type Port = GenericPort<Decl>;
-pub type Module = GenericModule<Decl, Parallel>;
+pub type Stmt = subset::ast::GenericStmt<Decl, Parallel>;
+pub type Port = subset::ast::GenericPort<Decl>;
+pub type Module = subset::ast::GenericModule<Decl, Parallel>;
