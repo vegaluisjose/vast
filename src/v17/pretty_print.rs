@@ -100,10 +100,10 @@ impl PrettyPrint for Port {
 impl PrettyPrint for Module {
     fn to_doc(&self) -> RcDoc<()> {
         let mut body_doc = RcDoc::nil();
-        for decl in self.body.iter() {
+        for stmt in self.body.iter() {
             body_doc = body_doc
                 .append(RcDoc::hardline())
-                .append(decl.to_doc())
+                .append(stmt.to_doc())
                 .append(RcDoc::text(";"));
         }
         body_doc = body_doc.nest(PRETTY_INDENT).group();
