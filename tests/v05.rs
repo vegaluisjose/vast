@@ -52,9 +52,9 @@ fn test_sequential_event_posedge_clock() {
 }
 
 #[test]
-fn test_empty_module() {
-    let exp = read_to_string("regression/v05/empty_module.v");
-    let res = Module::new_with_name("foo").to_string();
+fn test_module_empty() {
+    let exp = read_to_string("regression/v05/module_empty.v");
+    let res = Module::new_with_name("empty").to_string();
     assert_eq!(exp, res);
 }
 
