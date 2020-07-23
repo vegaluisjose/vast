@@ -9,3 +9,33 @@ Add `vast` to your `Cargo.toml` like this:
 [dependencies]
 vast = "0.1.0"
 ```
+
+## Creating a module in Verilog-2005
+
+```rust
+use vast::v05::ast::Module;
+
+fn main() {
+    let mut module = Module::new_with_name("foo");
+    module.add_input("a", 32);
+    let expected = r#"module foo (
+    input wire [31:0] a);
+endmodule"#;
+    assert_eq!(module.to_string(), expected);
+}
+```
+
+## Creating a module in SystemVerilog-2017
+
+```rust
+use vast::v17::ast::Module;
+
+fn main() {
+    let mut module = Module::new_with_name("foo");
+    module.add_input("a", 32);
+    let expected = r#"module foo (
+    input logic [31:0] a);
+endmodule"#;
+    assert_eq!(module.to_string(), expected);
+}
+```
