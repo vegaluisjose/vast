@@ -47,8 +47,8 @@ impl Port {
 
     pub fn new_output_reg(name: &str, width: u64) -> Port {
         let ty = Ty::Width(width);
-        let wire = Decl::Reg(name.to_string(), ty);
-        Port::Output(wire)
+        let reg = Decl::Reg(name.to_string(), ty);
+        Port::Output(reg)
     }
 }
 
