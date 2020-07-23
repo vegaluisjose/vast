@@ -72,4 +72,16 @@ impl Module {
     pub fn add_output_reg(&mut self, name: &str, width: u64) {
         self.ports.push(Port::new_output_reg(name, width));
     }
+
+    pub fn name(&self) -> String {
+        self.name.to_string()
+    }
+
+    pub fn body(&self) -> &Vec<Stmt> {
+        &self.body
+    }
+
+    pub fn ports(&self) -> &Vec<Port> {
+        &self.ports
+    }
 }
