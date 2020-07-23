@@ -66,3 +66,14 @@ fn test_module_one_input() {
     let res = module.to_string();
     assert_eq!(exp, res);
 }
+
+#[test]
+fn test_module_three_inputs() {
+    let exp = read_to_string("regression/v05/module_three_inputs.v");
+    let mut module = Module::new_with_name("three_inputs");
+    module.add_input("a", 5);
+    module.add_input("b", 61);
+    module.add_input("c", 1);
+    let res = module.to_string();
+    assert_eq!(exp, res);
+}
