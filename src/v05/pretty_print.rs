@@ -110,11 +110,10 @@ impl PrettyPrint for Module {
         body_doc = body_doc.nest(PRETTY_INDENT).group();
         let mut ports_doc = match self.ports().is_empty() {
             true => RcDoc::nil(),
-            false => RcDoc::hardline()
-                .append(RcDoc::intersperse(
-                    self.ports().iter().map(|p| p.to_doc()),
-                    RcDoc::text(",").append(RcDoc::hardline()),
-                )),
+            false => RcDoc::hardline().append(RcDoc::intersperse(
+                self.ports().iter().map(|p| p.to_doc()),
+                RcDoc::text(",").append(RcDoc::hardline()),
+            )),
         };
         ports_doc = ports_doc.nest(PRETTY_INDENT).group();
         RcDoc::text("module")

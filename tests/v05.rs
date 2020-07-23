@@ -1,5 +1,5 @@
-use vast::v05::ast::{Decl, EventTy, Expr, Module, Sequential};
 use vast::util::file::read_to_string;
+use vast::v05::ast::{Decl, EventTy, Expr, Module, Sequential};
 
 #[test]
 fn test_decl_wire_width_32() {
@@ -11,10 +11,7 @@ fn test_decl_wire_width_32() {
 
 #[test]
 fn test_decl_wire_width_1() {
-    assert_eq!(
-        "wire foo".to_string(),
-        Decl::new_wire("foo", 1).to_string()
-    );
+    assert_eq!("wire foo".to_string(), Decl::new_wire("foo", 1).to_string());
 }
 
 #[test]
@@ -27,10 +24,7 @@ fn test_decl_reg_width_32() {
 
 #[test]
 fn test_decl_reg_width_1() {
-    assert_eq!(
-        "reg foo".to_string(),
-        Decl::new_reg("foo", 1).to_string()
-    );
+    assert_eq!("reg foo".to_string(), Decl::new_reg("foo", 1).to_string());
 }
 
 #[test]

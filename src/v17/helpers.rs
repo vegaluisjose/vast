@@ -30,7 +30,6 @@ impl Port {
         let logic = Decl::Logic(name.to_string(), ty);
         Port::Output(logic)
     }
-
 }
 
 impl Module {
