@@ -57,3 +57,12 @@ fn test_empty_module() {
     let res = Module::new_with_name("foo").to_string();
     assert_eq!(exp, res);
 }
+
+#[test]
+fn test_module_one_input() {
+    let exp = read_to_string("regression/v05/module_one_input.v");
+    let mut module = Module::new_with_name("one_input");
+    module.add_input("a", 5);
+    let res = module.to_string();
+    assert_eq!(exp, res);
+}

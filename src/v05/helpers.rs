@@ -32,6 +32,26 @@ impl Decl {
     }
 }
 
+impl Port {
+    pub fn new_input(name: &str, width: u64) -> Port {
+        let ty = Ty::Width(width);
+        let wire = Decl::Wire(name.to_string(), ty);
+        Port::Input(wire)
+    }
+
+    pub fn new_output(name: &str, width: u64) -> Port {
+        let ty = Ty::Width(width);
+        let wire = Decl::Wire(name.to_string(), ty);
+        Port::Output(wire)
+    }
+
+    pub fn new_output_reg(name: &str, width: u64) -> Port {
+        let ty = Ty::Width(width);
+        let wire = Decl::Reg(name.to_string(), ty);
+        Port::Output(wire)
+    }
+}
+
 impl Module {
     pub fn new_with_name(name: &str) -> Module {
         Module {
@@ -39,5 +59,17 @@ impl Module {
             ports: Vec::new(),
             body: Vec::new(),
         }
+    }
+
+    pub fn add_input(&mut self, name: &str, width: u64) {
+        self.ports.push(Port::new_input(name, width));
+    }
+
+    pub fn add_output(&mut self, name: &str, width: u64) {
+        self.ports.push(Port::new_output(name, width));
+    }
+
+    pub fn add_output_reg(&mut self, name: &str, width: u64) {
+        self.ports.push(Port::new_output_reg(name, width));
     }
 }
