@@ -12,7 +12,7 @@ impl Ty {
 
     pub fn width(&self) -> u64 {
         match self {
-            Ty::Width(w) => w.clone(),
+            Ty::Width(w) => *w,
             _ => panic!("Error: type does not support width"),
         }
     }
