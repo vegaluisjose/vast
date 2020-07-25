@@ -49,6 +49,7 @@ pub enum GenericStmt<T, U> {
 #[derive(Clone, Debug)]
 pub struct GenericModule<T, U> {
     pub name: String,
+    pub params: Vec<T>,
     pub ports: Vec<GenericPort<T>>,
     pub body: Vec<GenericStmt<T, U>>,
 }

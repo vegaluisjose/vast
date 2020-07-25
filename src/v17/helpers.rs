@@ -42,6 +42,7 @@ impl Module {
     pub fn new_with_name(name: &str) -> Module {
         Module {
             name: name.to_string(),
+            params: Vec::new(),
             ports: Vec::new(),
             body: Vec::new(),
         }
@@ -65,5 +66,9 @@ impl Module {
 
     pub fn ports(&self) -> &Vec<Port> {
         &self.ports
+    }
+
+    pub fn params(&self) -> &Vec<Decl> {
+        &self.params
     }
 }

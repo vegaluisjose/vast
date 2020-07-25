@@ -79,3 +79,13 @@ fn test_module_three_inputs() {
     let res = module.to_string();
     assert_eq!(exp, res);
 }
+
+#[test]
+fn test_module_one_param() {
+    let exp = read_to_string("regression/v05/module_one_param.v");
+    let mut module = Module::new_with_name("one_param");
+    module.add_param_int("width", 32);
+    module.add_input("data", 4);
+    let res = module.to_string();
+    assert_eq!(exp, res);
+}

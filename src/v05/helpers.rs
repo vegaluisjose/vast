@@ -60,9 +60,14 @@ impl Module {
     pub fn new_with_name(name: &str) -> Module {
         Module {
             name: name.to_string(),
+            params: Vec::new(),
             ports: Vec::new(),
             body: Vec::new(),
         }
+    }
+
+    pub fn add_param_int(&mut self, name: &str, value: i32) {
+        self.params.push(Decl::new_param_int(name, value));
     }
 
     pub fn add_input(&mut self, name: &str, width: u64) {
@@ -87,5 +92,9 @@ impl Module {
 
     pub fn ports(&self) -> &Vec<Port> {
         &self.ports
+    }
+
+    pub fn params(&self) -> &Vec<Decl> {
+        &self.params
     }
 }

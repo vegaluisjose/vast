@@ -124,10 +124,25 @@ impl PrettyPrint for Module {
             ))
         };
         ports_doc = ports_doc.nest(PRETTY_INDENT).group();
+        let mut params_doc = if self.params().is_empty() {
+            RcDoc::nil()
+        } else {
+            RcDoc::text("#")
+                .append(RcDoc::space())
+                .append(RcDoc::text("("))
+                .append(RcDoc::hardline())
+                .append(RcDoc::intersperse(
+                    self.params().iter().map(|p| p.to_doc()),
+                    RcDoc::text(",").append(RcDoc::hardline()),
+                ))
+                .append(RcDoc::text(")"))
+        };
+        params_doc = params_doc.nest(PRETTY_INDENT).group();
         RcDoc::text("module")
             .append(RcDoc::space())
             .append(RcDoc::as_string(&self.name()))
             .append(RcDoc::space())
+            .append(params_doc)
             .append(RcDoc::text("("))
             .append(ports_doc)
             .append(RcDoc::text(")"))
