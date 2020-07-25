@@ -17,7 +17,7 @@ jobs:
     - name: Install cargo deadlinks
       run: which cargo-deadlinks || cargo install cargo-deadlinks
     - name: Install Verilator
-      run: sudo apt-install verilator
+      run: sudo apt-get install verilator
     - name: Lint regression tests
       run: make test-lint
     - name: Build and Test
