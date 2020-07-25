@@ -24,6 +24,7 @@ pub enum Binop {
 pub enum Expr {
     Ref(Id),
     Const(i32),
+    Str(String),
     Unop(Rop, Rc<Expr>),
     Binop(Binop, Rc<Expr>, Rc<Expr>),
 }

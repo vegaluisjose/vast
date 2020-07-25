@@ -34,6 +34,10 @@ impl Decl {
     pub fn new_param_int(name: &str, value: i32) -> Decl {
         Decl::Param(name.to_string(), Expr::new_const(value))
     }
+
+    pub fn new_param_str(name: &str, value: &str) -> Decl {
+        Decl::Param(name.to_string(), Expr::new_str(value))
+    }
 }
 
 impl Port {
@@ -68,6 +72,10 @@ impl Module {
 
     pub fn add_param_int(&mut self, name: &str, value: i32) {
         self.params.push(Decl::new_param_int(name, value));
+    }
+
+    pub fn add_param_str(&mut self, name: &str, value: &str) {
+        self.params.push(Decl::new_param_str(name, value));
     }
 
     pub fn add_input(&mut self, name: &str, width: u64) {

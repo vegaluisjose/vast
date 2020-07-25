@@ -23,6 +23,8 @@ test-lint-v05:
 	verilator --lint-only +1364-2005ext+v $(V05_DIR)/module_one_input.v
 	verilator --lint-only +1364-2005ext+v $(V05_DIR)/module_three_inputs.v
 	verilator --lint-only +1364-2005ext+v $(V05_DIR)/module_one_param.v
+	verilator --lint-only +1364-2005ext+v $(V05_DIR)/module_two_params.v
+	verilator --lint-only +1364-2005ext+v $(V05_DIR)/module_mix_params.v
 
 .PHONY: test-lint-v17
 test-lint-v17:
