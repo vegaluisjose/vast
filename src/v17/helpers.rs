@@ -32,6 +32,12 @@ impl Port {
     }
 }
 
+impl Decl {
+    pub fn new_param_int(name: &str, value: i32) -> Decl {
+        Decl::Param(name.to_string(), Ty::new_int(), Expr::new_const(value))
+    }
+}
+
 impl Module {
     pub fn new_with_name(name: &str) -> Module {
         Module {

@@ -18,6 +18,7 @@ pub enum Decl {
     Int(Id, Ty),
     Logic(Id, Ty),
     Function(Id, Ty, Vec<Port>, Vec<Decl>, Vec<Sequential>),
+    Param(Id, Ty, Expr),
 }
 
 #[derive(Clone, Debug)]
