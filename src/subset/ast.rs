@@ -23,7 +23,7 @@ pub enum Binop {
 #[derive(Clone, Debug)]
 pub enum Expr {
     Ref(Id),
-    Const(i64),
+    Const(i32),
     Unop(Rop, Rc<Expr>),
     Binop(Binop, Rc<Expr>, Rc<Expr>),
 }
