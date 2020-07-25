@@ -25,11 +25,24 @@ impl PrettyPrint for Binop {
     }
 }
 
+impl PrettyPrint for Radix {
+    fn to_doc(&self) -> RcDoc<()> {
+        match self {
+            Radix::Dec => RcDoc::text("d"),
+            Radix::Bin => RcDoc::text("b"),
+            Radix::Hex => RcDoc::text("h"),
+        }
+    }
+}
+
 impl PrettyPrint for Expr {
     fn to_doc(&self) -> RcDoc<()> {
         match self {
             Expr::Ref(name) => RcDoc::as_string(name),
-            Expr::Const(value) => RcDoc::as_string(value),
+            Expr::ULit(width, radix, value) => RcDoc::as_string(width)
+                .append(RcDoc::text("'"))
+                .append(radix.to_doc())
+                .append(RcDoc::as_string(value)),
             Expr::Str(value) => RcDoc::text(r#"""#)
                 .append(RcDoc::as_string(value))
                 .append(RcDoc::text(r#"""#)),

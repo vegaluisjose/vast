@@ -33,8 +33,12 @@ impl Port {
 }
 
 impl Decl {
-    pub fn new_param_int(name: &str, value: i32) -> Decl {
-        Decl::Param(name.to_string(), Ty::new_int(), Expr::new_const(value))
+    pub fn new_param_uint(name: &str, value: u32) -> Decl {
+        Decl::Param(
+            name.to_string(),
+            Ty::new_int(),
+            Expr::new_dec_ulit(32, &value.to_string()),
+        )
     }
 }
 

@@ -31,8 +31,8 @@ impl Decl {
         Decl::Reg(name.to_string(), Ty::new_width(width))
     }
 
-    pub fn new_param_int(name: &str, value: i32) -> Decl {
-        Decl::Param(name.to_string(), Expr::new_const(value))
+    pub fn new_param_uint(name: &str, value: u32) -> Decl {
+        Decl::Param(name.to_string(), Expr::new_dec_ulit(32, &value.to_string()))
     }
 
     pub fn new_param_str(name: &str, value: &str) -> Decl {
@@ -70,8 +70,8 @@ impl Module {
         }
     }
 
-    pub fn add_param_int(&mut self, name: &str, value: i32) {
-        self.params.push(Decl::new_param_int(name, value));
+    pub fn add_param_uint(&mut self, name: &str, value: u32) {
+        self.params.push(Decl::new_param_uint(name, value));
     }
 
     pub fn add_param_str(&mut self, name: &str, value: &str) {

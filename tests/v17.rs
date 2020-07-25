@@ -34,10 +34,10 @@ fn test_decl_int() {
 }
 
 #[test]
-fn test_decl_param_int() {
+fn test_decl_param_uint() {
     assert_eq!(
-        "parameter int width = 3".to_string(),
-        Decl::new_param_int("width", 3).to_string(),
+        "parameter int width = 32'd3".to_string(),
+        Decl::new_param_uint("width", 3).to_string(),
     );
 }
 

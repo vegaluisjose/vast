@@ -28,10 +28,10 @@ fn test_decl_reg_width_1() {
 }
 
 #[test]
-fn test_decl_param_int() {
+fn test_decl_param_uint() {
     assert_eq!(
-        "parameter width = 3".to_string(),
-        Decl::new_param_int("width", 3).to_string(),
+        "parameter width = 32'd3".to_string(),
+        Decl::new_param_uint("width", 3).to_string(),
     );
 }
 
@@ -84,7 +84,7 @@ fn test_module_three_inputs() {
 fn test_module_one_param() {
     let exp = read_to_string("regression/v05/module_one_param.v");
     let mut module = Module::new_with_name("one_param");
-    module.add_param_int("width", 32);
+    module.add_param_uint("width", 32);
     module.add_input("data", 4);
     let res = module.to_string();
     assert_eq!(exp, res);
@@ -94,8 +94,8 @@ fn test_module_one_param() {
 fn test_module_two_params() {
     let exp = read_to_string("regression/v05/module_two_params.v");
     let mut module = Module::new_with_name("two_params");
-    module.add_param_int("width", 4);
-    module.add_param_int("length", 8);
+    module.add_param_uint("width", 4);
+    module.add_param_uint("length", 8);
     module.add_input("data", 4);
     let res = module.to_string();
     assert_eq!(exp, res);
@@ -105,8 +105,8 @@ fn test_module_two_params() {
 fn test_module_mix_params() {
     let exp = read_to_string("regression/v05/module_mix_params.v");
     let mut module = Module::new_with_name("mix_params");
-    module.add_param_int("width", 4);
-    module.add_param_int("length", 8);
+    module.add_param_uint("width", 4);
+    module.add_param_uint("length", 8);
     module.add_param_str("name", "foo");
     module.add_input("data", 4);
     let res = module.to_string();

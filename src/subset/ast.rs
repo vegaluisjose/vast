@@ -21,9 +21,16 @@ pub enum Binop {
 }
 
 #[derive(Clone, Debug)]
+pub enum Radix {
+    Dec,
+    Bin,
+    Hex,
+}
+
+#[derive(Clone, Debug)]
 pub enum Expr {
     Ref(Id),
-    Const(i32),
+    ULit(u32, Radix, String),
     Str(String),
     Unop(Rop, Rc<Expr>),
     Binop(Binop, Rc<Expr>, Rc<Expr>),
