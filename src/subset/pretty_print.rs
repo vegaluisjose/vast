@@ -29,6 +29,7 @@ impl PrettyPrint for Expr {
     fn to_doc(&self) -> RcDoc<()> {
         match self {
             Expr::Ref(name) => RcDoc::as_string(name),
+            Expr::Const(num) => RcDoc::as_string(num),
             Expr::Unop(op, input) => op.to_doc().append(input.to_doc()),
             Expr::Binop(op, lhs, rhs) => lhs
                 .to_doc()
