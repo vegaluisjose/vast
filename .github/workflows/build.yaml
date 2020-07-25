@@ -5,7 +5,7 @@ on: [push, pull_request]
 jobs:
   build:
 
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
 
     steps:
     - uses: actions/checkout@v1
@@ -16,8 +16,8 @@ jobs:
         key: ${{ runner.os }}-cargo-bin
     - name: Install cargo deadlinks
       run: which cargo-deadlinks || cargo install cargo-deadlinks
-    - name: Install verilator
-      run: sudo apt-get install verilator
+    - name: Install Verilator
+      run: sudo apt-install verilator
     - name: Lint regression tests
       run: make test-lint
     - name: Build and Test
