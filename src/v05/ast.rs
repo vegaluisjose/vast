@@ -16,7 +16,7 @@ pub enum Decl {
     Int(Id, Ty),
     Wire(Id, Ty),
     Reg(Id, Ty),
-    Param(Id, Ty, Expr),
+    Param(Id, Expr),
 }
 
 #[derive(Clone, Debug)]

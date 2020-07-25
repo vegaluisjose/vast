@@ -48,9 +48,7 @@ impl PrettyPrint for Decl {
                     .append(extra_space)
                     .append(RcDoc::as_string(name))
             }
-            Decl::Param(name, ty, expr) => RcDoc::text("parameter")
-                .append(RcDoc::space())
-                .append(ty.to_doc())
+            Decl::Param(name, expr) => RcDoc::text("parameter")
                 .append(RcDoc::space())
                 .append(RcDoc::as_string(name))
                 .append(RcDoc::space())

@@ -30,7 +30,7 @@ fn test_decl_reg_width_1() {
 #[test]
 fn test_decl_param_int() {
     assert_eq!(
-        "parameter int width = 3".to_string(),
+        "parameter width = 3".to_string(),
         Decl::new_param_int("width", 3).to_string(),
     );
 }
