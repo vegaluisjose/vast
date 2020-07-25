@@ -61,6 +61,13 @@ impl Port {
 }
 
 impl Map {
+    pub fn new(id: &str, value: Expr) -> Map {
+        Map {
+            id: id.to_string(),
+            value,
+        }
+    }
+
     pub fn id(&self) -> String {
         self.id.to_string()
     }
@@ -71,6 +78,23 @@ impl Map {
 }
 
 impl Instance {
+    pub fn new(id: &str, prim: &str) -> Instance {
+        Instance {
+            id: id.to_string(),
+            prim: prim.to_string(),
+            param_map: Vec::new(),
+            port_map: Vec::new(),
+        }
+    }
+
+    pub fn map_param(&mut self, id: &str, value: Expr) {
+        self.param_map.push(Map::new(id, value));
+    }
+
+    pub fn map_port(&mut self, id: &str, value: Expr) {
+        self.port_map.push(Map::new(id, value));
+    }
+
     pub fn id(&self) -> String {
         self.id.to_string()
     }
@@ -89,6 +113,10 @@ impl Instance {
 }
 
 impl Parallel {
+    pub fn new_instance(id: &str, prim: &str) -> Parallel {
+        Parallel::Instance(Instance::new(id, prim))
+    }
+
     pub fn id(&self) -> String {
         match self {
             Parallel::Instance(inst) => inst.id(),
