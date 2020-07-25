@@ -28,6 +28,14 @@ fn test_decl_reg_width_1() {
 }
 
 #[test]
+fn test_decl_param_int() {
+    assert_eq!(
+        "parameter int width = 3".to_string(),
+        Decl::new_param_int("width", 3).to_string(),
+    );
+}
+
+#[test]
 fn test_event_ty_posedge() {
     assert_eq!("posedge".to_string(), EventTy::Posedge.to_string(),);
 }
