@@ -16,5 +16,7 @@ jobs:
         key: ${{ runner.os }}-cargo-bin
     - name: Install cargo deadlinks
       run: which cargo-deadlinks || cargo install cargo-deadlinks
+    - name: Install verilator
+      run: sudo apt-get install verilator
     - name: Build and Test
       run: make
