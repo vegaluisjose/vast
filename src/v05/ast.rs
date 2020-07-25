@@ -33,7 +33,7 @@ pub struct Map {
 }
 
 #[derive(Clone, Debug)]
-pub struct InstTy {
+pub struct Instance {
     pub id: Id,
     pub prim: Id,
     pub param_map: Vec<Map>,
@@ -42,7 +42,7 @@ pub struct InstTy {
 
 #[derive(Clone, Debug)]
 pub enum Parallel {
-    Inst(InstTy),
+    Instance(Instance),
     Assign(Expr, Expr),
     Always,
 }

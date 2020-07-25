@@ -84,7 +84,7 @@ impl PrettyPrint for Map {
     }
 }
 
-impl PrettyPrint for InstTy {
+impl PrettyPrint for Instance {
     fn to_doc(&self) -> RcDoc<()> {
         let mut params_doc = if self.param_map().is_empty() {
             RcDoc::nil()
@@ -126,7 +126,7 @@ impl PrettyPrint for InstTy {
 impl PrettyPrint for Parallel {
     fn to_doc(&self) -> RcDoc<()> {
         match self {
-            Parallel::Inst(ty) => ty.to_doc(),
+            Parallel::Instance(ty) => ty.to_doc(),
             Parallel::Assign(lexpr, rexpr) => RcDoc::text("assign")
                 .append(RcDoc::space())
                 .append(lexpr.to_doc())
