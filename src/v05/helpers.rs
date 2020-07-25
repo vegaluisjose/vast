@@ -113,8 +113,8 @@ impl Instance {
 }
 
 impl Parallel {
-    pub fn new_instance(id: &str, prim: &str) -> Parallel {
-        Parallel::Instance(Instance::new(id, prim))
+    pub fn new(inst: Instance) -> Parallel {
+        Parallel::Instance(inst)
     }
 
     pub fn id(&self) -> String {
