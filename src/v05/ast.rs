@@ -27,8 +27,23 @@ pub enum Sequential {
 }
 
 #[derive(Clone, Debug)]
+pub struct Map {
+    pub id: Id,
+    pub value: Expr,
+}
+
+#[derive(Clone, Debug)]
+pub struct InstTy {
+    pub id: Id,
+    pub prim: Id,
+    pub param_map: Vec<Map>,
+    pub port_map: Vec<Map>,
+}
+
+#[derive(Clone, Debug)]
 pub enum Parallel {
-    Assign,
+    Inst(InstTy),
+    Assign(Expr, Expr),
     Always,
 }
 

@@ -74,10 +74,65 @@ impl PrettyPrint for Sequential {
     }
 }
 
+impl PrettyPrint for Map {
+    fn to_doc(&self) -> RcDoc<()> {
+        RcDoc::text(".")
+            .append(RcDoc::as_string(self.id()))
+            .append(RcDoc::text("("))
+            .append(self.value().to_doc())
+            .append(RcDoc::text(")"))
+    }
+}
+
+impl PrettyPrint for InstTy {
+    fn to_doc(&self) -> RcDoc<()> {
+        let mut params_doc = if self.param_map().is_empty() {
+            RcDoc::nil()
+        } else {
+            RcDoc::text("#")
+                .append(RcDoc::space())
+                .append(RcDoc::text("("))
+                .append(RcDoc::hardline())
+                .append(RcDoc::intersperse(
+                    self.param_map().iter().map(|p| p.to_doc()),
+                    RcDoc::text(",").append(RcDoc::hardline()),
+                ))
+                .append(RcDoc::text(")"))
+        };
+        params_doc = params_doc.nest(PRETTY_INDENT).group();
+        let mut ports_doc = if self.port_map().is_empty() {
+            RcDoc::nil()
+        } else {
+            RcDoc::text("#")
+                .append(RcDoc::space())
+                .append(RcDoc::text("("))
+                .append(RcDoc::hardline())
+                .append(RcDoc::intersperse(
+                    self.port_map().iter().map(|p| p.to_doc()),
+                    RcDoc::text(",").append(RcDoc::hardline()),
+                ))
+                .append(RcDoc::text(")"))
+        };
+        ports_doc = ports_doc.nest(PRETTY_INDENT).group();
+        RcDoc::as_string(self.prim())
+            .append(params_doc)
+            .append(RcDoc::space())
+            .append(RcDoc::as_string(self.id()))
+            .append(RcDoc::space())
+            .append(ports_doc)
+    }
+}
+
 impl PrettyPrint for Parallel {
     fn to_doc(&self) -> RcDoc<()> {
         match self {
-            Parallel::Assign => RcDoc::text("assign"),
+            Parallel::Inst(ty) => ty.to_doc(),
+            Parallel::Assign(lexpr, rexpr) => RcDoc::text("assign")
+                .append(RcDoc::space())
+                .append(lexpr.to_doc())
+                .append(RcDoc::space())
+                .append(RcDoc::text("="))
+                .append(rexpr.to_doc()),
             Parallel::Always => RcDoc::text("always"),
         }
     }

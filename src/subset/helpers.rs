@@ -1,6 +1,13 @@
 use crate::subset::ast::*;
 
 impl Expr {
+    pub fn id(&self) -> String {
+        match self {
+            Expr::Ref(id) => id.to_string(),
+            _ => panic!("Error: do not support id"),
+        }
+    }
+
     pub fn new_ref(name: &str) -> Expr {
         Expr::Ref(name.to_string())
     }

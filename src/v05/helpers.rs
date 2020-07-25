@@ -60,6 +60,44 @@ impl Port {
     }
 }
 
+impl Map {
+    pub fn id(&self) -> String {
+        self.id.to_string()
+    }
+
+    pub fn value(&self) -> &Expr {
+        &self.value
+    }
+}
+
+impl InstTy {
+    pub fn id(&self) -> String {
+        self.id.to_string()
+    }
+
+    pub fn prim(&self) -> String {
+        self.prim.to_string()
+    }
+
+    pub fn param_map(&self) -> &Vec<Map> {
+        &self.param_map
+    }
+
+    pub fn port_map(&self) -> &Vec<Map> {
+        &self.port_map
+    }
+}
+
+impl Parallel {
+    pub fn id(&self) -> String {
+        match self {
+            Parallel::Inst(inst) => inst.id(),
+            Parallel::Assign(lexpr, _) => lexpr.id(),
+            _ => panic!("Error: always do not support id"),
+        }
+    }
+}
+
 impl Module {
     pub fn new_with_name(name: &str) -> Module {
         Module {
