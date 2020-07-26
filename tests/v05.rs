@@ -150,12 +150,17 @@ fn test_module_mix_params() {
 #[test]
 fn test_module_with_instances() {
     let exp = read_to_string("regression/v05/module_with_instances.v");
-    let i0 = Instance::new("i0", "PRIM");
-    let mut i1 = Instance::new("i1", "PRIM");
-    let mut i2 = Instance::new("i2", "PRIM");
+    let mut i0 = Instance::new("i0", "prim");
+    let mut i1 = Instance::new("i1", "prim");
+    let mut i2 = Instance::new("i2", "prim");
+    let e0 = Expr::new_ulit_hex(4, "0");
+    let e1 = Expr::new_ulit_hex(4, "8");
+    let e2 = Expr::new_ulit_hex(4, "f");
     i1.add_param_str("name", "multiply");
     i2.add_param_uint("WIDTH", 3);
-    i2.connect_ref("port_a", "signal_b");
+    i0.connect("port_a", e0);
+    i1.connect("port_a", e1);
+    i2.connect("port_a", e2);
     let mut module = Module::new_with_name("module_with_instances");
     module.add_instance(i0);
     module.add_instance(i1);

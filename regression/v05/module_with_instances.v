@@ -1,10 +1,12 @@
 module module_with_instances ();
-    PRIM i0 ();
-    PRIM # (
+    prim i0 (
+        .port_a(4'h0));
+    prim # (
         .name("multiply"))
-    i1 ();
-    PRIM # (
+    i1 (
+        .port_a(4'h8));
+    prim # (
         .WIDTH(32'd3))
     i2 (
-        .port_a(signal_b));
+        .port_a(4'hf));
 endmodule
