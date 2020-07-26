@@ -1,5 +1,5 @@
 use vast::util::file::read_to_string;
-use vast::v05::ast::{Decl, EventTy, Expr, Module, Sequential};
+use vast::v05::ast::*;
 
 #[test]
 fn test_decl_wire_width_32() {
@@ -109,6 +109,23 @@ fn test_module_mix_params() {
     module.add_param_uint("length", 8);
     module.add_param_str("name", "foo");
     module.add_input("data", 4);
+    let res = module.to_string();
+    assert_eq!(exp, res);
+}
+
+#[test]
+fn test_module_with_instances() {
+    let exp = read_to_string("regression/v05/module_with_instances.v");
+    let i0 = Instance::new("i0", "PRIM");
+    let mut i1 = Instance::new("i1", "PRIM");
+    let mut i2 = Instance::new("i2", "PRIM");
+    i1.add_param_str("name", "multiply");
+    i2.add_param_uint("WIDTH", 3);
+    i2.connect_ref("port_a", "signal_b");
+    let mut module = Module::new_with_name("module_with_instances");
+    module.add_instance(i0);
+    module.add_instance(i1);
+    module.add_instance(i2);
     let res = module.to_string();
     assert_eq!(exp, res);
 }

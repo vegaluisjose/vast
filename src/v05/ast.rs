@@ -1,4 +1,5 @@
 use crate::subset;
+use std::collections::HashMap;
 
 pub type EventTy = subset::ast::EventTy;
 pub type Expr = subset::ast::Expr;
@@ -26,18 +27,14 @@ pub enum Sequential {
     If(Expr, Vec<Sequential>, Vec<Sequential>),
 }
 
-#[derive(Clone, Debug)]
-pub struct Map {
-    pub id: Id,
-    pub value: Expr,
-}
+pub type PMap = HashMap<Id, Expr>;
 
 #[derive(Clone, Debug)]
 pub struct Instance {
     pub id: Id,
     pub prim: Id,
-    pub param_map: Vec<Map>,
-    pub port_map: Vec<Map>,
+    pub params: PMap,
+    pub ports: PMap,
 }
 
 #[derive(Clone, Debug)]

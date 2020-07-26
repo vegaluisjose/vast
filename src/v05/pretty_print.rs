@@ -74,51 +74,53 @@ impl PrettyPrint for Sequential {
     }
 }
 
-impl PrettyPrint for Map {
+impl PrettyPrint for PMap {
     fn to_doc(&self) -> RcDoc<()> {
-        RcDoc::text(".")
-            .append(RcDoc::as_string(self.id()))
-            .append(RcDoc::text("("))
-            .append(self.value().to_doc())
-            .append(RcDoc::text(")"))
+        RcDoc::intersperse(
+            self.iter().map(|(id, expr)| {
+                RcDoc::text(".")
+                    .append(RcDoc::as_string(id))
+                    .append(RcDoc::text("("))
+                    .append(expr.to_doc())
+                    .append(RcDoc::text(")"))
+            }),
+            RcDoc::text(",").append(RcDoc::hardline()),
+        )
     }
 }
 
 impl PrettyPrint for Instance {
     fn to_doc(&self) -> RcDoc<()> {
-        let mut params_doc = if self.param_map().is_empty() {
-            RcDoc::nil()
+        let params_doc = if self.param_map().is_empty() {
+            RcDoc::space()
         } else {
-            RcDoc::text("#")
+            RcDoc::space()
+                .append(RcDoc::text("#"))
                 .append(RcDoc::space())
                 .append(RcDoc::text("("))
                 .append(RcDoc::hardline())
-                .append(RcDoc::intersperse(
-                    self.param_map().iter().map(|p| p.to_doc()),
-                    RcDoc::text(",").append(RcDoc::hardline()),
-                ))
+                .append(self.param_map().to_doc())
                 .append(RcDoc::text(")"))
+                .nest(PRETTY_INDENT)
+                .group()
+                .append(RcDoc::hardline())
         };
-        params_doc = params_doc.nest(PRETTY_INDENT).group();
-        let mut ports_doc = if self.port_map().is_empty() {
-            RcDoc::nil()
+        let ports_doc = if self.port_map().is_empty() {
+            RcDoc::space()
+                .append(RcDoc::text("("))
+                .append(RcDoc::text(")"))
         } else {
-            RcDoc::text("#")
-                .append(RcDoc::space())
+            RcDoc::space()
                 .append(RcDoc::text("("))
                 .append(RcDoc::hardline())
-                .append(RcDoc::intersperse(
-                    self.port_map().iter().map(|p| p.to_doc()),
-                    RcDoc::text(",").append(RcDoc::hardline()),
-                ))
+                .append(self.port_map().to_doc())
                 .append(RcDoc::text(")"))
+                .nest(PRETTY_INDENT)
+                .group()
         };
-        ports_doc = ports_doc.nest(PRETTY_INDENT).group();
         RcDoc::as_string(self.prim())
             .append(params_doc)
-            .append(RcDoc::space())
             .append(RcDoc::as_string(self.id()))
-            .append(RcDoc::space())
             .append(ports_doc)
     }
 }

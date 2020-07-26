@@ -60,39 +60,37 @@ impl Port {
     }
 }
 
-impl Map {
-    pub fn new(id: &str, value: Expr) -> Map {
-        Map {
-            id: id.to_string(),
-            value,
-        }
-    }
-
-    pub fn id(&self) -> String {
-        self.id.to_string()
-    }
-
-    pub fn value(&self) -> &Expr {
-        &self.value
-    }
-}
-
 impl Instance {
     pub fn new(id: &str, prim: &str) -> Instance {
         Instance {
             id: id.to_string(),
             prim: prim.to_string(),
-            param_map: Vec::new(),
-            port_map: Vec::new(),
+            params: PMap::new(),
+            ports: PMap::new(),
         }
     }
 
-    pub fn map_param(&mut self, id: &str, value: Expr) {
-        self.param_map.push(Map::new(id, value));
+    pub fn add_param(&mut self, param: &str, value: Expr) {
+        self.params.insert(param.to_string(), value);
     }
 
-    pub fn map_port(&mut self, id: &str, value: Expr) {
-        self.port_map.push(Map::new(id, value));
+    pub fn add_param_uint(&mut self, param: &str, value: u32) {
+        self.params.insert(
+            param.to_string(),
+            Expr::new_dec_ulit(32, &value.to_string()),
+        );
+    }
+
+    pub fn add_param_str(&mut self, param: &str, value: &str) {
+        self.params.insert(param.to_string(), Expr::new_str(value));
+    }
+
+    pub fn connect(&mut self, port: &str, expr: Expr) {
+        self.ports.insert(port.to_string(), expr);
+    }
+
+    pub fn connect_ref(&mut self, port: &str, id: &str) {
+        self.ports.insert(port.to_string(), Expr::new_ref(id));
     }
 
     pub fn id(&self) -> String {
@@ -103,17 +101,17 @@ impl Instance {
         self.prim.to_string()
     }
 
-    pub fn param_map(&self) -> &Vec<Map> {
-        &self.param_map
+    pub fn param_map(&self) -> &PMap {
+        &self.params
     }
 
-    pub fn port_map(&self) -> &Vec<Map> {
-        &self.port_map
+    pub fn port_map(&self) -> &PMap {
+        &self.ports
     }
 }
 
 impl Parallel {
-    pub fn new(inst: Instance) -> Parallel {
+    pub fn new_inst(inst: Instance) -> Parallel {
         Parallel::Instance(inst)
     }
 
@@ -123,6 +121,16 @@ impl Parallel {
             Parallel::Assign(lexpr, _) => lexpr.id(),
             _ => panic!("Error: always do not support id"),
         }
+    }
+}
+
+impl Stmt {
+    pub fn new_parallel(par: Parallel) -> Stmt {
+        Stmt::Parallel(par)
+    }
+
+    pub fn new_decl(decl: Decl) -> Stmt {
+        Stmt::Decl(decl)
     }
 }
 
@@ -154,6 +162,10 @@ impl Module {
 
     pub fn add_output_reg(&mut self, name: &str, width: u64) {
         self.ports.push(Port::new_output_reg(name, width));
+    }
+
+    pub fn add_instance(&mut self, inst: Instance) {
+        self.body.push(Stmt::new_parallel(Parallel::new_inst(inst)));
     }
 
     pub fn name(&self) -> String {

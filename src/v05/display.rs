@@ -38,12 +38,6 @@ impl fmt::Display for Instance {
     }
 }
 
-impl fmt::Display for Map {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        write!(f, "{}", self.to_pretty())
-    }
-}
-
 impl fmt::Display for Module {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         write!(f, "{}", self.to_pretty())
