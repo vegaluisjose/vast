@@ -207,5 +207,6 @@ impl PrettyPrint for Module {
             .append(body_doc)
             .append(RcDoc::hardline())
             .append(RcDoc::text("endmodule"))
+            .append(RcDoc::hardline())
     }
 }
