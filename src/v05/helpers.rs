@@ -32,7 +32,7 @@ impl Decl {
     }
 
     pub fn new_param_uint(name: &str, value: u32) -> Decl {
-        Decl::Param(name.to_string(), Expr::new_dec_ulit(32, &value.to_string()))
+        Decl::Param(name.to_string(), Expr::new_ulit_dec(32, &value.to_string()))
     }
 
     pub fn new_param_str(name: &str, value: &str) -> Decl {
@@ -77,7 +77,7 @@ impl Instance {
     pub fn add_param_uint(&mut self, param: &str, value: u32) {
         self.params.insert(
             param.to_string(),
-            Expr::new_dec_ulit(32, &value.to_string()),
+            Expr::new_ulit_dec(32, &value.to_string()),
         );
     }
 

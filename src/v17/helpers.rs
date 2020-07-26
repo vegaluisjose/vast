@@ -37,7 +37,7 @@ impl Decl {
         Decl::Param(
             name.to_string(),
             Ty::new_int(),
-            Expr::new_dec_ulit(32, &value.to_string()),
+            Expr::new_ulit_dec(32, &value.to_string()),
         )
     }
 }
