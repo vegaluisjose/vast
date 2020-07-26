@@ -60,6 +60,17 @@ impl Port {
     }
 }
 
+impl Default for Instance {
+    fn default() -> Instance {
+        Instance {
+            id: String::new(),
+            prim: String::new(),
+            params: PMap::new(),
+            ports: PMap::new(),
+        }
+    }
+}
+
 impl Instance {
     pub fn new(id: &str, prim: &str) -> Instance {
         Instance {
@@ -68,6 +79,14 @@ impl Instance {
             params: PMap::new(),
             ports: PMap::new(),
         }
+    }
+
+    pub fn set_id(&mut self, id: &str) {
+        self.id = id.to_string();
+    }
+
+    pub fn set_prim(&mut self, prim: &str) {
+        self.prim = prim.to_string();
     }
 
     pub fn add_param(&mut self, param: &str, value: Expr) {
