@@ -115,7 +115,7 @@ impl PrettyPrint for Module {
                 .append(stmt.to_doc())
                 .append(RcDoc::text(";"));
         }
-        body_doc = body_doc.nest(PRETTY_INDENT).group();
+        body_doc = body_doc.nest(PRETTY_INDENT);
         let mut ports_doc = if self.ports().is_empty() {
             RcDoc::nil()
         } else {
@@ -124,7 +124,7 @@ impl PrettyPrint for Module {
                 RcDoc::text(",").append(RcDoc::hardline()),
             ))
         };
-        ports_doc = ports_doc.nest(PRETTY_INDENT).group();
+        ports_doc = ports_doc.nest(PRETTY_INDENT);
         RcDoc::text("module")
             .append(RcDoc::space())
             .append(RcDoc::as_string(&self.name()))

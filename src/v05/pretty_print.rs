@@ -102,7 +102,6 @@ impl PrettyPrint for Instance {
                 .append(self.param_map().to_doc())
                 .append(RcDoc::text(")"))
                 .nest(PRETTY_INDENT)
-                .group()
                 .append(RcDoc::hardline())
         };
         let ports_doc = if self.port_map().is_empty() {
@@ -116,7 +115,6 @@ impl PrettyPrint for Instance {
                 .append(self.port_map().to_doc())
                 .append(RcDoc::text(")"))
                 .nest(PRETTY_INDENT)
-                .group()
         };
         RcDoc::as_string(self.prim())
             .append(params_doc)
@@ -171,7 +169,7 @@ impl PrettyPrint for Module {
                 .append(stmt.to_doc())
                 .append(RcDoc::text(";"));
         }
-        body_doc = body_doc.nest(PRETTY_INDENT).group();
+        body_doc = body_doc.nest(PRETTY_INDENT);
         let mut ports_doc = if self.ports().is_empty() {
             RcDoc::nil()
         } else {
@@ -180,7 +178,7 @@ impl PrettyPrint for Module {
                 RcDoc::text(",").append(RcDoc::hardline()),
             ))
         };
-        ports_doc = ports_doc.nest(PRETTY_INDENT).group();
+        ports_doc = ports_doc.nest(PRETTY_INDENT);
         let mut params_doc = if self.params().is_empty() {
             RcDoc::nil()
         } else {
@@ -194,7 +192,7 @@ impl PrettyPrint for Module {
                 ))
                 .append(RcDoc::text(")"))
         };
-        params_doc = params_doc.nest(PRETTY_INDENT).group();
+        params_doc = params_doc.nest(PRETTY_INDENT);
         RcDoc::text("module")
             .append(RcDoc::space())
             .append(RcDoc::as_string(&self.name()))
