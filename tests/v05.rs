@@ -88,6 +88,18 @@ fn test_sequential_event_posedge_clock() {
 }
 
 #[test]
+fn test_module_simple() {
+    let mut module = Module::new_with_name("foo");
+    module.add_input("a", 32);
+    let res = module.to_string();
+    let exp = r#"module foo (
+    input wire [31:0] a);
+endmodule
+"#;
+    assert_eq!(res, exp);
+}
+
+#[test]
 fn test_module_empty() {
     let exp = read_to_string("regression/v05/module_empty.v");
     let res = Module::new_with_name("empty").to_string();

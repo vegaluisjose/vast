@@ -22,10 +22,12 @@ use vast::v05::ast::Module;
 fn main() {
     let mut module = Module::new_with_name("foo");
     module.add_input("a", 32);
-    let expected = r#"module foo (
+    let res = module.to_string();
+    let exp = r#"module foo (
     input wire [31:0] a);
-endmodule"#;
-    assert_eq!(module.to_string(), expected);
+endmodule
+"#;
+    assert_eq!(res, exp);
 }
 ```
 
@@ -37,9 +39,11 @@ use vast::v17::ast::Module;
 fn main() {
     let mut module = Module::new_with_name("foo");
     module.add_input("a", 32);
-    let expected = r#"module foo (
+    let res = module.to_string();
+    let exp = r#"module foo (
     input logic [31:0] a);
-endmodule"#;
-    assert_eq!(module.to_string(), expected);
+endmodule
+"#;
+    assert_eq!(res, exp);
 }
 ```
