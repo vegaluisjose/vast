@@ -1,8 +1,8 @@
 V05_DIR = $(abspath .)/regression/v05
 V17_DIR = $(abspath .)/regression/v17
 
-.PHONY: default
-default:
+.PHONY: test
+test:
 	cargo fmt -- --check
 	cargo clippy --tests
 
