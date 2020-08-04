@@ -67,14 +67,6 @@ fn test_decl_logic_width_1() {
 }
 
 #[test]
-fn test_port_input_width_1() {
-    assert_eq!(
-        "input logic foo".to_string(),
-        Port::Input(Decl::Logic("foo".to_string(), Ty::Width(1))).to_string()
-    );
-}
-
-#[test]
 fn test_decl_int() {
     assert_eq!(
         "int a".to_string(),
@@ -113,6 +105,14 @@ fn test_seq_error() {
     let res = Sequential::new_error("this is an error").to_string();
     let exp = r#"$error("this is an error")"#;
     assert_eq!(res, exp);
+}
+
+#[test]
+fn test_port_input_width_1() {
+    assert_eq!(
+        "input logic foo".to_string(),
+        Port::Input(Decl::Logic("foo".to_string(), Ty::Width(1))).to_string()
+    );
 }
 
 #[test]
