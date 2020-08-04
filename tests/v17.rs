@@ -41,6 +41,16 @@ fn test_expr_add() {
 }
 
 #[test]
+fn test_expr_lt() {
+    let lhs = Expr::new_ref("mask");
+    let rhs = Expr::new_ulit_dec(32, "1");
+    let lt = Expr::new_lt(lhs, rhs);
+    let res = lt.to_string();
+    let exp = "mask < 32'd1".to_string();
+    assert_eq!(res, exp);
+}
+
+#[test]
 fn test_decl_logic_width_32() {
     assert_eq!(
         "logic [31:0] foo".to_string(),

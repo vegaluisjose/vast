@@ -35,6 +35,10 @@ impl Expr {
     pub fn new_add(lhs: Expr, rhs: Expr) -> Expr {
         Expr::Binop(Binop::Add, Rc::new(lhs), Rc::new(rhs))
     }
+
+    pub fn new_lt(lhs: Expr, rhs: Expr) -> Expr {
+        Expr::Binop(Binop::Lt, Rc::new(lhs), Rc::new(rhs))
+    }
 }
 
 impl Instance {
