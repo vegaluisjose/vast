@@ -5,6 +5,7 @@ V17_DIR = $(abspath .)/regression/v17
 test:
 	cargo fmt -- --check
 	cargo clippy --tests
+	cargo test --tests
 
 .PHONY: test-lint
 test-lint: test-lint-v05 test-lint-v17
