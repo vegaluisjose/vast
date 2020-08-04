@@ -36,6 +36,7 @@ pub enum Decl {
 
 #[derive(Clone, Debug)]
 pub enum Sequential {
+    Error(String),
     Event(EventTy, Expr),
     If(Expr, Vec<Sequential>, Vec<Sequential>),
     Assert(Expr, Option<Rc<Sequential>>),

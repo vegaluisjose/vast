@@ -32,6 +32,12 @@ impl Port {
     }
 }
 
+impl Sequential {
+    pub fn new_error(msg: &str) -> Sequential {
+        Sequential::Error(msg.to_string())
+    }
+}
+
 impl Parallel {
     pub fn new_inst(inst: Instance) -> Parallel {
         Parallel::Inst(inst)

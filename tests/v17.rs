@@ -52,11 +52,18 @@ fn test_event_ty_negedge() {
 }
 
 #[test]
-fn test_sequential_event_posedge_clock() {
+fn test_seq_event_posedge_clock() {
     assert_eq!(
         "posedge clock".to_string(),
         Sequential::Event(EventTy::Posedge, Expr::Ref("clock".to_string())).to_string(),
     );
+}
+
+#[test]
+fn test_seq_error() {
+    let res = Sequential::new_error("this is an error").to_string();
+    let exp = r#"$error("this is an error")"#;
+    assert_eq!(res, exp);
 }
 
 #[test]
