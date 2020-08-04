@@ -45,7 +45,7 @@ impl Expr {
     }
 
     pub fn new_neq(lhs: Expr, rhs: Expr) -> Expr {
-        Expr::Binop(Binop::Nequal, Rc::new(lhs), Rc::new(rhs))
+        Expr::Binop(Binop::NotEqual, Rc::new(lhs), Rc::new(rhs))
     }
 }
 

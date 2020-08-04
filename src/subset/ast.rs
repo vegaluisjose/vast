@@ -22,7 +22,7 @@ pub enum Binop {
     Add,
     Lt,
     Equal,
-    Nequal,
+    NotEqual,
 }
 
 #[derive(Clone, Debug)]

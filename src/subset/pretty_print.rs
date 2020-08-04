@@ -23,7 +23,7 @@ impl PrettyPrint for Binop {
             Binop::Add => RcDoc::text("+"),
             Binop::Lt => RcDoc::text("<"),
             Binop::Equal => RcDoc::text("=="),
-            Binop::Nequal => RcDoc::text("!="),
+            Binop::NotEqual => RcDoc::text("!="),
         }
     }
 }
