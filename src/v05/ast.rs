@@ -1,9 +1,12 @@
 use crate::subset;
-use std::collections::HashMap;
 
-pub type EventTy = subset::ast::EventTy;
-pub type Expr = subset::ast::Expr;
 pub type Id = subset::ast::Id;
+pub type Expr = subset::ast::Expr;
+pub type EventTy = subset::ast::EventTy;
+pub type Instance = subset::ast::Instance;
+pub type Stmt = subset::ast::GenericStmt<Decl, Parallel>;
+pub type Port = subset::ast::GenericPort<Decl>;
+pub type Module = subset::ast::GenericModule<Decl, Parallel>;
 
 #[derive(Clone, Debug)]
 pub enum Ty {
@@ -27,23 +30,9 @@ pub enum Sequential {
     If(Expr, Vec<Sequential>, Vec<Sequential>),
 }
 
-pub type Map = HashMap<Id, Expr>;
-
-#[derive(Clone, Debug)]
-pub struct Instance {
-    pub id: Id,
-    pub prim: Id,
-    pub params: Map,
-    pub ports: Map,
-}
-
 #[derive(Clone, Debug)]
 pub enum Parallel {
     Inst(Instance),
     Assign(Expr, Expr),
     Always,
 }
-
-pub type Stmt = subset::ast::GenericStmt<Decl, Parallel>;
-pub type Port = subset::ast::GenericPort<Decl>;
-pub type Module = subset::ast::GenericModule<Decl, Parallel>;

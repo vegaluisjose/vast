@@ -1,6 +1,8 @@
+use std::collections::HashMap;
 use std::rc::Rc;
 
 pub type Id = String;
+pub type Map = HashMap<Id, Expr>;
 
 // Reduce ops
 #[derive(Clone, Debug)]
@@ -40,6 +42,14 @@ pub enum Expr {
 pub enum EventTy {
     Posedge,
     Negedge,
+}
+
+#[derive(Clone, Debug)]
+pub struct Instance {
+    pub id: Id,
+    pub prim: Id,
+    pub params: Map,
+    pub ports: Map,
 }
 
 #[derive(Clone, Debug)]

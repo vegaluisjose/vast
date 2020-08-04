@@ -1,5 +1,5 @@
 use crate::subset::ast::*;
-use crate::util::pretty_print::PrettyPrint;
+use crate::util::pretty_print::{PrettyPrint, PRETTY_INDENT};
 use pretty::RcDoc;
 
 impl PrettyPrint for Rop {
@@ -63,5 +63,54 @@ impl PrettyPrint for EventTy {
             EventTy::Posedge => RcDoc::text("posedge"),
             EventTy::Negedge => RcDoc::text("negedge"),
         }
+    }
+}
+
+impl PrettyPrint for Map {
+    fn to_doc(&self) -> RcDoc<()> {
+        RcDoc::intersperse(
+            self.iter().map(|(id, expr)| {
+                RcDoc::text(".")
+                    .append(RcDoc::as_string(id))
+                    .append(RcDoc::text("("))
+                    .append(expr.to_doc())
+                    .append(RcDoc::text(")"))
+            }),
+            RcDoc::text(",").append(RcDoc::hardline()),
+        )
+    }
+}
+
+impl PrettyPrint for Instance {
+    fn to_doc(&self) -> RcDoc<()> {
+        let params_doc = if self.param_map().is_empty() {
+            RcDoc::space()
+        } else {
+            RcDoc::space()
+                .append(RcDoc::text("#"))
+                .append(RcDoc::space())
+                .append(RcDoc::text("("))
+                .append(RcDoc::hardline())
+                .append(self.param_map().to_doc())
+                .append(RcDoc::text(")"))
+                .nest(PRETTY_INDENT)
+                .append(RcDoc::hardline())
+        };
+        let ports_doc = if self.port_map().is_empty() {
+            RcDoc::space()
+                .append(RcDoc::text("("))
+                .append(RcDoc::text(")"))
+        } else {
+            RcDoc::space()
+                .append(RcDoc::text("("))
+                .append(RcDoc::hardline())
+                .append(self.port_map().to_doc())
+                .append(RcDoc::text(")"))
+                .nest(PRETTY_INDENT)
+        };
+        RcDoc::as_string(self.prim())
+            .append(params_doc)
+            .append(RcDoc::as_string(self.id()))
+            .append(ports_doc)
     }
 }
