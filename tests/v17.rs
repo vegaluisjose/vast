@@ -2,6 +2,35 @@ use vast::util::file::read_to_string;
 use vast::v17::ast::*;
 
 #[test]
+fn test_expr_str() {
+    assert_eq!(
+        r#""multiply""#.to_string(),
+        Expr::new_str("multiply").to_string()
+    );
+}
+
+#[test]
+fn test_expr_ulit_bin() {
+    assert_eq!(
+        "4'b1000".to_string(),
+        Expr::new_ulit_bin(4, "1000").to_string()
+    );
+}
+
+#[test]
+fn test_expr_ulit_hex() {
+    assert_eq!("8'hff".to_string(), Expr::new_ulit_hex(8, "ff").to_string());
+}
+
+#[test]
+fn test_expr_ulit_dec() {
+    assert_eq!(
+        "16'd78".to_string(),
+        Expr::new_ulit_dec(16, "78").to_string()
+    );
+}
+
+#[test]
 fn test_decl_logic_width_32() {
     assert_eq!(
         "logic [31:0] foo".to_string(),
