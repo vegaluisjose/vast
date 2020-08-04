@@ -61,18 +61,23 @@ pub enum AssignTy {
     NonBlocking,
 }
 
+// T ~> Declaration type
 #[derive(Clone, Debug)]
 pub enum GenericPort<T> {
     Input(T),
     Output(T),
 }
 
+// T ~> Declaration type
+// U ~> Parallel type
 #[derive(Clone, Debug)]
 pub enum GenericStmt<T, U> {
     Decl(T),
     Parallel(U),
 }
 
+// T ~> Declaration type
+// U ~> Parallel type
 #[derive(Clone, Debug)]
 pub struct GenericModule<T, U> {
     pub name: String,
