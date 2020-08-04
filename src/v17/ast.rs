@@ -18,10 +18,19 @@ pub enum Ty {
 }
 
 #[derive(Clone, Debug)]
+pub struct Function {
+    pub name: Id,
+    pub inputs: Vec<Port>,
+    pub decls: Vec<Decl>,
+    pub body: Vec<Sequential>,
+    pub ret: Ty,
+}
+
+#[derive(Clone, Debug)]
 pub enum Decl {
     Int(Id, Ty),
     Logic(Id, Ty),
-    Function(Id, Ty, Vec<Port>, Vec<Decl>, Vec<Sequential>),
+    Func(Function),
     Param(Id, Ty, Expr),
 }
 

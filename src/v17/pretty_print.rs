@@ -20,6 +20,16 @@ impl PrettyPrint for Ty {
     }
 }
 
+impl PrettyPrint for Function {
+    fn to_doc(&self) -> RcDoc<()> {
+        RcDoc::text("function")
+            .append(RcDoc::space())
+            .append(RcDoc::as_string(&self.name))
+            .append(RcDoc::space())
+            .append(self.ret.to_doc())
+    }
+}
+
 impl PrettyPrint for Decl {
     fn to_doc(&self) -> RcDoc<()> {
         match self {
@@ -38,11 +48,7 @@ impl PrettyPrint for Decl {
                     .append(extra_space)
                     .append(RcDoc::as_string(name))
             }
-            Decl::Function(name, retty, _, _, _) => RcDoc::text("function")
-                .append(RcDoc::space())
-                .append(RcDoc::as_string(name))
-                .append(RcDoc::space())
-                .append(retty.to_doc()),
+            Decl::Func(function) => function.to_doc(),
             Decl::Param(name, ty, expr) => RcDoc::text("parameter")
                 .append(RcDoc::space())
                 .append(ty.to_doc())

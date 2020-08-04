@@ -48,6 +48,30 @@ impl Stmt {
     }
 }
 
+impl Function {
+    pub fn new(name: &str, ret: Ty) -> Function {
+        Function {
+            name: name.to_string(),
+            inputs: Vec::new(),
+            decls: Vec::new(),
+            body: Vec::new(),
+            ret,
+        }
+    }
+
+    pub fn add_input(&mut self, name: &str, width: u64) {
+        self.inputs.push(Port::new_input(name, width));
+    }
+
+    pub fn add_logic(&mut self, name: &str, width: u64) {
+        self.decls.push(Decl::new_logic(name, width));
+    }
+
+    pub fn set_return_type(&mut self, ret: Ty) {
+        self.ret = ret;
+    }
+}
+
 impl Decl {
     pub fn new_param_uint(name: &str, value: u32) -> Decl {
         Decl::Param(
@@ -55,6 +79,14 @@ impl Decl {
             Ty::new_int(),
             Expr::new_ulit_dec(32, &value.to_string()),
         )
+    }
+
+    pub fn new_logic(name: &str, width: u64) -> Decl {
+        Decl::Logic(name.to_string(), Ty::new_width(width))
+    }
+
+    pub fn new_func(func: Function) -> Decl {
+        Decl::Func(func)
     }
 }
 
@@ -74,6 +106,10 @@ impl Module {
 
     pub fn add_output(&mut self, name: &str, width: u64) {
         self.ports.push(Port::new_output(name, width));
+    }
+
+    pub fn add_function(&mut self, func: Function) {
+        self.body.push(Stmt::new_decl(Decl::new_func(func)));
     }
 
     pub fn add_instance(&mut self, inst: Instance) {
