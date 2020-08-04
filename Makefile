@@ -1,17 +1,9 @@
 V05_DIR = $(abspath .)/regression/v05
 V17_DIR = $(abspath .)/regression/v17
 
-.PHONY:
-test: test-vast
+.PHONY: default
+default:
 	cargo fmt -- --check
-	cargo clean --doc
-	cargo doc --no-deps
-	cargo deadlinks
-
-.PHONY: test-vast
-test-vast:
-	cargo build
-	cargo test --release
 	cargo clippy --tests
 
 .PHONY: test-lint
