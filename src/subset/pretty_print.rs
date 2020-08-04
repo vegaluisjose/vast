@@ -69,6 +69,15 @@ impl PrettyPrint for EventTy {
     }
 }
 
+impl PrettyPrint for AssignTy {
+    fn to_doc(&self) -> RcDoc<()> {
+        match self {
+            AssignTy::Blocking => RcDoc::text("="),
+            AssignTy::NonBlocking => RcDoc::text("<="),
+        }
+    }
+}
+
 impl PrettyPrint for Map {
     fn to_doc(&self) -> RcDoc<()> {
         RcDoc::intersperse(

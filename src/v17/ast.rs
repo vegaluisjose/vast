@@ -4,6 +4,7 @@ use std::rc::Rc;
 pub type Id = subset::ast::Id;
 pub type Expr = subset::ast::Expr;
 pub type EventTy = subset::ast::EventTy;
+pub type AssignTy = subset::ast::AssignTy;
 pub type Instance = subset::ast::Instance;
 pub type Stmt = subset::ast::GenericStmt<Decl, Parallel>;
 pub type Port = subset::ast::GenericPort<Decl>;
@@ -37,6 +38,7 @@ pub enum Decl {
 #[derive(Clone, Debug)]
 pub enum Sequential {
     Error(String),
+    Assign(Id, Expr, AssignTy),
     Event(EventTy, Expr),
     If(Expr, Vec<Sequential>, Vec<Sequential>),
     Assert(Expr, Option<Rc<Sequential>>),

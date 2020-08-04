@@ -103,6 +103,11 @@ impl PrettyPrint for Sequential {
                 .append(RcDoc::as_string(msg))
                 .append(RcDoc::text(r#"""#))
                 .append(RcDoc::text(")")),
+            Sequential::Assign(id, expr, ty) => RcDoc::as_string(id)
+                .append(RcDoc::space())
+                .append(ty.to_doc())
+                .append(RcDoc::space())
+                .append(expr.to_doc()),
             Sequential::Event(ty, expr) => ty.to_doc().append(RcDoc::space()).append(expr.to_doc()),
             Sequential::Assert(expr, branch) => {
                 let cond = RcDoc::text("assert")

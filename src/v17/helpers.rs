@@ -45,6 +45,14 @@ impl Sequential {
     pub fn new_assert_with_else(expr: Expr, seq: Sequential) -> Sequential {
         Sequential::Assert(expr, Some(Rc::new(seq)))
     }
+
+    pub fn new_blk_assign(name: &str, expr: Expr) -> Sequential {
+        Sequential::Assign(name.to_string(), expr, AssignTy::Blocking)
+    }
+
+    pub fn new_non_blk_assign(name: &str, expr: Expr) -> Sequential {
+        Sequential::Assign(name.to_string(), expr, AssignTy::NonBlocking)
+    }
 }
 
 impl Parallel {

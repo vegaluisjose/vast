@@ -56,6 +56,12 @@ pub struct Instance {
 }
 
 #[derive(Clone, Debug)]
+pub enum AssignTy {
+    Blocking,
+    NonBlocking,
+}
+
+#[derive(Clone, Debug)]
 pub enum GenericPort<T> {
     Input(T),
     Output(T),
