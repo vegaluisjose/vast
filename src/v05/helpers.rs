@@ -131,12 +131,12 @@ impl Instance {
 
 impl Parallel {
     pub fn new_inst(inst: Instance) -> Parallel {
-        Parallel::Instance(inst)
+        Parallel::Inst(inst)
     }
 
     pub fn id(&self) -> String {
         match self {
-            Parallel::Instance(inst) => inst.id(),
+            Parallel::Inst(inst) => inst.id(),
             Parallel::Assign(lexpr, _) => lexpr.id(),
             _ => panic!("Error: always do not support id"),
         }

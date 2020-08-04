@@ -39,7 +39,7 @@ pub struct Instance {
 
 #[derive(Clone, Debug)]
 pub enum Parallel {
-    Instance(Instance),
+    Inst(Instance),
     Assign(Expr, Expr),
     Always,
 }
