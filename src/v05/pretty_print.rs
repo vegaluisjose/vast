@@ -5,7 +5,7 @@ use pretty::RcDoc;
 impl PrettyPrint for Ty {
     fn to_doc(&self) -> RcDoc<()> {
         match self {
-            Ty::Int => RcDoc::text("int"),
+            Ty::Int => RcDoc::text("integer"),
             Ty::Width(w) => match w {
                 0 => panic!("Error: width must be greater than zero"),
                 1 => RcDoc::nil(),
