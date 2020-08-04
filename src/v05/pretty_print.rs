@@ -74,7 +74,7 @@ impl PrettyPrint for Sequential {
     }
 }
 
-impl PrettyPrint for PMap {
+impl PrettyPrint for Map {
     fn to_doc(&self) -> RcDoc<()> {
         RcDoc::intersperse(
             self.iter().map(|(id, expr)| {

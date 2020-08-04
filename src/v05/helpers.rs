@@ -65,8 +65,8 @@ impl Default for Instance {
         Instance {
             id: String::new(),
             prim: String::new(),
-            params: PMap::new(),
-            ports: PMap::new(),
+            params: Map::new(),
+            ports: Map::new(),
         }
     }
 }
@@ -76,8 +76,8 @@ impl Instance {
         Instance {
             id: id.to_string(),
             prim: prim.to_string(),
-            params: PMap::new(),
-            ports: PMap::new(),
+            params: Map::new(),
+            ports: Map::new(),
         }
     }
 
@@ -120,11 +120,11 @@ impl Instance {
         self.prim.to_string()
     }
 
-    pub fn param_map(&self) -> &PMap {
+    pub fn param_map(&self) -> &Map {
         &self.params
     }
 
-    pub fn port_map(&self) -> &PMap {
+    pub fn port_map(&self) -> &Map {
         &self.ports
     }
 }

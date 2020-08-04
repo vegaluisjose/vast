@@ -27,14 +27,14 @@ pub enum Sequential {
     If(Expr, Vec<Sequential>, Vec<Sequential>),
 }
 
-pub type PMap = HashMap<Id, Expr>;
+pub type Map = HashMap<Id, Expr>;
 
 #[derive(Clone, Debug)]
 pub struct Instance {
     pub id: Id,
     pub prim: Id,
-    pub params: PMap,
-    pub ports: PMap,
+    pub params: Map,
+    pub ports: Map,
 }
 
 #[derive(Clone, Debug)]
