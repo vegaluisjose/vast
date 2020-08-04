@@ -31,6 +31,16 @@ fn test_expr_ulit_dec() {
 }
 
 #[test]
+fn test_expr_add() {
+    let lhs = Expr::new_ref("a");
+    let rhs = Expr::new_ulit_dec(8, "1");
+    let add = Expr::new_add(lhs, rhs);
+    let res = add.to_string();
+    let exp = "a + 8'd1".to_string();
+    assert_eq!(res, exp);
+}
+
+#[test]
 fn test_decl_logic_width_32() {
     assert_eq!(
         "logic [31:0] foo".to_string(),

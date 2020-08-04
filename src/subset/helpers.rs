@@ -1,4 +1,5 @@
 use crate::subset::ast::*;
+use std::rc::Rc;
 
 impl Expr {
     pub fn id(&self) -> String {
@@ -29,6 +30,10 @@ impl Expr {
     pub fn new_ulit_bin(width: u32, value: &str) -> Expr {
         assert!(width > 0, "Error: width must be greater than zero");
         Expr::ULit(width, Radix::Bin, value.to_string())
+    }
+
+    pub fn new_add(lhs: Expr, rhs: Expr) -> Expr {
+        Expr::Binop(Binop::Add, Rc::new(lhs), Rc::new(rhs))
     }
 }
 
