@@ -166,6 +166,7 @@ impl PrettyPrint for Module {
         for stmt in self.body().iter() {
             body_doc = body_doc
                 .append(RcDoc::hardline())
+                .append(RcDoc::hardline())
                 .append(stmt.to_doc())
                 .append(RcDoc::text(";"));
         }
