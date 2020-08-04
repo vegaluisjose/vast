@@ -32,6 +32,22 @@ impl Port {
     }
 }
 
+impl Parallel {
+    pub fn new_inst(inst: Instance) -> Parallel {
+        Parallel::Inst(inst)
+    }
+}
+
+impl Stmt {
+    pub fn new_parallel(par: Parallel) -> Stmt {
+        Stmt::Parallel(par)
+    }
+
+    pub fn new_decl(decl: Decl) -> Stmt {
+        Stmt::Decl(decl)
+    }
+}
+
 impl Decl {
     pub fn new_param_uint(name: &str, value: u32) -> Decl {
         Decl::Param(
@@ -58,6 +74,10 @@ impl Module {
 
     pub fn add_output(&mut self, name: &str, width: u64) {
         self.ports.push(Port::new_output(name, width));
+    }
+
+    pub fn add_instance(&mut self, inst: Instance) {
+        self.body.push(Stmt::new_parallel(Parallel::new_inst(inst)));
     }
 
     pub fn name(&self) -> String {

@@ -25,3 +25,4 @@ test-lint-v17:
 	verilator --lint-only +1800-2017ext+v $(V17_DIR)/module_empty.v
 	verilator --lint-only +1800-2017ext+v $(V17_DIR)/module_one_input.v
 	verilator --lint-only +1800-2017ext+v $(V17_DIR)/module_four_inputs.v
+	verilator --lint-only +1800-2017ext+v $(V17_DIR)/prim.v $(V17_DIR)/module_with_instances.v

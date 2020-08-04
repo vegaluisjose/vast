@@ -4,6 +4,7 @@ use std::rc::Rc;
 pub type Id = subset::ast::Id;
 pub type Expr = subset::ast::Expr;
 pub type EventTy = subset::ast::EventTy;
+pub type Instance = subset::ast::Instance;
 pub type Stmt = subset::ast::GenericStmt<Decl, Parallel>;
 pub type Port = subset::ast::GenericPort<Decl>;
 pub type Module = subset::ast::GenericModule<Decl, Parallel>;
@@ -33,6 +34,7 @@ pub enum Sequential {
 
 #[derive(Clone, Debug)]
 pub enum Parallel {
+    Inst(Instance),
     Assign,
     AlwaysComb(Vec<Sequential>),
     AlwaysFF(Sequential, Vec<Sequential>),
