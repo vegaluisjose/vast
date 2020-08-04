@@ -219,3 +219,20 @@ fn test_module_with_instances() {
     let res = module.to_string();
     assert_eq!(exp, res);
 }
+
+#[test]
+fn test_module_with_function() {
+    let exp = read_to_string("regression/v17/module_with_function.v");
+    let lhs = Expr::new_ref("value");
+    let rhs = Expr::new_ulit_hex(32, "badc0ffe");
+    let expr = Expr::new_eq(lhs, rhs);
+    let err = Sequential::new_error("good coffee");
+    let assert = Sequential::new_assert_with_else(expr, err);
+    let mut func = Function::new("check", Ty::Void);
+    func.add_input("value", 32);
+    func.add_seq(assert);
+    let mut module = Module::new_with_name("module_with_function");
+    module.add_function(func);
+    let res = module.to_string();
+    assert_eq!(exp, res);
+}

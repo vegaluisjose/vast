@@ -22,11 +22,42 @@ impl PrettyPrint for Ty {
 
 impl PrettyPrint for Function {
     fn to_doc(&self) -> RcDoc<()> {
+        let input_doc = if self.inputs().is_empty() {
+            RcDoc::nil()
+        } else {
+            let mut doc = RcDoc::nil();
+            for port in self.inputs().iter() {
+                doc = doc
+                    .append(RcDoc::hardline())
+                    .append(port.to_doc())
+                    .append(RcDoc::text(";"));
+            }
+            doc = doc.append(RcDoc::hardline()).nest(PRETTY_INDENT);
+            doc
+        };
+        let body_doc = if self.body().is_empty() {
+            RcDoc::nil()
+        } else {
+            let mut doc = RcDoc::nil();
+            for seq in self.body().iter() {
+                doc = doc
+                    .append(RcDoc::hardline())
+                    .append(seq.to_doc())
+                    .append(RcDoc::text(";"));
+            }
+            doc = doc.append(RcDoc::hardline()).nest(PRETTY_INDENT);
+            RcDoc::text("begin").append(doc).append(RcDoc::text("end"))
+        };
         RcDoc::text("function")
             .append(RcDoc::space())
-            .append(RcDoc::as_string(&self.name))
-            .append(RcDoc::space())
             .append(self.ret.to_doc())
+            .append(RcDoc::space())
+            .append(RcDoc::as_string(&self.name))
+            .append(RcDoc::text(";"))
+            .append(input_doc)
+            .append(body_doc)
+            .append(RcDoc::hardline())
+            .append(RcDoc::text("endfunction"))
     }
 }
 
@@ -139,8 +170,12 @@ impl PrettyPrint for Module {
                 doc = doc
                     .append(RcDoc::hardline())
                     .append(RcDoc::hardline())
-                    .append(stmt.to_doc())
-                    .append(RcDoc::text(";"));
+                    .append(stmt.to_doc());
+                if let Stmt::Decl(Decl::Func(_)) = stmt {
+                    doc = doc;
+                } else {
+                    doc = doc.append(RcDoc::text(";"));
+                }
             }
             doc = doc.append(RcDoc::hardline()).nest(PRETTY_INDENT);
             doc

@@ -74,12 +74,28 @@ impl Function {
         }
     }
 
+    pub fn inputs(&self) -> &Vec<Port> {
+        &self.inputs
+    }
+
+    pub fn decls(&self) -> &Vec<Decl> {
+        &self.decls
+    }
+
+    pub fn body(&self) -> &Vec<Sequential> {
+        &self.body
+    }
+
     pub fn add_input(&mut self, name: &str, width: u64) {
         self.inputs.push(Port::new_input(name, width));
     }
 
     pub fn add_logic(&mut self, name: &str, width: u64) {
         self.decls.push(Decl::new_logic(name, width));
+    }
+
+    pub fn add_seq(&mut self, seq: Sequential) {
+        self.body.push(seq);
     }
 
     pub fn set_return_type(&mut self, ret: Ty) {
