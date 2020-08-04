@@ -1,4 +1,5 @@
 use crate::v17::ast::*;
+use std::rc::Rc;
 
 impl Ty {
     pub fn new_int() -> Ty {
@@ -35,6 +36,14 @@ impl Port {
 impl Sequential {
     pub fn new_error(msg: &str) -> Sequential {
         Sequential::Error(msg.to_string())
+    }
+
+    pub fn new_assert(expr: Expr) -> Sequential {
+        Sequential::Assert(expr, None)
+    }
+
+    pub fn new_assert_with_else(expr: Expr, seq: Sequential) -> Sequential {
+        Sequential::Assert(expr, Some(Rc::new(seq)))
     }
 }
 

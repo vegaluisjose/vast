@@ -51,6 +51,26 @@ fn test_expr_lt() {
 }
 
 #[test]
+fn test_expr_eq() {
+    let lhs = Expr::new_ref("z");
+    let rhs = Expr::new_ulit_dec(8, "1");
+    let eq = Expr::new_eq(lhs, rhs);
+    let res = eq.to_string();
+    let exp = "z == 8'd1".to_string();
+    assert_eq!(res, exp);
+}
+
+#[test]
+fn test_expr_neq() {
+    let lhs = Expr::new_ref("a");
+    let rhs = Expr::new_ref("b");
+    let neq = Expr::new_neq(lhs, rhs);
+    let res = neq.to_string();
+    let exp = "a != b".to_string();
+    assert_eq!(res, exp);
+}
+
+#[test]
 fn test_decl_logic_width_32() {
     assert_eq!(
         "logic [31:0] foo".to_string(),
@@ -104,6 +124,29 @@ fn test_seq_event_posedge_clock() {
 fn test_seq_error() {
     let res = Sequential::new_error("this is an error").to_string();
     let exp = r#"$error("this is an error")"#;
+    assert_eq!(res, exp);
+}
+
+#[test]
+fn test_seq_assert() {
+    let lhs = Expr::new_ref("a");
+    let rhs = Expr::new_ref("b");
+    let expr = Expr::new_eq(lhs, rhs);
+    let assert = Sequential::new_assert(expr);
+    let res = assert.to_string();
+    let exp = "assert(a == b)".to_string();
+    assert_eq!(res, exp);
+}
+
+#[test]
+fn test_seq_assert_with_error() {
+    let lhs = Expr::new_ref("a");
+    let rhs = Expr::new_ref("b");
+    let expr = Expr::new_eq(lhs, rhs);
+    let err = Sequential::new_error("some error");
+    let assert = Sequential::new_assert_with_else(expr, err);
+    let res = assert.to_string();
+    let exp = r#"assert(a == b) else $error("some error")"#;
     assert_eq!(res, exp);
 }
 

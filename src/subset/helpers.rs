@@ -39,6 +39,14 @@ impl Expr {
     pub fn new_lt(lhs: Expr, rhs: Expr) -> Expr {
         Expr::Binop(Binop::Lt, Rc::new(lhs), Rc::new(rhs))
     }
+
+    pub fn new_eq(lhs: Expr, rhs: Expr) -> Expr {
+        Expr::Binop(Binop::Equal, Rc::new(lhs), Rc::new(rhs))
+    }
+
+    pub fn new_neq(lhs: Expr, rhs: Expr) -> Expr {
+        Expr::Binop(Binop::Nequal, Rc::new(lhs), Rc::new(rhs))
+    }
 }
 
 impl Instance {

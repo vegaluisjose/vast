@@ -73,11 +73,20 @@ impl PrettyPrint for Sequential {
                 .append(RcDoc::text(r#"""#))
                 .append(RcDoc::text(")")),
             Sequential::Event(ty, expr) => ty.to_doc().append(RcDoc::space()).append(expr.to_doc()),
-            Sequential::Assert(expr, _) => RcDoc::text("assert")
-                .append(RcDoc::space())
-                .append(RcDoc::text("("))
-                .append(expr.to_doc())
-                .append(RcDoc::text(")")),
+            Sequential::Assert(expr, branch) => {
+                let cond = RcDoc::text("assert")
+                    .append(RcDoc::text("("))
+                    .append(expr.to_doc())
+                    .append(RcDoc::text(")"));
+                if let Some(block) = branch {
+                    cond.append(RcDoc::space())
+                        .append(RcDoc::text("else"))
+                        .append(RcDoc::space())
+                        .append(block.to_doc())
+                } else {
+                    cond
+                }
+            }
             Sequential::If(expr, _, _) => RcDoc::text("if")
                 .append(RcDoc::space())
                 .append(RcDoc::text("("))
