@@ -162,15 +162,20 @@ impl PrettyPrint for Port {
 
 impl PrettyPrint for Module {
     fn to_doc(&self) -> RcDoc<()> {
-        let mut body_doc = RcDoc::nil();
-        for stmt in self.body().iter() {
-            body_doc = body_doc
-                .append(RcDoc::hardline())
-                .append(RcDoc::hardline())
-                .append(stmt.to_doc())
-                .append(RcDoc::text(";"));
-        }
-        body_doc = body_doc.nest(PRETTY_INDENT);
+        let body_doc = if self.body().is_empty() {
+            RcDoc::nil()
+        } else {
+            let mut doc = RcDoc::nil();
+            for stmt in self.body().iter() {
+                doc = doc
+                    .append(RcDoc::hardline())
+                    .append(RcDoc::hardline())
+                    .append(stmt.to_doc())
+                    .append(RcDoc::text(";"));
+            }
+            doc = doc.append(RcDoc::hardline()).nest(PRETTY_INDENT);
+            doc
+        };
         let mut ports_doc = if self.ports().is_empty() {
             RcDoc::nil()
         } else {

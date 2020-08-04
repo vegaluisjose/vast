@@ -12,4 +12,5 @@ module module_with_instances ();
         .WIDTH(32'd3))
     i2 (
         .port_a(4'hf));
+    
 endmodule
