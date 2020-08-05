@@ -71,6 +71,16 @@ fn test_expr_neq() {
 }
 
 #[test]
+fn test_expr_mul() {
+    let lhs = Expr::new_ref("a");
+    let rhs = Expr::new_ref("b");
+    let mul = Expr::new_mul(lhs, rhs);
+    let res = mul.to_string();
+    let exp = "a * b".to_string();
+    assert_eq!(res, exp);
+}
+
+#[test]
 fn test_decl_logic_width_32() {
     assert_eq!(
         "logic [31:0] foo".to_string(),

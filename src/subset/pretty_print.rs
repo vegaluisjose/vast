@@ -21,6 +21,7 @@ impl PrettyPrint for Binop {
     fn to_doc(&self) -> RcDoc<()> {
         match self {
             Binop::Add => RcDoc::text("+"),
+            Binop::Mul => RcDoc::text("*"),
             Binop::Lt => RcDoc::text("<"),
             Binop::Equal => RcDoc::text("=="),
             Binop::NotEqual => RcDoc::text("!="),

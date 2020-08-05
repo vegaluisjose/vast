@@ -20,6 +20,7 @@ pub enum Rop {
 #[derive(Clone, Debug)]
 pub enum Binop {
     Add,
+    Mul,
     Lt,
     Equal,
     NotEqual,
