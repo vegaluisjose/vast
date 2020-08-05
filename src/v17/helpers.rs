@@ -38,6 +38,10 @@ impl Sequential {
         Sequential::Error(msg.to_string())
     }
 
+    pub fn new_return(expr: Expr) -> Sequential {
+        Sequential::Return(expr)
+    }
+
     pub fn new_assert(expr: Expr) -> Sequential {
         Sequential::Assert(expr, None)
     }

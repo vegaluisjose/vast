@@ -129,6 +129,14 @@ fn test_expr_ipath() {
 }
 
 #[test]
+fn test_expr_return() {
+    let ret = Sequential::new_return(Expr::new_ref("y"));
+    let res = ret.to_string();
+    let exp = "return y".to_string();
+    assert_eq!(res, exp);
+}
+
+#[test]
 fn test_decl_logic_width_32() {
     assert_eq!(
         "logic [31:0] foo".to_string(),

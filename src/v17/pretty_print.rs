@@ -103,6 +103,9 @@ impl PrettyPrint for Sequential {
                 .append(RcDoc::as_string(msg))
                 .append(RcDoc::text(r#"""#))
                 .append(RcDoc::text(")")),
+            Sequential::Return(expr) => RcDoc::text("return")
+                .append(RcDoc::space())
+                .append(expr.to_doc()),
             Sequential::Assign(lexpr, rexpr, ty) => lexpr
                 .to_doc()
                 .append(RcDoc::space())
