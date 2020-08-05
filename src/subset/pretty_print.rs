@@ -52,6 +52,11 @@ impl PrettyPrint for Expr {
                 .append(RcDoc::as_string(value))
                 .append(RcDoc::text(r#"""#)),
             Expr::Unop(op, input) => op.to_doc().append(input.to_doc()),
+            Expr::Bit(var, index) => var
+                .to_doc()
+                .append(RcDoc::text("["))
+                .append(index.to_doc())
+                .append(RcDoc::text("]")),
             Expr::Binop(op, lhs, rhs) => lhs
                 .to_doc()
                 .append(RcDoc::space())
@@ -68,7 +73,7 @@ impl PrettyPrint for Expr {
                 .append(RcDoc::text(":"))
                 .append(RcDoc::space())
                 .append(fal.to_doc()),
-            Expr::Terop(Terop::Bits, var, hi, lo) => var
+            Expr::Terop(Terop::Slice, var, hi, lo) => var
                 .to_doc()
                 .append(RcDoc::text("["))
                 .append(hi.to_doc())

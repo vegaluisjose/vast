@@ -56,8 +56,17 @@ impl Expr {
         Expr::Terop(Terop::Mux, Rc::new(cond), Rc::new(tru), Rc::new(fal))
     }
 
-    pub fn new_bits(var: Expr, hi: Expr, lo: Expr) -> Expr {
-        Expr::Terop(Terop::Bits, Rc::new(var), Rc::new(hi), Rc::new(lo))
+    pub fn new_slice(var: &str, hi: Expr, lo: Expr) -> Expr {
+        Expr::Terop(
+            Terop::Slice,
+            Rc::new(Expr::new_ref(var)),
+            Rc::new(hi),
+            Rc::new(lo),
+        )
+    }
+
+    pub fn new_bit(var: &str, bit: i32) -> Expr {
+        Expr::Bit(Rc::new(Expr::new_ref(var)), Rc::new(Expr::new_int(bit)))
     }
 
     pub fn new_int(value: i32) -> Expr {

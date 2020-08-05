@@ -29,7 +29,7 @@ pub enum Binop {
 #[derive(Clone, Debug)]
 pub enum Terop {
     Mux,
-    Bits,
+    Slice,
 }
 
 #[derive(Clone, Debug)]
@@ -47,6 +47,7 @@ pub enum Expr {
     Str(String),
     Unop(Unop, Rc<Expr>),
     Binop(Binop, Rc<Expr>, Rc<Expr>),
+    Bit(Rc<Expr>, Rc<Expr>),
     Terop(Terop, Rc<Expr>, Rc<Expr>, Rc<Expr>),
 }
 

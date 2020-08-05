@@ -100,13 +100,20 @@ fn test_expr_mux() {
 }
 
 #[test]
-fn test_expr_bits() {
-    let var = Expr::new_ref("a");
+fn test_expr_slice() {
     let hi = Expr::new_int(7);
     let lo = Expr::new_int(0);
-    let bits = Expr::new_bits(var, hi, lo);
-    let res = bits.to_string();
+    let slice = Expr::new_slice("a", hi, lo);
+    let res = slice.to_string();
     let exp = "a[7:0]".to_string();
+    assert_eq!(res, exp);
+}
+
+#[test]
+fn test_expr_bit() {
+    let bit = Expr::new_bit("a", 9);
+    let res = bit.to_string();
+    let exp = "a[9]".to_string();
     assert_eq!(res, exp);
 }
 
