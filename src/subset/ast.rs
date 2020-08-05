@@ -36,7 +36,7 @@ pub enum Radix {
 #[derive(Clone, Debug)]
 pub enum Expr {
     Ref(Id),
-    ULit(u32, Radix, String),
+    RadixULit(u32, Radix, String),
     Str(String),
     Unop(Rop, Rc<Expr>),
     Binop(Binop, Rc<Expr>, Rc<Expr>),

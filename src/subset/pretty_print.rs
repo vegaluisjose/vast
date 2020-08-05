@@ -43,7 +43,7 @@ impl PrettyPrint for Expr {
     fn to_doc(&self) -> RcDoc<()> {
         match self {
             Expr::Ref(name) => RcDoc::as_string(name),
-            Expr::ULit(width, radix, value) => RcDoc::as_string(width)
+            Expr::RadixULit(width, radix, value) => RcDoc::as_string(width)
                 .append(RcDoc::text("'"))
                 .append(radix.to_doc())
                 .append(RcDoc::as_string(value)),
