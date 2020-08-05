@@ -89,6 +89,28 @@ fn test_expr_int() {
 }
 
 #[test]
+fn test_expr_mux() {
+    let cond = Expr::new_eq(Expr::new_ref("a"), Expr::new_ref("b"));
+    let tru = Expr::new_ref("a");
+    let fal = Expr::new_ref("b");
+    let mux = Expr::new_mux(cond, tru, fal);
+    let res = mux.to_string();
+    let exp = "a == b ? a : b".to_string();
+    assert_eq!(res, exp);
+}
+
+#[test]
+fn test_expr_bits() {
+    let var = Expr::new_ref("a");
+    let hi = Expr::new_int(7);
+    let lo = Expr::new_int(0);
+    let bits = Expr::new_bits(var, hi, lo);
+    let res = bits.to_string();
+    let exp = "a[7:0]".to_string();
+    assert_eq!(res, exp);
+}
+
+#[test]
 fn test_decl_logic_width_32() {
     assert_eq!(
         "logic [31:0] foo".to_string(),

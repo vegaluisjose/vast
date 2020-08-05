@@ -51,6 +51,18 @@ impl Expr {
     pub fn new_mul(lhs: Expr, rhs: Expr) -> Expr {
         Expr::Binop(Binop::Mul, Rc::new(lhs), Rc::new(rhs))
     }
+
+    pub fn new_mux(cond: Expr, tru: Expr, fal: Expr) -> Expr {
+        Expr::Terop(Terop::Mux, Rc::new(cond), Rc::new(tru), Rc::new(fal))
+    }
+
+    pub fn new_bits(var: Expr, hi: Expr, lo: Expr) -> Expr {
+        Expr::Terop(Terop::Bits, Rc::new(var), Rc::new(hi), Rc::new(lo))
+    }
+
+    pub fn new_int(value: i32) -> Expr {
+        Expr::Int(value)
+    }
 }
 
 impl Instance {

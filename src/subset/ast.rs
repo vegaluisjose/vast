@@ -6,7 +6,7 @@ pub type Map = HashMap<Id, Expr>;
 
 // Reduce ops
 #[derive(Clone, Debug)]
-pub enum Rop {
+pub enum Unop {
     LogNot,
     Not,
     And,
@@ -27,6 +27,12 @@ pub enum Binop {
 }
 
 #[derive(Clone, Debug)]
+pub enum Terop {
+    Mux,
+    Bits,
+}
+
+#[derive(Clone, Debug)]
 pub enum Radix {
     Dec,
     Bin,
@@ -39,8 +45,9 @@ pub enum Expr {
     Int(i32),
     ULit(u32, Radix, String),
     Str(String),
-    Unop(Rop, Rc<Expr>),
+    Unop(Unop, Rc<Expr>),
     Binop(Binop, Rc<Expr>, Rc<Expr>),
+    Terop(Terop, Rc<Expr>, Rc<Expr>, Rc<Expr>),
 }
 
 #[derive(Clone, Debug)]

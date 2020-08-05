@@ -2,17 +2,17 @@ use crate::subset::ast::*;
 use crate::util::pretty_print::{PrettyPrint, PRETTY_INDENT};
 use pretty::RcDoc;
 
-impl PrettyPrint for Rop {
+impl PrettyPrint for Unop {
     fn to_doc(&self) -> RcDoc<()> {
         match self {
-            Rop::LogNot => RcDoc::text("!"),
-            Rop::Not => RcDoc::text("~"),
-            Rop::And => RcDoc::text("&"),
-            Rop::Nand => RcDoc::text("~&"),
-            Rop::Or => RcDoc::text("|"),
-            Rop::Nor => RcDoc::text("~|"),
-            Rop::Xor => RcDoc::text("^"),
-            Rop::Xnor => RcDoc::text("~^"),
+            Unop::LogNot => RcDoc::text("!"),
+            Unop::Not => RcDoc::text("~"),
+            Unop::And => RcDoc::text("&"),
+            Unop::Nand => RcDoc::text("~&"),
+            Unop::Or => RcDoc::text("|"),
+            Unop::Nor => RcDoc::text("~|"),
+            Unop::Xor => RcDoc::text("^"),
+            Unop::Xnor => RcDoc::text("~^"),
         }
     }
 }
@@ -58,6 +58,23 @@ impl PrettyPrint for Expr {
                 .append(op.to_doc())
                 .append(RcDoc::space())
                 .append(rhs.to_doc()),
+            Expr::Terop(Terop::Mux, cond, tru, fal) => cond
+                .to_doc()
+                .append(RcDoc::space())
+                .append(RcDoc::text("?"))
+                .append(RcDoc::space())
+                .append(tru.to_doc())
+                .append(RcDoc::space())
+                .append(RcDoc::text(":"))
+                .append(RcDoc::space())
+                .append(fal.to_doc()),
+            Expr::Terop(Terop::Bits, var, hi, lo) => var
+                .to_doc()
+                .append(RcDoc::text("["))
+                .append(hi.to_doc())
+                .append(RcDoc::text(":"))
+                .append(lo.to_doc())
+                .append(RcDoc::text("]")),
         }
     }
 }
