@@ -118,6 +118,17 @@ fn test_expr_bit() {
 }
 
 #[test]
+fn test_expr_ipath() {
+    let mut ipath = IPath::default();
+    ipath.add_inst("cpu");
+    ipath.add_inst("alu");
+    ipath.add_inst("a");
+    let res = Expr::new_ipath(ipath).to_string();
+    let exp = "cpu.alu.a".to_string();
+    assert_eq!(res, exp);
+}
+
+#[test]
 fn test_decl_logic_width_32() {
     assert_eq!(
         "logic [31:0] foo".to_string(),

@@ -39,6 +39,12 @@ impl PrettyPrint for Radix {
     }
 }
 
+impl PrettyPrint for IPath {
+    fn to_doc(&self) -> RcDoc<()> {
+        RcDoc::intersperse(self.names().iter().map(RcDoc::as_string), RcDoc::text("."))
+    }
+}
+
 impl PrettyPrint for Expr {
     fn to_doc(&self) -> RcDoc<()> {
         match self {
@@ -51,6 +57,7 @@ impl PrettyPrint for Expr {
             Expr::Str(value) => RcDoc::text(r#"""#)
                 .append(RcDoc::as_string(value))
                 .append(RcDoc::text(r#"""#)),
+            Expr::IPath(path) => path.to_doc(),
             Expr::Unop(op, input) => op.to_doc().append(input.to_doc()),
             Expr::Bit(var, index) => var
                 .to_doc()

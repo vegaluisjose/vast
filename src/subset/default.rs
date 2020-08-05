@@ -10,3 +10,9 @@ impl Default for Instance {
         }
     }
 }
+
+impl Default for IPath {
+    fn default() -> IPath {
+        IPath { names: Vec::new() }
+    }
+}

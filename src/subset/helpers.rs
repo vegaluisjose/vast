@@ -1,6 +1,16 @@
 use crate::subset::ast::*;
 use std::rc::Rc;
 
+impl IPath {
+    pub fn names(&self) -> &Vec<Id> {
+        &self.names
+    }
+
+    pub fn add_inst(&mut self, inst: &str) {
+        self.names.push(inst.to_string());
+    }
+}
+
 impl Expr {
     pub fn id(&self) -> String {
         match self {
@@ -71,6 +81,10 @@ impl Expr {
 
     pub fn new_int(value: i32) -> Expr {
         Expr::Int(value)
+    }
+
+    pub fn new_ipath(ipath: IPath) -> Expr {
+        Expr::IPath(ipath)
     }
 }
 
