@@ -30,7 +30,7 @@ pub enum Decl {
 #[derive(Clone, Debug)]
 pub enum Sequential {
     Error(String),
-    Assign(Id, Expr, AssignTy),
+    Assign(Expr, Expr, AssignTy),
     Event(EventTy, Expr),
     If(Expr, Vec<Sequential>, Vec<Sequential>),
     Assert(Expr, Option<Rc<Sequential>>),

@@ -151,18 +151,20 @@ fn test_seq_assert_with_error() {
 }
 
 #[test]
-fn test_seq_assign_blk() {
-    let expr = Expr::new_ulit_bin(2, "10");
-    let assign = Sequential::new_blk_assign("a", expr);
+fn test_seq_assign_blk_ref() {
+    let lexpr = Expr::new_ref("a");
+    let rexpr = Expr::new_ulit_bin(2, "10");
+    let assign = Sequential::new_blk_assign(lexpr, rexpr);
     let res = assign.to_string();
     let exp = "a = 2'b10".to_string();
     assert_eq!(res, exp);
 }
 
 #[test]
-fn test_seq_assign_non_blk() {
-    let expr = Expr::new_ref("a");
-    let assign = Sequential::new_non_blk_assign("y", expr);
+fn test_seq_assign_non_blk_ref() {
+    let lexpr = Expr::new_ref("y");
+    let rexpr = Expr::new_ref("a");
+    let assign = Sequential::new_non_blk_assign(lexpr, rexpr);
     let res = assign.to_string();
     let exp = "y <= a".to_string();
     assert_eq!(res, exp);

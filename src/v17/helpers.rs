@@ -46,12 +46,12 @@ impl Sequential {
         Sequential::Assert(expr, Some(Rc::new(seq)))
     }
 
-    pub fn new_blk_assign(name: &str, expr: Expr) -> Sequential {
-        Sequential::Assign(name.to_string(), expr, AssignTy::Blocking)
+    pub fn new_blk_assign(lexpr: Expr, rexpr: Expr) -> Sequential {
+        Sequential::Assign(lexpr, rexpr, AssignTy::Blocking)
     }
 
-    pub fn new_non_blk_assign(name: &str, expr: Expr) -> Sequential {
-        Sequential::Assign(name.to_string(), expr, AssignTy::NonBlocking)
+    pub fn new_non_blk_assign(lexpr: Expr, rexpr: Expr) -> Sequential {
+        Sequential::Assign(lexpr, rexpr, AssignTy::NonBlocking)
     }
 }
 
