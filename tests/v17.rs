@@ -81,6 +81,14 @@ fn test_expr_mul() {
 }
 
 #[test]
+fn test_expr_int() {
+    let expr = Expr::Int(3);
+    let res = expr.to_string();
+    let exp = "3".to_string();
+    assert_eq!(res, exp);
+}
+
+#[test]
 fn test_decl_logic_width_32() {
     assert_eq!(
         "logic [31:0] foo".to_string(),
