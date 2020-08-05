@@ -19,17 +19,17 @@ impl Expr {
 
     pub fn new_ulit_dec(width: u32, value: &str) -> Expr {
         assert!(width > 0, "Error: width must be greater than zero");
-        Expr::RadixULit(width, Radix::Dec, value.to_string())
+        Expr::ULit(width, Radix::Dec, value.to_string())
     }
 
     pub fn new_ulit_hex(width: u32, value: &str) -> Expr {
         assert!(width > 0, "Error: width must be greater than zero");
-        Expr::RadixULit(width, Radix::Hex, value.to_string())
+        Expr::ULit(width, Radix::Hex, value.to_string())
     }
 
     pub fn new_ulit_bin(width: u32, value: &str) -> Expr {
         assert!(width > 0, "Error: width must be greater than zero");
-        Expr::RadixULit(width, Radix::Bin, value.to_string())
+        Expr::ULit(width, Radix::Bin, value.to_string())
     }
 
     pub fn new_add(lhs: Expr, rhs: Expr) -> Expr {
