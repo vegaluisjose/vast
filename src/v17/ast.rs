@@ -6,6 +6,7 @@ pub type Expr = subset::ast::Expr;
 pub type EventTy = subset::ast::EventTy;
 pub type AssignTy = subset::ast::AssignTy;
 pub type Instance = subset::ast::Instance;
+pub type Function = subset::ast::GenericFunction<Decl, Sequential, Ty>;
 pub type Stmt = subset::ast::GenericStmt<Decl, Parallel>;
 pub type Port = subset::ast::GenericPort<Decl>;
 pub type Module = subset::ast::GenericModule<Decl, Parallel>;
@@ -16,15 +17,6 @@ pub enum Ty {
     Int,
     // maybe use nonzero64?
     Width(u64),
-}
-
-#[derive(Clone, Debug)]
-pub struct Function {
-    pub name: Id,
-    pub inputs: Vec<Port>,
-    pub decls: Vec<Decl>,
-    pub body: Vec<Sequential>,
-    pub ret: Ty,
 }
 
 #[derive(Clone, Debug)]

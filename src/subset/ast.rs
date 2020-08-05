@@ -69,6 +69,18 @@ pub enum GenericPort<T> {
 }
 
 // T ~> Declaration type
+// U ~> Sequential type
+// V ~> Data Type
+#[derive(Clone, Debug)]
+pub struct GenericFunction<T, U, V> {
+    pub name: Id,
+    pub inputs: Vec<GenericPort<T>>,
+    pub decls: Vec<T>,
+    pub body: Vec<U>,
+    pub ret: V,
+}
+
+// T ~> Declaration type
 // U ~> Parallel type
 #[derive(Clone, Debug)]
 pub enum GenericStmt<T, U> {
