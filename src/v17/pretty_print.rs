@@ -1,4 +1,4 @@
-use crate::util::pretty_print::{add_newline, block, block_with_parens, PrettyHelper, PrettyPrint};
+use crate::util::pretty_print::{block, block_with_parens, intersperse, PrettyHelper, PrettyPrint};
 use crate::v17::ast::*;
 use pretty::RcDoc;
 
@@ -31,10 +31,11 @@ impl PrettyPrint for CaseBranch {
         let body = if self.body().is_empty() {
             RcDoc::nil()
         } else {
-            add_newline(
+            intersperse(
                 self.body()
                     .iter()
                     .map(|x| x.to_doc().append(RcDoc::text(";"))),
+                RcDoc::hardline(),
             )
         };
         let body = if self.body().len() > 1 {
@@ -55,10 +56,11 @@ impl PrettyPrint for CaseDefault {
         let body = if self.body().is_empty() {
             RcDoc::nil()
         } else {
-            add_newline(
+            intersperse(
                 self.body()
                     .iter()
                     .map(|x| x.to_doc().append(RcDoc::text(";"))),
+                RcDoc::hardline(),
             )
         };
         let body = if self.body().len() > 1 {
@@ -75,7 +77,10 @@ impl PrettyPrint for Case {
         let branches = if self.branches().is_empty() {
             RcDoc::nil()
         } else {
-            add_newline(self.branches().iter().map(|x| x.to_doc()))
+            intersperse(
+                self.branches().iter().map(|x| x.to_doc()),
+                RcDoc::hardline(),
+            )
         };
         let branches = if let Some(default) = &self.default {
             branches.append(RcDoc::hardline()).append(default.to_doc())
@@ -95,28 +100,31 @@ impl PrettyPrint for Function {
         let inputs = if self.inputs().is_empty() {
             RcDoc::nil()
         } else {
-            add_newline(
+            intersperse(
                 self.inputs()
                     .iter()
                     .map(|x| x.to_doc().append(RcDoc::text(";"))),
+                RcDoc::hardline(),
             )
         };
         let decls = if self.decls().is_empty() {
             RcDoc::nil()
         } else {
-            add_newline(
+            intersperse(
                 self.decls()
                     .iter()
                     .map(|x| x.to_doc().append(RcDoc::text(";"))),
+                RcDoc::hardline(),
             )
         };
         let body = if self.body().is_empty() {
             RcDoc::nil()
         } else {
-            add_newline(
+            intersperse(
                 self.body()
                     .iter()
                     .map(|x| x.to_doc().append(RcDoc::text(";"))),
+                RcDoc::hardline(),
             )
         };
         RcDoc::space()
@@ -254,10 +262,11 @@ impl PrettyPrint for Module {
         let body = if self.body().is_empty() {
             RcDoc::hardline()
         } else {
-            block(add_newline(
+            block(intersperse(
                 self.body()
                     .iter()
                     .map(|x| x.to_doc().append(RcDoc::text(";"))),
+                RcDoc::hardline(),
             ))
         };
         RcDoc::space()
