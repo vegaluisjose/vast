@@ -124,6 +124,10 @@ impl Sequential {
     pub fn new_non_blk_assign(lexpr: Expr, rexpr: Expr) -> Sequential {
         Sequential::SeqAssign(lexpr, rexpr, AssignTy::NonBlocking)
     }
+
+    pub fn new_case(case: Case) -> Sequential {
+        Sequential::SeqCase(case)
+    }
 }
 
 impl Default for AlwaysComb {
@@ -135,6 +139,10 @@ impl Default for AlwaysComb {
 impl AlwaysComb {
     pub fn add_stmt(&mut self, stmt: Sequential) {
         self.body.push(stmt);
+    }
+
+    pub fn add_case(&mut self, case: Case) {
+        self.body.push(Sequential::new_case(case));
     }
 
     pub fn body(&self) -> &Vec<Sequential> {

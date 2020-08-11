@@ -31,12 +31,7 @@ impl PrettyPrint for CaseBranch {
         let body = if self.body().is_empty() {
             RcDoc::nil()
         } else {
-            intersperse(
-                self.body()
-                    .iter()
-                    .map(|x| x.to_doc().append(RcDoc::text(";"))),
-                RcDoc::hardline(),
-            )
+            intersperse(self.body().iter().map(|x| x.to_doc()), RcDoc::hardline())
         };
         let body = if self.body().len() > 1 {
             block(body).begin_end()
@@ -56,12 +51,7 @@ impl PrettyPrint for CaseDefault {
         let body = if self.body().is_empty() {
             RcDoc::nil()
         } else {
-            intersperse(
-                self.body()
-                    .iter()
-                    .map(|x| x.to_doc().append(RcDoc::text(";"))),
-                RcDoc::hardline(),
-            )
+            intersperse(self.body().iter().map(|x| x.to_doc()), RcDoc::hardline())
         };
         let body = if self.body().len() > 1 {
             block(body).begin_end()
@@ -189,7 +179,8 @@ impl PrettyPrint for Sequential {
                 .append(RcDoc::as_string(msg).quotes().parens()),
             Sequential::Display(msg) => RcDoc::text("$")
                 .append(RcDoc::text("display"))
-                .append(RcDoc::as_string(msg).quotes().parens()),
+                .append(RcDoc::as_string(msg).quotes().parens())
+                .append(RcDoc::text(";")),
             Sequential::Return(expr) => RcDoc::text("return")
                 .append(RcDoc::space())
                 .append(expr.to_doc()),
@@ -199,6 +190,7 @@ impl PrettyPrint for Sequential {
                 .append(ty.to_doc())
                 .append(RcDoc::space())
                 .append(rexpr.to_doc()),
+            Sequential::SeqCase(case) => case.to_doc(),
             Sequential::Event(ty, expr) => ty.to_doc().append(RcDoc::space()).append(expr.to_doc()),
             Sequential::Assert(expr, branch) => {
                 let cond = RcDoc::text("assert").append(expr.to_doc().parens());
@@ -222,9 +214,7 @@ impl PrettyPrint for AlwaysComb {
             RcDoc::nil()
         } else {
             block(intersperse(
-                self.body()
-                    .iter()
-                    .map(|x| x.to_doc().append(RcDoc::text(";"))),
+                self.body().iter().map(|x| x.to_doc()),
                 RcDoc::hardline(),
             ))
             .begin_end()

@@ -217,7 +217,7 @@ fn test_seq_error() {
 #[test]
 fn test_seq_display() {
     let res = Sequential::new_display("this is a message").to_string();
-    let exp = r#"$display("this is a message")"#;
+    let exp = r#"$display("this is a message");"#;
     assert_eq!(res, exp, "\n\nresult:\n{}\nexpected:\n{}\n\n", res, exp);
 }
 
@@ -376,6 +376,31 @@ fn test_module_with_always_comb() {
     let mut always = AlwaysComb::default();
     always.add_stmt(Sequential::new_display("hello world"));
     let mut module = Module::new_with_name("module_with_always_comb");
+    module.add_always_comb(always);
+    let res = module.to_string();
+    assert_eq!(res, exp, "\n\nresult:\n{}\nexpected:\n{}\n\n", res, exp);
+}
+
+#[test]
+fn test_module_with_case() {
+    let exp = read_to_string("regression/v17/module_with_case.v");
+    let mut nop = CaseBranch::new(Expr::new_ulit_dec(5, "0"));
+    nop.add_stmt(Sequential::new_display("nop"));
+    let mut add = CaseBranch::new(Expr::new_ulit_dec(5, "1"));
+    add.add_stmt(Sequential::new_display("add"));
+    let mut sub = CaseBranch::new(Expr::new_ulit_dec(5, "2"));
+    sub.add_stmt(Sequential::new_display("sub"));
+    let mut invalid = CaseDefault::default();
+    invalid.add_stmt(Sequential::new_display("invalid"));
+    let mut case = Case::new(Expr::new_ref("opcode"));
+    case.add_branch(nop);
+    case.add_branch(add);
+    case.add_branch(sub);
+    case.set_default(invalid);
+    let mut always = AlwaysComb::default();
+    always.add_case(case);
+    let mut module = Module::new_with_name("module_with_case");
+    module.add_input("opcode", 5);
     module.add_always_comb(always);
     let res = module.to_string();
     assert_eq!(res, exp, "\n\nresult:\n{}\nexpected:\n{}\n\n", res, exp);
