@@ -179,7 +179,7 @@ impl PrettyPrint for Sequential {
             Sequential::Return(expr) => RcDoc::text("return")
                 .append(RcDoc::space())
                 .append(expr.to_doc()),
-            Sequential::Assign(lexpr, rexpr, ty) => lexpr
+            Sequential::SeqAssign(lexpr, rexpr, ty) => lexpr
                 .to_doc()
                 .append(RcDoc::space())
                 .append(ty.to_doc())
@@ -213,7 +213,7 @@ impl PrettyPrint for Parallel {
     fn to_doc(&self) -> RcDoc<()> {
         match self {
             Parallel::Inst(ty) => ty.to_doc(),
-            Parallel::Assign => RcDoc::text("assign"),
+            Parallel::ParAssign(_, _) => unimplemented!(),
             Parallel::AlwaysComb(_) => RcDoc::text("always_comb"),
             Parallel::AlwaysFF(_, _) => RcDoc::text("always_ff"),
         }

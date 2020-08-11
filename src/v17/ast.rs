@@ -36,7 +36,7 @@ pub enum Sequential {
     Error(String),
     Display(String),
     Return(Expr),
-    Assign(Expr, Expr, AssignTy),
+    SeqAssign(Expr, Expr, AssignTy),
     Event(EventTy, Expr),
     If(Expr, Vec<Sequential>, Vec<Sequential>),
     Assert(Expr, Option<Rc<Sequential>>),
@@ -45,7 +45,7 @@ pub enum Sequential {
 #[derive(Clone, Debug)]
 pub enum Parallel {
     Inst(Instance),
-    Assign,
+    ParAssign(Expr, Expr),
     AlwaysComb(Vec<Sequential>),
     AlwaysFF(Sequential, Vec<Sequential>),
 }

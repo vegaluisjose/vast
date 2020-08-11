@@ -78,7 +78,7 @@ impl PrettyPrint for Parallel {
     fn to_doc(&self) -> RcDoc<()> {
         match self {
             Parallel::Inst(ty) => ty.to_doc(),
-            Parallel::Assign(lexpr, rexpr) => RcDoc::text("assign")
+            Parallel::ParAssign(lexpr, rexpr) => RcDoc::text("assign")
                 .append(RcDoc::space())
                 .append(lexpr.to_doc())
                 .append(RcDoc::space())

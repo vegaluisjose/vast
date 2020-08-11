@@ -33,6 +33,6 @@ pub enum Sequential {
 #[derive(Clone, Debug)]
 pub enum Parallel {
     Inst(Instance),
-    Assign(Expr, Expr),
+    ParAssign(Expr, Expr),
     Always,
 }
