@@ -77,6 +77,11 @@ impl PrettyPrint for Case {
         } else {
             add_newline(self.branches().iter().map(|x| x.to_doc()))
         };
+        let branches = if let Some(default) = &self.default {
+            branches.append(RcDoc::hardline()).append(default.to_doc())
+        } else {
+            branches
+        };
         self.cond
             .to_doc()
             .parens()
