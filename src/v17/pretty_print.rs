@@ -1,4 +1,4 @@
-use crate::util::pretty_print::{PrettyPrint, PRETTY_INDENT};
+use crate::util::pretty_print::{add_newline, block, PrettyHelper, PrettyPrint, PRETTY_INDENT};
 use crate::v17::ast::*;
 use pretty::RcDoc;
 
@@ -22,31 +22,32 @@ impl PrettyPrint for Ty {
 
 impl PrettyPrint for Function {
     fn to_doc(&self) -> RcDoc<()> {
-        let input_doc = if self.inputs().is_empty() {
+        let inputs = if self.inputs().is_empty() {
             RcDoc::nil()
         } else {
-            let mut doc = RcDoc::nil();
-            for port in self.inputs().iter() {
-                doc = doc
-                    .append(RcDoc::hardline())
-                    .append(port.to_doc())
-                    .append(RcDoc::text(";"));
-            }
-            doc = doc.append(RcDoc::hardline()).nest(PRETTY_INDENT);
-            doc
+            add_newline(
+                self.inputs()
+                    .iter()
+                    .map(|x| x.to_doc().append(RcDoc::text(";"))),
+            )
         };
-        let body_doc = if self.body().is_empty() {
+        let decls = if self.decls().is_empty() {
             RcDoc::nil()
         } else {
-            let mut doc = RcDoc::nil();
-            for seq in self.body().iter() {
-                doc = doc
-                    .append(RcDoc::hardline())
-                    .append(seq.to_doc())
-                    .append(RcDoc::text(";"));
-            }
-            doc = doc.append(RcDoc::hardline()).nest(PRETTY_INDENT);
-            RcDoc::text("begin").append(doc).append(RcDoc::text("end"))
+            add_newline(
+                self.decls()
+                    .iter()
+                    .map(|x| x.to_doc().append(RcDoc::text(";"))),
+            )
+        };
+        let body = if self.body().is_empty() {
+            RcDoc::nil()
+        } else {
+            add_newline(
+                self.body()
+                    .iter()
+                    .map(|x| x.to_doc().append(RcDoc::text(";"))),
+            )
         };
         RcDoc::text("function")
             .append(RcDoc::space())
@@ -54,9 +55,12 @@ impl PrettyPrint for Function {
             .append(RcDoc::space())
             .append(RcDoc::as_string(&self.name))
             .append(RcDoc::text(";"))
-            .append(input_doc)
-            .append(body_doc)
-            .append(RcDoc::hardline())
+            .append(block(
+                inputs
+                    .append(decls)
+                    .append(RcDoc::hardline())
+                    .append(block(body).begin_end()),
+            ))
             .append(RcDoc::text("endfunction"))
     }
 }
