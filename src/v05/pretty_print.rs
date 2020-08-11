@@ -65,11 +65,7 @@ impl PrettyPrint for Sequential {
             // wildcard for sensitivity list
             Sequential::Wildcard => RcDoc::text("*"),
             Sequential::Event(ty, expr) => ty.to_doc().append(RcDoc::space()).append(expr.to_doc()),
-            Sequential::If(expr, _, _) => RcDoc::text("if")
-                .append(RcDoc::space())
-                .append(RcDoc::text("("))
-                .append(expr.to_doc())
-                .append(RcDoc::text(")")),
+            Sequential::If(_, _, _) => unimplemented!(),
         }
     }
 }

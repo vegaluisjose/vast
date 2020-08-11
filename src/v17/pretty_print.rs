@@ -186,8 +186,7 @@ impl PrettyPrint for Sequential {
                 .append(rexpr.to_doc()),
             Sequential::Event(ty, expr) => ty.to_doc().append(RcDoc::space()).append(expr.to_doc()),
             Sequential::Assert(expr, branch) => {
-                let cond = RcDoc::text("assert")
-                    .append(expr.to_doc().parens());
+                let cond = RcDoc::text("assert").append(expr.to_doc().parens());
                 if let Some(block) = branch {
                     cond.append(RcDoc::space())
                         .append(RcDoc::text("else"))
@@ -207,8 +206,8 @@ impl PrettyPrint for Parallel {
         match self {
             Parallel::Inst(ty) => ty.to_doc(),
             Parallel::ParAssign(_, _) => unimplemented!(),
-            Parallel::AlwaysComb(_) => RcDoc::text("always_comb"),
-            Parallel::AlwaysFF(_, _) => RcDoc::text("always_ff"),
+            Parallel::AlwaysComb(_) => unimplemented!(),
+            Parallel::AlwaysFF(_, _) => unimplemented!(),
         }
     }
 }
