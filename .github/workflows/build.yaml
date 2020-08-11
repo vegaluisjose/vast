@@ -19,6 +19,6 @@ jobs:
     - name: Install Verilator
       run: sudo apt-get install verilator
     - name: Lint regression tests
-      run: make test-lint
+      run: make lint
     - name: Test
       run: make test
