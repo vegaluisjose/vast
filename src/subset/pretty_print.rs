@@ -155,5 +155,6 @@ impl PrettyPrint for Instance {
             .append(params_doc)
             .append(RcDoc::as_string(self.id()))
             .append(ports_doc)
+            .append(RcDoc::text(";"))
     }
 }

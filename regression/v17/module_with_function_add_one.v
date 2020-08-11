@@ -6,5 +6,5 @@ module module_with_function_add_one ();
             res = val + 1'b1;
             return res;
         end
-    endfunction;
+    endfunction
 endmodule

@@ -126,9 +126,29 @@ impl Sequential {
     }
 }
 
+impl Default for AlwaysComb {
+    fn default() -> AlwaysComb {
+        AlwaysComb { body: Vec::new() }
+    }
+}
+
+impl AlwaysComb {
+    pub fn add_stmt(&mut self, stmt: Sequential) {
+        self.body.push(stmt);
+    }
+
+    pub fn body(&self) -> &Vec<Sequential> {
+        &self.body
+    }
+}
+
 impl Parallel {
     pub fn new_inst(inst: Instance) -> Parallel {
         Parallel::Inst(inst)
+    }
+
+    pub fn new_always_comb(always: AlwaysComb) -> Parallel {
+        Parallel::ParAlwaysComb(always)
     }
 }
 
@@ -224,6 +244,11 @@ impl Module {
 
     pub fn add_instance(&mut self, inst: Instance) {
         self.body.push(Stmt::new_parallel(Parallel::new_inst(inst)));
+    }
+
+    pub fn add_always_comb(&mut self, always: AlwaysComb) {
+        self.body
+            .push(Stmt::new_parallel(Parallel::new_always_comb(always)));
     }
 
     pub fn name(&self) -> String {

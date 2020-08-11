@@ -369,3 +369,14 @@ fn test_module_with_function_add_one() {
     let res = module.to_string();
     assert_eq!(res, exp, "\n\nresult:\n{}\nexpected:\n{}\n\n", res, exp);
 }
+
+#[test]
+fn test_module_with_always_comb() {
+    let exp = read_to_string("regression/v17/module_with_always_comb.v");
+    let mut always = AlwaysComb::default();
+    always.add_stmt(Sequential::new_display("hello world"));
+    let mut module = Module::new_with_name("module_with_always_comb");
+    module.add_always_comb(always);
+    let res = module.to_string();
+    assert_eq!(res, exp, "\n\nresult:\n{}\nexpected:\n{}\n\n", res, exp);
+}

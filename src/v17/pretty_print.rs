@@ -216,12 +216,31 @@ impl PrettyPrint for Sequential {
     }
 }
 
+impl PrettyPrint for AlwaysComb {
+    fn to_doc(&self) -> RcDoc<()> {
+        let body = if self.body().is_empty() {
+            RcDoc::nil()
+        } else {
+            block(intersperse(
+                self.body()
+                    .iter()
+                    .map(|x| x.to_doc().append(RcDoc::text(";"))),
+                RcDoc::hardline(),
+            ))
+            .begin_end()
+        };
+        RcDoc::text("always_comb")
+            .append(RcDoc::space())
+            .append(body)
+    }
+}
+
 impl PrettyPrint for Parallel {
     fn to_doc(&self) -> RcDoc<()> {
         match self {
             Parallel::Inst(ty) => ty.to_doc(),
             Parallel::ParAssign(_, _) => unimplemented!(),
-            Parallel::AlwaysComb(_) => unimplemented!(),
+            Parallel::ParAlwaysComb(always) => always.to_doc(),
             Parallel::AlwaysFF(_, _) => unimplemented!(),
         }
     }
@@ -270,9 +289,7 @@ impl PrettyPrint for Module {
             RcDoc::hardline()
         } else {
             block(intersperse(
-                self.body()
-                    .iter()
-                    .map(|x| x.to_doc().append(RcDoc::text(";"))),
+                self.body().iter().map(|x| x.to_doc()),
                 RcDoc::hardline(),
             ))
         };

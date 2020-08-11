@@ -4,5 +4,5 @@ module module_with_function ();
         begin
             assert(value == 32'hbadc0ffe) else $error("good coffee");
         end
-    endfunction;
+    endfunction
 endmodule

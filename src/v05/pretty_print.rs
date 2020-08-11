@@ -118,7 +118,6 @@ impl PrettyPrint for Module {
                     .append(RcDoc::hardline())
                     .append(RcDoc::hardline())
                     .append(stmt.to_doc())
-                    .append(RcDoc::text(";"));
             }
             doc = doc.append(RcDoc::hardline()).nest(PRETTY_INDENT);
             doc
