@@ -196,18 +196,6 @@ fn test_case_default() {
     assert_eq!(res, exp);
 }
 
-// #[test]
-// fn test_case() {
-//     let mut b0 = CaseBranch::new(Expr::new_ulit_dec(32, "0"));
-//     b0.add_stmt(Sequential::new_error("error in branch 0"));
-//     let mut b1 = CaseBranch::new(Expr::new_ulit_dec(32, "1"));
-//     b1.add_stmt(Sequential::new_error("error in branch 1"));
-//     let mut case = Case::new(Expr::new_ref("op"));
-//     case.add_branch(b0);
-//     case.add_branch(b1);
-//     println!("{}", case);
-// }
-
 #[test]
 fn test_seq_event_posedge_clock() {
     assert_eq!(
