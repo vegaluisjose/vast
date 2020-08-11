@@ -181,18 +181,18 @@ fn test_event_ty_negedge() {
 #[test]
 fn test_case_branch() {
     let mut branch = CaseBranch::new(Expr::new_ulit_dec(32, "0"));
-    branch.add_stmt(Sequential::new_error("this is an error"));
+    branch.add_stmt(Sequential::new_display("branch 0"));
     let res = branch.to_string();
-    let exp = r#"32'd0 : $error("this is an error");"#;
+    let exp = r#"32'd0 : $display("branch 0");"#;
     assert_eq!(res, exp);
 }
 
 #[test]
 fn test_case_default() {
     let mut default = CaseDefault::default();
-    default.add_stmt(Sequential::new_error("this is an error"));
+    default.add_stmt(Sequential::new_display("default branch"));
     let res = default.to_string();
-    let exp = r#"default : $error("this is an error");"#;
+    let exp = r#"default : $display("default branch");"#;
     assert_eq!(res, exp);
 }
 
@@ -208,6 +208,13 @@ fn test_seq_event_posedge_clock() {
 fn test_seq_error() {
     let res = Sequential::new_error("this is an error").to_string();
     let exp = r#"$error("this is an error")"#;
+    assert_eq!(res, exp);
+}
+
+#[test]
+fn test_seq_display() {
+    let res = Sequential::new_display("this is a message").to_string();
+    let exp = r#"$display("this is a message")"#;
     assert_eq!(res, exp);
 }
 

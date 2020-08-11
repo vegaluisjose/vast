@@ -34,6 +34,7 @@ pub enum Decl {
 #[derive(Clone, Debug)]
 pub enum Sequential {
     Error(String),
+    Display(String),
     Return(Expr),
     Assign(Expr, Expr, AssignTy),
     Event(EventTy, Expr),

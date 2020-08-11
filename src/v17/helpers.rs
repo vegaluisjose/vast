@@ -101,6 +101,10 @@ impl Sequential {
         Sequential::Error(msg.to_string())
     }
 
+    pub fn new_display(msg: &str) -> Sequential {
+        Sequential::Display(msg.to_string())
+    }
+
     pub fn new_return(expr: Expr) -> Sequential {
         Sequential::Return(expr)
     }

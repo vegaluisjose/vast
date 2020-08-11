@@ -172,11 +172,10 @@ impl PrettyPrint for Sequential {
         match self {
             Sequential::Error(msg) => RcDoc::text("$")
                 .append(RcDoc::text("error"))
-                .append(RcDoc::text("("))
-                .append(RcDoc::text(r#"""#))
-                .append(RcDoc::as_string(msg))
-                .append(RcDoc::text(r#"""#))
-                .append(RcDoc::text(")")),
+                .append(RcDoc::as_string(msg).quotes().parens()),
+            Sequential::Display(msg) => RcDoc::text("$")
+                .append(RcDoc::text("display"))
+                .append(RcDoc::as_string(msg).quotes().parens()),
             Sequential::Return(expr) => RcDoc::text("return")
                 .append(RcDoc::space())
                 .append(expr.to_doc()),
