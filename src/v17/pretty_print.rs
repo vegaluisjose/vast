@@ -117,6 +117,18 @@ impl PrettyPrint for Function {
                 RcDoc::hardline(),
             )
         };
+        let preamble = if self.inputs().is_empty() && self.decls().is_empty() {
+            RcDoc::nil()
+        } else if self.inputs().is_empty() {
+            decls.append(RcDoc::hardline())
+        } else if self.decls().is_empty() {
+            inputs.append(RcDoc::hardline())
+        } else {
+            inputs
+                .append(RcDoc::hardline())
+                .append(decls)
+                .append(RcDoc::hardline())
+        };
         let body = if self.body().is_empty() {
             RcDoc::nil()
         } else {
@@ -132,12 +144,7 @@ impl PrettyPrint for Function {
             .append(RcDoc::space())
             .append(RcDoc::as_string(&self.name))
             .append(RcDoc::text(";"))
-            .append(block(
-                inputs
-                    .append(decls)
-                    .append(RcDoc::hardline())
-                    .append(block(body).begin_end()),
-            ))
+            .append(block(preamble.append(block(body).begin_end())))
             .func_endfunc()
     }
 }

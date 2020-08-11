@@ -173,8 +173,8 @@ impl Function {
         self.decls.push(Decl::new_logic(name, width));
     }
 
-    pub fn add_seq(&mut self, seq: Sequential) {
-        self.body.push(seq);
+    pub fn add_stmt(&mut self, stmt: Sequential) {
+        self.body.push(stmt);
     }
 
     pub fn set_return_type(&mut self, ret: Ty) {

@@ -295,7 +295,7 @@ fn test_module_one_input() {
     let mut module = Module::new_with_name("one_input");
     module.add_input("a", 5);
     let res = module.to_string();
-    assert_eq!(exp, res);
+    assert_eq!(res, exp);
 }
 
 #[test]
@@ -307,7 +307,7 @@ fn test_module_four_inputs() {
     module.add_input("c", 4);
     module.add_input("d", 1);
     let res = module.to_string();
-    assert_eq!(exp, res);
+    assert_eq!(res, exp);
 }
 
 #[test]
@@ -329,7 +329,7 @@ fn test_module_with_instances() {
     module.add_instance(i1);
     module.add_instance(i2);
     let res = module.to_string();
-    assert_eq!(exp, res);
+    assert_eq!(res, exp);
 }
 
 #[test]
@@ -342,9 +342,27 @@ fn test_module_with_function() {
     let assert = Sequential::new_assert_with_else(expr, err);
     let mut func = Function::new("check", Ty::Void);
     func.add_input("value", 32);
-    func.add_seq(assert);
+    func.add_stmt(assert);
     let mut module = Module::new_with_name("module_with_function");
     module.add_function(func);
     let res = module.to_string();
-    assert_eq!(exp, res);
+    assert_eq!(res, exp);
+}
+
+#[test]
+fn test_module_with_function_add_one() {
+    let exp = read_to_string("regression/v17/module_with_function_add_one.v");
+    let var_res = Expr::new_ref("res");
+    let var_val = Expr::new_ref("val");
+    let con_one = Expr::new_ulit_bin(1, "1");
+    let add_expr = Expr::new_add(var_val, con_one);
+    let mut func = Function::new("add_one", Ty::Int);
+    func.add_input("val", 32);
+    func.add_logic("res", 32);
+    func.add_stmt(Sequential::new_blk_assign(var_res.clone(), add_expr));
+    func.add_stmt(Sequential::new_return(var_res));
+    let mut module = Module::new_with_name("module_with_function_add_one");
+    module.add_function(func);
+    let res = module.to_string();
+    assert_eq!(res, exp, "\n\nresult:\n{}\nexpected:\n{}\n\n", res, exp);
 }
