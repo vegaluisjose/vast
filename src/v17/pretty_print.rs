@@ -119,8 +119,7 @@ impl PrettyPrint for Function {
                     .map(|x| x.to_doc().append(RcDoc::text(";"))),
             )
         };
-        RcDoc::text("function")
-            .append(RcDoc::space())
+        RcDoc::space()
             .append(self.ret.to_doc())
             .append(RcDoc::space())
             .append(RcDoc::as_string(&self.name))
@@ -131,7 +130,7 @@ impl PrettyPrint for Function {
                     .append(RcDoc::hardline())
                     .append(block(body).begin_end()),
             ))
-            .append(RcDoc::text("endfunction"))
+            .func_endfunc()
     }
 }
 

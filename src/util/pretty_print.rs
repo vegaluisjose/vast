@@ -43,6 +43,10 @@ pub trait PrettyHelper<'a>: Sized {
     fn case_endcase(self) -> Self {
         self.surround("case", "endcase")
     }
+
+    fn func_endfunc(self) -> Self {
+        self.surround("function", "endfunction")
+    }
 }
 
 impl<'a, A> PrettyHelper<'a> for RcDoc<'a, A> {
