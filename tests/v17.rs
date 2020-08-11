@@ -3,31 +3,34 @@ use vast::v17::ast::*;
 
 #[test]
 fn test_expr_str() {
-    assert_eq!(
-        r#""multiply""#.to_string(),
-        Expr::new_str("multiply").to_string()
-    );
+    let expr = Expr::new_str("multiply");
+    let exp = r#""multiply""#.to_string();
+    let res = expr.to_string();
+    assert_eq!(res, exp, "\n\nresult:\n{}\nexpected:\n{}\n\n", res, exp);
 }
 
 #[test]
 fn test_expr_ulit_bin() {
-    assert_eq!(
-        "4'b1000".to_string(),
-        Expr::new_ulit_bin(4, "1000").to_string()
-    );
+    let expr = Expr::new_ulit_bin(4, "1000");
+    let exp = "4'b1000".to_string();
+    let res = expr.to_string();
+    assert_eq!(res, exp, "\n\nresult:\n{}\nexpected:\n{}\n\n", res, exp);
 }
 
 #[test]
 fn test_expr_ulit_hex() {
-    assert_eq!("8'hff".to_string(), Expr::new_ulit_hex(8, "ff").to_string());
+    let expr = Expr::new_ulit_hex(8, "ff");
+    let exp = "8'hff".to_string();
+    let res = expr.to_string();
+    assert_eq!(res, exp, "\n\nresult:\n{}\nexpected:\n{}\n\n", res, exp);
 }
 
 #[test]
 fn test_expr_ulit_dec() {
-    assert_eq!(
-        "16'd78".to_string(),
-        Expr::new_ulit_dec(16, "78").to_string()
-    );
+    let expr = Expr::new_ulit_dec(16, "78");
+    let exp = "16'd78".to_string();
+    let res = expr.to_string();
+    assert_eq!(res, exp, "\n\nresult:\n{}\nexpected:\n{}\n\n", res, exp);
 }
 
 #[test]
@@ -37,7 +40,7 @@ fn test_expr_add() {
     let add = Expr::new_add(lhs, rhs);
     let res = add.to_string();
     let exp = "a + 8'd1".to_string();
-    assert_eq!(res, exp);
+    assert_eq!(res, exp, "\n\nresult:\n{}\nexpected:\n{}\n\n", res, exp);
 }
 
 #[test]
@@ -47,7 +50,7 @@ fn test_expr_lt() {
     let lt = Expr::new_lt(lhs, rhs);
     let res = lt.to_string();
     let exp = "mask < 32'd1".to_string();
-    assert_eq!(res, exp);
+    assert_eq!(res, exp, "\n\nresult:\n{}\nexpected:\n{}\n\n", res, exp);
 }
 
 #[test]
@@ -57,7 +60,7 @@ fn test_expr_eq() {
     let eq = Expr::new_eq(lhs, rhs);
     let res = eq.to_string();
     let exp = "z == 8'd1".to_string();
-    assert_eq!(res, exp);
+    assert_eq!(res, exp, "\n\nresult:\n{}\nexpected:\n{}\n\n", res, exp);
 }
 
 #[test]
@@ -67,7 +70,7 @@ fn test_expr_neq() {
     let neq = Expr::new_neq(lhs, rhs);
     let res = neq.to_string();
     let exp = "a != b".to_string();
-    assert_eq!(res, exp);
+    assert_eq!(res, exp, "\n\nresult:\n{}\nexpected:\n{}\n\n", res, exp);
 }
 
 #[test]
@@ -77,7 +80,7 @@ fn test_expr_mul() {
     let mul = Expr::new_mul(lhs, rhs);
     let res = mul.to_string();
     let exp = "a * b".to_string();
-    assert_eq!(res, exp);
+    assert_eq!(res, exp, "\n\nresult:\n{}\nexpected:\n{}\n\n", res, exp);
 }
 
 #[test]
@@ -85,7 +88,7 @@ fn test_expr_int() {
     let expr = Expr::Int(3);
     let res = expr.to_string();
     let exp = "3".to_string();
-    assert_eq!(res, exp);
+    assert_eq!(res, exp, "\n\nresult:\n{}\nexpected:\n{}\n\n", res, exp);
 }
 
 #[test]
@@ -96,7 +99,7 @@ fn test_expr_mux() {
     let mux = Expr::new_mux(cond, tru, fal);
     let res = mux.to_string();
     let exp = "a == b ? a : b".to_string();
-    assert_eq!(res, exp);
+    assert_eq!(res, exp, "\n\nresult:\n{}\nexpected:\n{}\n\n", res, exp);
 }
 
 #[test]
@@ -106,7 +109,7 @@ fn test_expr_slice() {
     let slice = Expr::new_slice("a", hi, lo);
     let res = slice.to_string();
     let exp = "a[7:0]".to_string();
-    assert_eq!(res, exp);
+    assert_eq!(res, exp, "\n\nresult:\n{}\nexpected:\n{}\n\n", res, exp);
 }
 
 #[test]
@@ -114,7 +117,7 @@ fn test_expr_bit() {
     let bit = Expr::new_bit("a", 9);
     let res = bit.to_string();
     let exp = "a[9]".to_string();
-    assert_eq!(res, exp);
+    assert_eq!(res, exp, "\n\nresult:\n{}\nexpected:\n{}\n\n", res, exp);
 }
 
 #[test]
@@ -125,7 +128,7 @@ fn test_expr_ipath() {
     ipath.add_inst("a");
     let res = Expr::new_ipath(ipath).to_string();
     let exp = "cpu.alu.a".to_string();
-    assert_eq!(res, exp);
+    assert_eq!(res, exp, "\n\nresult:\n{}\nexpected:\n{}\n\n", res, exp);
 }
 
 #[test]
@@ -133,7 +136,7 @@ fn test_expr_return() {
     let ret = Sequential::new_return(Expr::new_ref("y"));
     let res = ret.to_string();
     let exp = "return y".to_string();
-    assert_eq!(res, exp);
+    assert_eq!(res, exp, "\n\nresult:\n{}\nexpected:\n{}\n\n", res, exp);
 }
 
 #[test]
@@ -184,7 +187,7 @@ fn test_case_branch() {
     branch.add_stmt(Sequential::new_display("branch 0"));
     let res = branch.to_string();
     let exp = r#"32'd0 : $display("branch 0");"#;
-    assert_eq!(res, exp);
+    assert_eq!(res, exp, "\n\nresult:\n{}\nexpected:\n{}\n\n", res, exp);
 }
 
 #[test]
@@ -193,7 +196,7 @@ fn test_case_default() {
     default.add_stmt(Sequential::new_display("default branch"));
     let res = default.to_string();
     let exp = r#"default : $display("default branch");"#;
-    assert_eq!(res, exp);
+    assert_eq!(res, exp, "\n\nresult:\n{}\nexpected:\n{}\n\n", res, exp);
 }
 
 #[test]
@@ -208,14 +211,14 @@ fn test_seq_event_posedge_clock() {
 fn test_seq_error() {
     let res = Sequential::new_error("this is an error").to_string();
     let exp = r#"$error("this is an error")"#;
-    assert_eq!(res, exp);
+    assert_eq!(res, exp, "\n\nresult:\n{}\nexpected:\n{}\n\n", res, exp);
 }
 
 #[test]
 fn test_seq_display() {
     let res = Sequential::new_display("this is a message").to_string();
     let exp = r#"$display("this is a message")"#;
-    assert_eq!(res, exp);
+    assert_eq!(res, exp, "\n\nresult:\n{}\nexpected:\n{}\n\n", res, exp);
 }
 
 #[test]
@@ -226,7 +229,7 @@ fn test_seq_assert() {
     let assert = Sequential::new_assert(expr);
     let res = assert.to_string();
     let exp = "assert(a == b)".to_string();
-    assert_eq!(res, exp);
+    assert_eq!(res, exp, "\n\nresult:\n{}\nexpected:\n{}\n\n", res, exp);
 }
 
 #[test]
@@ -238,7 +241,7 @@ fn test_seq_assert_with_error() {
     let assert = Sequential::new_assert_with_else(expr, err);
     let res = assert.to_string();
     let exp = r#"assert(a == b) else $error("some error")"#;
-    assert_eq!(res, exp);
+    assert_eq!(res, exp, "\n\nresult:\n{}\nexpected:\n{}\n\n", res, exp);
 }
 
 #[test]
@@ -248,7 +251,7 @@ fn test_seq_assign_blk_ref() {
     let assign = Sequential::new_blk_assign(lexpr, rexpr);
     let res = assign.to_string();
     let exp = "a = 2'b10".to_string();
-    assert_eq!(res, exp);
+    assert_eq!(res, exp, "\n\nresult:\n{}\nexpected:\n{}\n\n", res, exp);
 }
 
 #[test]
@@ -258,7 +261,7 @@ fn test_seq_assign_non_blk_ref() {
     let assign = Sequential::new_non_blk_assign(lexpr, rexpr);
     let res = assign.to_string();
     let exp = "y <= a".to_string();
-    assert_eq!(res, exp);
+    assert_eq!(res, exp, "\n\nresult:\n{}\nexpected:\n{}\n\n", res, exp);
 }
 
 #[test]
@@ -279,7 +282,7 @@ fn test_module_simple() {
 );
 endmodule
 "#;
-    assert_eq!(res, exp);
+    assert_eq!(res, exp, "\n\nresult:\n{}\nexpected:\n{}\n\n", res, exp);
 }
 
 #[test]
@@ -295,7 +298,7 @@ fn test_module_one_input() {
     let mut module = Module::new_with_name("one_input");
     module.add_input("a", 5);
     let res = module.to_string();
-    assert_eq!(res, exp);
+    assert_eq!(res, exp, "\n\nresult:\n{}\nexpected:\n{}\n\n", res, exp);
 }
 
 #[test]
@@ -307,7 +310,7 @@ fn test_module_four_inputs() {
     module.add_input("c", 4);
     module.add_input("d", 1);
     let res = module.to_string();
-    assert_eq!(res, exp);
+    assert_eq!(res, exp, "\n\nresult:\n{}\nexpected:\n{}\n\n", res, exp);
 }
 
 #[test]
@@ -329,7 +332,7 @@ fn test_module_with_instances() {
     module.add_instance(i1);
     module.add_instance(i2);
     let res = module.to_string();
-    assert_eq!(res, exp);
+    assert_eq!(res, exp, "\n\nresult:\n{}\nexpected:\n{}\n\n", res, exp);
 }
 
 #[test]
@@ -346,7 +349,7 @@ fn test_module_with_function() {
     let mut module = Module::new_with_name("module_with_function");
     module.add_function(func);
     let res = module.to_string();
-    assert_eq!(res, exp);
+    assert_eq!(res, exp, "\n\nresult:\n{}\nexpected:\n{}\n\n", res, exp);
 }
 
 #[test]
