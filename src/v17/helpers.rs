@@ -19,6 +19,23 @@ impl Ty {
     }
 }
 
+impl CaseBranch {
+    pub fn new(cond: Expr) -> CaseBranch {
+        CaseBranch {
+            cond,
+            body: Vec::new(),
+        }
+    }
+
+    pub fn add_stmt(&mut self, stmt: Sequential) {
+        self.body.push(stmt);
+    }
+
+    pub fn body(&self) -> &Vec<Sequential> {
+        &self.body
+    }
+}
+
 impl Port {
     pub fn new_input(name: &str, width: u64) -> Port {
         let ty = Ty::Width(width);

@@ -2,6 +2,12 @@ use crate::util::pretty_print::PrettyPrint;
 use crate::v17::ast::*;
 use std::fmt;
 
+impl fmt::Display for CaseBranch {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        write!(f, "{}", self.to_pretty())
+    }
+}
+
 impl fmt::Display for Decl {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         write!(f, "{}", self.to_pretty())

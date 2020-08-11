@@ -20,6 +20,26 @@ impl PrettyPrint for Ty {
     }
 }
 
+impl PrettyPrint for CaseBranch {
+    fn to_doc(&self) -> RcDoc<()> {
+        let body = if self.body().is_empty() {
+            RcDoc::nil()
+        } else {
+            add_newline(
+                self.body()
+                    .iter()
+                    .map(|x| x.to_doc().append(RcDoc::text(";"))),
+            )
+        };
+        self.cond
+            .to_doc()
+            .append(RcDoc::space())
+            .append(RcDoc::text(":"))
+            .append(RcDoc::space())
+            .append(block(body).begin_end())
+    }
+}
+
 impl PrettyPrint for Function {
     fn to_doc(&self) -> RcDoc<()> {
         let inputs = if self.inputs().is_empty() {

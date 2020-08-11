@@ -77,6 +77,13 @@ pub enum AssignTy {
     NonBlocking,
 }
 
+// T ~> Sequential type
+#[derive(Clone, Debug)]
+pub struct GenericCaseBranch<T> {
+    pub cond: Expr,
+    pub body: Vec<T>,
+}
+
 // T ~> Declaration type
 #[derive(Clone, Debug)]
 pub enum GenericPort<T> {

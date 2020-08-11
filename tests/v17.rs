@@ -179,6 +179,17 @@ fn test_event_ty_negedge() {
 }
 
 #[test]
+fn test_case_branch() {
+    let mut branch = CaseBranch::new(Expr::new_ulit_dec(32, "0"));
+    branch.add_stmt(Sequential::new_error("this is an error"));
+    let res = branch.to_string();
+    let exp = r#"32'd0 : begin
+    $error("this is an error");
+end"#;
+    assert_eq!(res, exp);
+}
+
+#[test]
 fn test_seq_event_posedge_clock() {
     assert_eq!(
         "posedge clock".to_string(),
