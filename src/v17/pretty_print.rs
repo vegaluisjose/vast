@@ -254,7 +254,7 @@ impl PrettyPrint for Module {
         let ports = if self.ports().is_empty() {
             RcDoc::nil()
         } else {
-            RcDoc::intersperse(
+            intersperse(
                 self.ports().iter().map(|x| x.to_doc()),
                 RcDoc::text(",").append(RcDoc::hardline()),
             )
