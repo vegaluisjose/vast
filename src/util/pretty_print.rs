@@ -19,20 +19,29 @@ pub trait PrettyPrint {
 
 pub trait PrettyHelper<'a>: Sized {
     fn surround(self, pre: &'a str, post: &'a str) -> Self;
+
     fn parens(self) -> Self {
         self.surround("(", ")")
     }
+
     fn brackets(self) -> Self {
         self.surround("[", "]")
     }
+
     fn braces(self) -> Self {
         self.surround("{", "}")
     }
+
     fn quotes(self) -> Self {
         self.surround("\"", "\"")
     }
+
     fn begin_end(self) -> Self {
         self.surround("begin", "end")
+    }
+
+    fn case_endcase(self) -> Self {
+        self.surround("case", "endcase")
     }
 }
 

@@ -22,6 +22,12 @@ impl PrettyPrint for Ty {
 
 impl PrettyPrint for CaseBranch {
     fn to_doc(&self) -> RcDoc<()> {
+        let cond = self
+            .cond
+            .to_doc()
+            .append(RcDoc::space())
+            .append(RcDoc::text(":"))
+            .append(RcDoc::space());
         let body = if self.body().is_empty() {
             RcDoc::nil()
         } else {
@@ -31,12 +37,51 @@ impl PrettyPrint for CaseBranch {
                     .map(|x| x.to_doc().append(RcDoc::text(";"))),
             )
         };
-        self.cond
-            .to_doc()
+        let body = if self.body().len() > 1 {
+            block(body).begin_end()
+        } else {
+            body
+        };
+        cond.append(body)
+    }
+}
+
+impl PrettyPrint for CaseDefault {
+    fn to_doc(&self) -> RcDoc<()> {
+        let default = RcDoc::text("default")
             .append(RcDoc::space())
             .append(RcDoc::text(":"))
-            .append(RcDoc::space())
-            .append(block(body).begin_end())
+            .append(RcDoc::space());
+        let body = if self.body().is_empty() {
+            RcDoc::nil()
+        } else {
+            add_newline(
+                self.body()
+                    .iter()
+                    .map(|x| x.to_doc().append(RcDoc::text(";"))),
+            )
+        };
+        let body = if self.body().len() > 1 {
+            block(body).begin_end()
+        } else {
+            body
+        };
+        default.append(body)
+    }
+}
+
+impl PrettyPrint for Case {
+    fn to_doc(&self) -> RcDoc<()> {
+        let branches = if self.branches().is_empty() {
+            RcDoc::nil()
+        } else {
+            add_newline(self.branches().iter().map(|x| x.to_doc()))
+        };
+        self.cond
+            .to_doc()
+            .parens()
+            .append(block(branches))
+            .case_endcase()
     }
 }
 

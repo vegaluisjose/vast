@@ -84,6 +84,20 @@ pub struct GenericCaseBranch<T> {
     pub body: Vec<T>,
 }
 
+// T ~> Sequential type
+#[derive(Clone, Debug)]
+pub struct GenericCaseDefault<T> {
+    pub body: Vec<T>,
+}
+
+// T ~> Sequential type
+#[derive(Clone, Debug)]
+pub struct GenericCase<T> {
+    pub cond: Expr,
+    pub branches: Vec<GenericCaseBranch<T>>,
+    pub default: Option<GenericCaseDefault<T>>,
+}
+
 // T ~> Declaration type
 #[derive(Clone, Debug)]
 pub enum GenericPort<T> {

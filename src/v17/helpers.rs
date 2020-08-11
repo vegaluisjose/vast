@@ -19,6 +19,20 @@ impl Ty {
     }
 }
 
+impl Port {
+    pub fn new_input(name: &str, width: u64) -> Port {
+        let ty = Ty::Width(width);
+        let logic = Decl::Logic(name.to_string(), ty);
+        Port::Input(logic)
+    }
+
+    pub fn new_output(name: &str, width: u64) -> Port {
+        let ty = Ty::Width(width);
+        let logic = Decl::Logic(name.to_string(), ty);
+        Port::Output(logic)
+    }
+}
+
 impl CaseBranch {
     pub fn new(cond: Expr) -> CaseBranch {
         CaseBranch {
@@ -36,17 +50,49 @@ impl CaseBranch {
     }
 }
 
-impl Port {
-    pub fn new_input(name: &str, width: u64) -> Port {
-        let ty = Ty::Width(width);
-        let logic = Decl::Logic(name.to_string(), ty);
-        Port::Input(logic)
+impl CaseDefault {
+    pub fn add_stmt(&mut self, stmt: Sequential) {
+        self.body.push(stmt);
     }
 
-    pub fn new_output(name: &str, width: u64) -> Port {
-        let ty = Ty::Width(width);
-        let logic = Decl::Logic(name.to_string(), ty);
-        Port::Output(logic)
+    pub fn body(&self) -> &Vec<Sequential> {
+        &self.body
+    }
+}
+
+impl Default for CaseDefault {
+    fn default() -> CaseDefault {
+        CaseDefault { body: Vec::new() }
+    }
+}
+
+impl Case {
+    pub fn new(cond: Expr) -> Case {
+        Case {
+            cond,
+            branches: Vec::new(),
+            default: None,
+        }
+    }
+
+    pub fn add_branch(&mut self, branch: CaseBranch) {
+        self.branches.push(branch);
+    }
+
+    pub fn set_default(&mut self, branch: CaseDefault) {
+        self.default = Some(branch);
+    }
+
+    pub fn branches(&self) -> &Vec<CaseBranch> {
+        &self.branches
+    }
+
+    pub fn default(&self) -> &CaseDefault {
+        if let Some(default) = &self.default {
+            &default
+        } else {
+            panic!("Default branch has not been set");
+        }
     }
 }
 
