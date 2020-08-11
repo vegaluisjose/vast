@@ -47,6 +47,10 @@ pub trait PrettyHelper<'a>: Sized {
     fn func_endfunc(self) -> Self {
         self.surround("function", "endfunction")
     }
+
+    fn module_endmodule(self) -> Self {
+        self.surround("function", "endfunction")
+    }
 }
 
 impl<'a, A> PrettyHelper<'a> for RcDoc<'a, A> {
@@ -73,4 +77,8 @@ pub fn block(body: RcDoc<()>) -> RcDoc<()> {
 
 pub fn block_with_braces<'a>(name: RcDoc<'a>, body: RcDoc<'a>) -> RcDoc<'a> {
     name.append(RcDoc::space()).append(block(body).braces())
+}
+
+pub fn block_with_parens<'a>(name: RcDoc<'a>, body: RcDoc<'a>) -> RcDoc<'a> {
+    name.append(RcDoc::space()).append(block(body).parens())
 }
