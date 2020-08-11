@@ -49,7 +49,7 @@ pub trait PrettyHelper<'a>: Sized {
     }
 
     fn module_endmodule(self) -> Self {
-        self.surround("function", "endfunction")
+        self.surround("module", "endmodule")
     }
 }
 

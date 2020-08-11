@@ -275,7 +275,8 @@ fn test_module_simple() {
     module.add_input("a", 32);
     let res = module.to_string();
     let exp = r#"module foo (
-    input logic [31:0] a);
+    input logic [31:0] a
+);
 endmodule
 "#;
     assert_eq!(res, exp);
@@ -298,7 +299,7 @@ fn test_module_one_input() {
 }
 
 #[test]
-fn test_module_three_inputs() {
+fn test_module_four_inputs() {
     let exp = read_to_string("regression/v17/module_four_inputs.v");
     let mut module = Module::new_with_name("four_inputs");
     module.add_input("a", 2);
@@ -346,4 +347,18 @@ fn test_module_with_function() {
     module.add_function(func);
     let res = module.to_string();
     assert_eq!(exp, res);
+}
+
+#[test]
+fn test_dummy() {
+    let mut module = Module::new_with_name("four_inputs");
+    let mut func = Function::new("check", Ty::Void);
+    func.add_input("value", 32);
+    func.add_seq(Sequential::new_display("hello"));
+    module.add_function(func);
+    module.add_input("a", 2);
+    module.add_input("b", 7);
+    module.add_input("c", 4);
+    module.add_input("d", 1);
+    println!("{}", module);
 }

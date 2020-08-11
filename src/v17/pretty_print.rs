@@ -1,4 +1,4 @@
-use crate::util::pretty_print::{add_newline, block, PrettyHelper, PrettyPrint, PRETTY_INDENT};
+use crate::util::pretty_print::{add_newline, block, block_with_parens, PrettyHelper, PrettyPrint};
 use crate::v17::ast::*;
 use pretty::RcDoc;
 
@@ -236,44 +236,35 @@ impl PrettyPrint for Port {
 
 impl PrettyPrint for Module {
     fn to_doc(&self) -> RcDoc<()> {
-        let body_doc = if self.body().is_empty() {
+        let ports = if self.ports().is_empty() {
             RcDoc::nil()
         } else {
-            let mut doc = RcDoc::nil();
-            for stmt in self.body().iter() {
-                doc = doc
-                    .append(RcDoc::hardline())
-                    .append(RcDoc::hardline())
-                    .append(stmt.to_doc());
-                if let Stmt::Decl(Decl::Func(_)) = stmt {
-                    doc = doc;
-                } else {
-                    doc = doc.append(RcDoc::text(";"));
-                }
-            }
-            doc = doc.append(RcDoc::hardline()).nest(PRETTY_INDENT);
-            doc
-        };
-        let mut ports_doc = if self.ports().is_empty() {
-            RcDoc::nil()
-        } else {
-            RcDoc::hardline().append(RcDoc::intersperse(
-                self.ports().iter().map(|p| p.to_doc()),
+            RcDoc::intersperse(
+                self.ports().iter().map(|x| x.to_doc()),
                 RcDoc::text(",").append(RcDoc::hardline()),
+            )
+        };
+        let name = if self.ports().is_empty() {
+            RcDoc::as_string(&self.name)
+                .append(RcDoc::space())
+                .append(RcDoc::nil().parens())
+        } else {
+            block_with_parens(RcDoc::as_string(&self.name), ports)
+        };
+        let body = if self.body().is_empty() {
+            RcDoc::hardline()
+        } else {
+            block(add_newline(
+                self.body()
+                    .iter()
+                    .map(|x| x.to_doc().append(RcDoc::text(";"))),
             ))
         };
-        ports_doc = ports_doc.nest(PRETTY_INDENT);
-        RcDoc::text("module")
-            .append(RcDoc::space())
-            .append(RcDoc::as_string(&self.name()))
-            .append(RcDoc::space())
-            .append(RcDoc::text("("))
-            .append(ports_doc)
-            .append(RcDoc::text(")"))
+        RcDoc::space()
+            .append(name)
             .append(RcDoc::text(";"))
-            .append(body_doc)
-            .append(RcDoc::hardline())
-            .append(RcDoc::text("endmodule"))
+            .append(body)
+            .module_endmodule()
             .append(RcDoc::hardline())
     }
 }
