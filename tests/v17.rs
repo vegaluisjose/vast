@@ -348,17 +348,3 @@ fn test_module_with_function() {
     let res = module.to_string();
     assert_eq!(exp, res);
 }
-
-#[test]
-fn test_dummy() {
-    let mut module = Module::new_with_name("four_inputs");
-    let mut func = Function::new("check", Ty::Void);
-    func.add_input("value", 32);
-    func.add_seq(Sequential::new_display("hello"));
-    module.add_function(func);
-    module.add_input("a", 2);
-    module.add_input("b", 7);
-    module.add_input("c", 4);
-    module.add_input("d", 1);
-    println!("{}", module);
-}
