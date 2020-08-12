@@ -113,6 +113,24 @@ fn test_expr_slice() {
 }
 
 #[test]
+fn test_expr_index_slice() {
+    let lo = Expr::new_int(0);
+    let slice = Expr::new_index_slice("a", lo, 8);
+    let res = slice.to_string();
+    let exp = "a[0 +: 8]".to_string();
+    assert_eq!(res, exp, "\n\nresult:\n{}\nexpected:\n{}\n\n", res, exp);
+}
+
+#[test]
+fn test_expr_index_slice_var() {
+    let lo = Expr::new_mul(Expr::new_ref("x"), Expr::new_int(32));
+    let slice = Expr::new_index_slice("a", lo, 32);
+    let res = slice.to_string();
+    let exp = "a[x * 32 +: 32]".to_string();
+    assert_eq!(res, exp, "\n\nresult:\n{}\nexpected:\n{}\n\n", res, exp);
+}
+
+#[test]
 fn test_expr_bit() {
     let bit = Expr::new_bit("a", 9);
     let res = bit.to_string();

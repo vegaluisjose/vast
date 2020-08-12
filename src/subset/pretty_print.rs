@@ -87,6 +87,16 @@ impl PrettyPrint for Expr {
                 .append(RcDoc::text(":"))
                 .append(lo.to_doc())
                 .append(RcDoc::text("]")),
+            Expr::Terop(Terop::IndexSlice, var, lo, width) => var
+                .to_doc()
+                .append(RcDoc::text("["))
+                .append(lo.to_doc())
+                .append(RcDoc::space())
+                .append(RcDoc::text("+"))
+                .append(RcDoc::text(":"))
+                .append(RcDoc::space())
+                .append(width.to_doc())
+                .append(RcDoc::text("]")),
         }
     }
 }

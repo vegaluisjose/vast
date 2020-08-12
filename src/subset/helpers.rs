@@ -80,6 +80,15 @@ impl Expr {
         )
     }
 
+    pub fn new_index_slice(var: &str, lo: Expr, width: u32) -> Expr {
+        Expr::Terop(
+            Terop::IndexSlice,
+            Rc::new(Expr::new_ref(var)),
+            Rc::new(lo),
+            Rc::new(Expr::new_int(width as i32)),
+        )
+    }
+
     pub fn new_bit(var: &str, bit: i32) -> Expr {
         Expr::Bit(Rc::new(Expr::new_ref(var)), Rc::new(Expr::new_int(bit)))
     }

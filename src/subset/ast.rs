@@ -30,6 +30,7 @@ pub enum Binop {
 pub enum Terop {
     Mux,
     Slice,
+    IndexSlice,
 }
 
 #[derive(Clone, Debug)]
