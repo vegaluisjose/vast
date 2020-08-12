@@ -1,5 +1,5 @@
 use crate::subset::ast::*;
-use crate::util::pretty_print::{PrettyPrint, PRETTY_INDENT};
+use crate::util::pretty_print::{block, intersperse, PrettyHelper, PrettyPrint};
 use pretty::RcDoc;
 
 impl PrettyPrint for Unop {
@@ -41,7 +41,7 @@ impl PrettyPrint for Radix {
 
 impl PrettyPrint for InstancePath {
     fn to_doc(&self) -> RcDoc<()> {
-        RcDoc::intersperse(self.path().iter().map(RcDoc::as_string), RcDoc::text("."))
+        intersperse(self.path().iter().map(RcDoc::as_string), RcDoc::text("."))
     }
 }
 
@@ -54,16 +54,10 @@ impl PrettyPrint for Expr {
                 .append(RcDoc::text("'"))
                 .append(radix.to_doc())
                 .append(RcDoc::as_string(value)),
-            Expr::Str(value) => RcDoc::text(r#"""#)
-                .append(RcDoc::as_string(value))
-                .append(RcDoc::text(r#"""#)),
+            Expr::Str(value) => RcDoc::as_string(value).quotes(),
             Expr::IPath(path) => path.to_doc(),
             Expr::Unop(op, input) => op.to_doc().append(input.to_doc()),
-            Expr::Bit(var, index) => var
-                .to_doc()
-                .append(RcDoc::text("["))
-                .append(index.to_doc())
-                .append(RcDoc::text("]")),
+            Expr::Bit(var, index) => var.to_doc().append(index.to_doc().brackets()),
             Expr::Binop(op, lhs, rhs) => lhs
                 .to_doc()
                 .append(RcDoc::space())
@@ -80,23 +74,21 @@ impl PrettyPrint for Expr {
                 .append(RcDoc::text(":"))
                 .append(RcDoc::space())
                 .append(fal.to_doc()),
-            Expr::Terop(Terop::Slice, var, hi, lo) => var
-                .to_doc()
-                .append(RcDoc::text("["))
-                .append(hi.to_doc())
-                .append(RcDoc::text(":"))
-                .append(lo.to_doc())
-                .append(RcDoc::text("]")),
-            Expr::Terop(Terop::IndexSlice, var, lo, width) => var
-                .to_doc()
-                .append(RcDoc::text("["))
-                .append(lo.to_doc())
-                .append(RcDoc::space())
-                .append(RcDoc::text("+"))
-                .append(RcDoc::text(":"))
-                .append(RcDoc::space())
-                .append(width.to_doc())
-                .append(RcDoc::text("]")),
+            Expr::Terop(Terop::Slice, var, hi, lo) => var.to_doc().append(
+                hi.to_doc()
+                    .append(RcDoc::text(":"))
+                    .append(lo.to_doc())
+                    .brackets(),
+            ),
+            Expr::Terop(Terop::IndexSlice, var, lo, width) => var.to_doc().append(
+                lo.to_doc()
+                    .append(RcDoc::space())
+                    .append(RcDoc::text("+"))
+                    .append(RcDoc::text(":"))
+                    .append(RcDoc::space())
+                    .append(width.to_doc())
+                    .brackets(),
+            ),
         }
     }
 }
@@ -121,13 +113,11 @@ impl PrettyPrint for AssignTy {
 
 impl PrettyPrint for Map {
     fn to_doc(&self) -> RcDoc<()> {
-        RcDoc::intersperse(
+        intersperse(
             self.iter().map(|(id, expr)| {
                 RcDoc::text(".")
                     .append(RcDoc::as_string(id))
-                    .append(RcDoc::text("("))
-                    .append(expr.to_doc())
-                    .append(RcDoc::text(")"))
+                    .append(expr.to_doc().parens())
             }),
             RcDoc::text(",").append(RcDoc::hardline()),
         )
@@ -142,24 +132,13 @@ impl PrettyPrint for Instance {
             RcDoc::space()
                 .append(RcDoc::text("#"))
                 .append(RcDoc::space())
-                .append(RcDoc::text("("))
-                .append(RcDoc::hardline())
-                .append(self.param_map().to_doc())
-                .append(RcDoc::text(")"))
-                .nest(PRETTY_INDENT)
-                .append(RcDoc::hardline())
+                .append(block(self.param_map().to_doc()).parens())
+                .append(RcDoc::space())
         };
         let ports_doc = if self.port_map().is_empty() {
-            RcDoc::space()
-                .append(RcDoc::text("("))
-                .append(RcDoc::text(")"))
+            RcDoc::space().parens()
         } else {
-            RcDoc::space()
-                .append(RcDoc::text("("))
-                .append(RcDoc::hardline())
-                .append(self.port_map().to_doc())
-                .append(RcDoc::text(")"))
-                .nest(PRETTY_INDENT)
+            RcDoc::space().append(block(self.port_map().to_doc()).parens())
         };
         RcDoc::as_string(self.prim())
             .append(params_doc)

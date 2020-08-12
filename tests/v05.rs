@@ -178,5 +178,5 @@ fn test_module_with_instances() {
     module.add_instance(i1);
     module.add_instance(i2);
     let res = module.to_string();
-    assert_eq!(exp, res);
+    assert_eq!(res, exp, "\n\nresult:\n{}\nexpected:\n{}\n\n", res, exp);
 }
