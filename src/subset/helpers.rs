@@ -1,13 +1,18 @@
 use crate::subset::ast::*;
 use std::rc::Rc;
 
-impl IPath {
-    pub fn names(&self) -> &Vec<Id> {
-        &self.names
+impl InstancePath {
+    pub fn new(path: &str) -> InstancePath {
+        let p: Vec<String> = path.split('.').map(|x| x.to_string()).collect();
+        InstancePath { path: p }
     }
 
-    pub fn add_inst(&mut self, inst: &str) {
-        self.names.push(inst.to_string());
+    pub fn path(&self) -> &Vec<Id> {
+        &self.path
+    }
+
+    pub fn add_inst(&mut self, name: &str) {
+        self.path.push(name.to_string());
     }
 }
 
@@ -83,8 +88,8 @@ impl Expr {
         Expr::Int(value)
     }
 
-    pub fn new_ipath(ipath: IPath) -> Expr {
-        Expr::IPath(ipath)
+    pub fn new_ipath(path: &str) -> Expr {
+        Expr::IPath(InstancePath::new(path))
     }
 }
 

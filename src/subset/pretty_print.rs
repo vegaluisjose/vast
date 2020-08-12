@@ -39,9 +39,9 @@ impl PrettyPrint for Radix {
     }
 }
 
-impl PrettyPrint for IPath {
+impl PrettyPrint for InstancePath {
     fn to_doc(&self) -> RcDoc<()> {
-        RcDoc::intersperse(self.names().iter().map(RcDoc::as_string), RcDoc::text("."))
+        RcDoc::intersperse(self.path().iter().map(RcDoc::as_string), RcDoc::text("."))
     }
 }
 

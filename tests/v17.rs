@@ -122,11 +122,8 @@ fn test_expr_bit() {
 
 #[test]
 fn test_expr_ipath() {
-    let mut ipath = IPath::default();
-    ipath.add_inst("cpu");
-    ipath.add_inst("alu");
-    ipath.add_inst("a");
-    let res = Expr::new_ipath(ipath).to_string();
+    let path = Expr::new_ipath("cpu.alu.a");
+    let res = path.to_string();
     let exp = "cpu.alu.a".to_string();
     assert_eq!(res, exp, "\n\nresult:\n{}\nexpected:\n{}\n\n", res, exp);
 }

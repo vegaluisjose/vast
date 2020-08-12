@@ -2,7 +2,7 @@ use crate::subset;
 use std::rc::Rc;
 
 pub type Id = subset::ast::Id;
-pub type IPath = subset::ast::IPath;
+pub type InstancePath = subset::ast::InstancePath;
 pub type Expr = subset::ast::Expr;
 pub type EventTy = subset::ast::EventTy;
 pub type AssignTy = subset::ast::AssignTy;

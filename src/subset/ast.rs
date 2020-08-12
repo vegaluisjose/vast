@@ -40,8 +40,8 @@ pub enum Radix {
 }
 
 #[derive(Clone, Debug)]
-pub struct IPath {
-    pub names: Vec<Id>,
+pub struct InstancePath {
+    pub path: Vec<Id>,
 }
 
 #[derive(Clone, Debug)]
@@ -50,7 +50,7 @@ pub enum Expr {
     Int(i32),
     ULit(u32, Radix, String),
     Str(String),
-    IPath(IPath),
+    IPath(InstancePath),
     Unop(Unop, Rc<Expr>),
     Binop(Binop, Rc<Expr>, Rc<Expr>),
     Bit(Rc<Expr>, Rc<Expr>),
