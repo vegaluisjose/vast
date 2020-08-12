@@ -141,44 +141,50 @@ fn test_expr_return() {
 
 #[test]
 fn test_decl_logic_width_32() {
-    assert_eq!(
-        "logic [31:0] foo".to_string(),
-        Decl::Logic("foo".to_string(), Ty::Width(32)).to_string()
-    );
+    let logic = Decl::Logic("foo".to_string(), Ty::Width(32));
+    let res = logic.to_string();
+    let exp = "logic [31:0] foo".to_string();
+    assert_eq!(res, exp, "\n\nresult:\n{}\nexpected:\n{}\n\n", res, exp);
 }
 
 #[test]
 fn test_decl_logic_width_1() {
-    assert_eq!(
-        "logic foo".to_string(),
-        Decl::Logic("foo".to_string(), Ty::Width(1)).to_string()
-    );
+    let logic = Decl::Logic("foo".to_string(), Ty::Width(1));
+    let res = logic.to_string();
+    let exp = "logic foo".to_string();
+    assert_eq!(res, exp, "\n\nresult:\n{}\nexpected:\n{}\n\n", res, exp);
 }
 
 #[test]
 fn test_decl_int() {
-    assert_eq!(
-        "int a".to_string(),
-        Decl::Int("a".to_string(), Ty::Int).to_string()
-    );
+    let int = Decl::Int("a".to_string(), Ty::Int);
+    let res = int.to_string();
+    let exp = "int a".to_string();
+    assert_eq!(res, exp, "\n\nresult:\n{}\nexpected:\n{}\n\n", res, exp);
 }
 
 #[test]
 fn test_decl_param_uint() {
-    assert_eq!(
-        "parameter int width = 32'd3".to_string(),
-        Decl::new_param_uint("width", 3).to_string(),
-    );
+    let param = Decl::new_param_uint("width", 3);
+    let res = param.to_string();
+    let exp = "parameter int width = 32'd3".to_string();
+    assert_eq!(res, exp, "\n\nresult:\n{}\nexpected:\n{}\n\n", res, exp);
 }
 
 #[test]
 fn test_event_ty_posedge() {
-    assert_eq!("posedge".to_string(), EventTy::Posedge.to_string(),);
+    let event = EventTy::Posedge;
+    let res = event.to_string();
+    let exp = "posedge".to_string();
+    assert_eq!(res, exp, "\n\nresult:\n{}\nexpected:\n{}\n\n", res, exp);
 }
 
 #[test]
 fn test_event_ty_negedge() {
-    assert_eq!("negedge".to_string(), EventTy::Negedge.to_string(),);
+    let event = EventTy::Negedge;
+    let res = event.to_string();
+    let exp = "negedge".to_string();
+    assert_eq!(res, exp, "\n\nresult:\n{}\nexpected:\n{}\n\n", res, exp);
 }
 
 #[test]
@@ -201,15 +207,16 @@ fn test_case_default() {
 
 #[test]
 fn test_seq_event_posedge_clock() {
-    assert_eq!(
-        "posedge clock".to_string(),
-        Sequential::Event(EventTy::Posedge, Expr::Ref("clock".to_string())).to_string(),
-    );
+    let event = Sequential::Event(EventTy::Posedge, Expr::Ref("clock".to_string()));
+    let res = event.to_string();
+    let exp = "posedge clock".to_string();
+    assert_eq!(res, exp, "\n\nresult:\n{}\nexpected:\n{}\n\n", res, exp);
 }
 
 #[test]
 fn test_seq_error() {
-    let res = Sequential::new_error("this is an error").to_string();
+    let err = Sequential::new_error("this is an error");
+    let res = err.to_string();
     let exp = r#"$error("this is an error")"#;
     assert_eq!(res, exp, "\n\nresult:\n{}\nexpected:\n{}\n\n", res, exp);
 }
@@ -266,10 +273,10 @@ fn test_seq_assign_non_blk_ref() {
 
 #[test]
 fn test_port_input_width_1() {
-    assert_eq!(
-        "input logic foo".to_string(),
-        Port::Input(Decl::Logic("foo".to_string(), Ty::Width(1))).to_string()
-    );
+    let input = Port::Input(Decl::Logic("foo".to_string(), Ty::Width(1)));
+    let res = input.to_string();
+    let exp = "input logic foo".to_string();
+    assert_eq!(res, exp, "\n\nresult:\n{}\nexpected:\n{}\n\n", res, exp);
 }
 
 #[test]
