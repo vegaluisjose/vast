@@ -77,9 +77,8 @@ impl PrettyPrint for Case {
         } else {
             branches
         };
-        self.cond
-            .to_doc()
-            .parens()
+        RcDoc::space()
+            .append(self.cond.to_doc().parens())
             .append(block(branches))
             .case_endcase()
     }
