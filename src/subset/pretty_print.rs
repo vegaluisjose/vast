@@ -55,7 +55,13 @@ impl PrettyPrint for Expr {
                 .append(radix.to_doc())
                 .append(RcDoc::as_string(value)),
             Expr::Str(value) => RcDoc::as_string(value).quotes(),
-            Expr::IPath(path) => path.to_doc(),
+            Expr::IPath(path, index) => {
+                if let Some(expr) = index.as_ref() {
+                    path.to_doc().append(expr.to_doc().brackets())
+                } else {
+                    path.to_doc()
+                }
+            }
             Expr::Unop(op, input) => op.to_doc().append(input.to_doc()),
             Expr::Bit(var, index) => var.to_doc().append(index.to_doc().brackets()),
             Expr::Binop(op, lhs, rhs) => lhs

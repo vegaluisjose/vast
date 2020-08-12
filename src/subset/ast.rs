@@ -51,7 +51,7 @@ pub enum Expr {
     Int(i32),
     ULit(u32, Radix, String),
     Str(String),
-    IPath(InstancePath),
+    IPath(InstancePath, Option<Rc<Expr>>),
     Unop(Unop, Rc<Expr>),
     Binop(Binop, Rc<Expr>, Rc<Expr>),
     Bit(Rc<Expr>, Rc<Expr>),

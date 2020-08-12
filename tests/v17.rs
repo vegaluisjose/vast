@@ -147,6 +147,14 @@ fn test_expr_ipath() {
 }
 
 #[test]
+fn test_expr_ipath_with_index() {
+    let path = Expr::new_ipath_with_index("cpu.mem", "addr");
+    let res = path.to_string();
+    let exp = "cpu.mem[addr]".to_string();
+    assert_eq!(res, exp, "\n\nresult:\n{}\nexpected:\n{}\n\n", res, exp);
+}
+
+#[test]
 fn test_expr_return() {
     let ret = Sequential::new_return(Expr::new_ref("y"));
     let res = ret.to_string();

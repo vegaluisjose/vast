@@ -98,7 +98,11 @@ impl Expr {
     }
 
     pub fn new_ipath(path: &str) -> Expr {
-        Expr::IPath(InstancePath::new(path))
+        Expr::IPath(InstancePath::new(path), None)
+    }
+
+    pub fn new_ipath_with_index(path: &str, index: &str) -> Expr {
+        Expr::IPath(InstancePath::new(path), Some(Rc::new(Expr::new_ref(index))))
     }
 }
 
