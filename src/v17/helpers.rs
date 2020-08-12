@@ -45,6 +45,10 @@ impl CaseBranch {
         self.body.push(stmt);
     }
 
+    pub fn add_case(&mut self, case: Case) {
+        self.body.push(Sequential::new_case(case));
+    }
+
     pub fn body(&self) -> &Vec<Sequential> {
         &self.body
     }

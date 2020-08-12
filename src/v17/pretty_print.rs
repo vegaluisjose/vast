@@ -31,12 +31,11 @@ impl PrettyPrint for CaseBranch {
         let body = if self.body().is_empty() {
             RcDoc::nil()
         } else {
-            intersperse(self.body().iter().map(|x| x.to_doc()), RcDoc::hardline())
-        };
-        let body = if self.body().len() > 1 {
-            block(body).begin_end()
-        } else {
-            body
+            block(intersperse(
+                self.body().iter().map(|x| x.to_doc()),
+                RcDoc::hardline(),
+            ))
+            .begin_end()
         };
         cond.append(body)
     }
@@ -51,12 +50,11 @@ impl PrettyPrint for CaseDefault {
         let body = if self.body().is_empty() {
             RcDoc::nil()
         } else {
-            intersperse(self.body().iter().map(|x| x.to_doc()), RcDoc::hardline())
-        };
-        let body = if self.body().len() > 1 {
-            block(body).begin_end()
-        } else {
-            body
+            block(intersperse(
+                self.body().iter().map(|x| x.to_doc()),
+                RcDoc::hardline(),
+            ))
+            .begin_end()
         };
         default.append(body)
     }
