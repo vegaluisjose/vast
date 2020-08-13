@@ -38,6 +38,7 @@ pub enum Sequential {
     Return(Expr),
     SeqAssign(Expr, Expr, AssignTy),
     SeqCase(Case),
+    SeqCall(Expr),
     Event(EventTy, Expr),
     If(Expr, Vec<Sequential>, Vec<Sequential>),
     Assert(Expr, Option<Rc<Sequential>>),

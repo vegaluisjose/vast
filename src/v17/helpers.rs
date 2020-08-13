@@ -132,6 +132,10 @@ impl Sequential {
     pub fn new_case(case: Case) -> Sequential {
         Sequential::SeqCase(case)
     }
+
+    pub fn new_call(call: Expr) -> Sequential {
+        Sequential::SeqCall(call)
+    }
 }
 
 impl Default for AlwaysComb {
