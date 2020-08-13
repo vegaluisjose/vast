@@ -119,12 +119,7 @@ impl PrettyPrint for Function {
         let body = if self.body().is_empty() {
             RcDoc::nil()
         } else {
-            intersperse(
-                self.body()
-                    .iter()
-                    .map(|x| x.to_doc().append(RcDoc::text(";"))),
-                RcDoc::hardline(),
-            )
+            intersperse(self.body().iter().map(|x| x.to_doc()), RcDoc::hardline())
         };
         RcDoc::space()
             .append(self.ret.to_doc())
@@ -173,20 +168,23 @@ impl PrettyPrint for Sequential {
         match self {
             Sequential::Error(msg) => RcDoc::text("$")
                 .append(RcDoc::text("error"))
-                .append(RcDoc::as_string(msg).quotes().parens()),
+                .append(RcDoc::as_string(msg).quotes().parens())
+                .append(RcDoc::text(";")),
             Sequential::Display(msg) => RcDoc::text("$")
                 .append(RcDoc::text("display"))
                 .append(RcDoc::as_string(msg).quotes().parens())
                 .append(RcDoc::text(";")),
             Sequential::Return(expr) => RcDoc::text("return")
                 .append(RcDoc::space())
-                .append(expr.to_doc()),
+                .append(expr.to_doc())
+                .append(RcDoc::text(";")),
             Sequential::SeqAssign(lexpr, rexpr, ty) => lexpr
                 .to_doc()
                 .append(RcDoc::space())
                 .append(ty.to_doc())
                 .append(RcDoc::space())
-                .append(rexpr.to_doc()),
+                .append(rexpr.to_doc())
+                .append(RcDoc::text(";")),
             Sequential::SeqCase(case) => case.to_doc(),
             Sequential::SeqCall(call) => call.to_doc(),
             Sequential::Event(ty, expr) => ty.to_doc().append(RcDoc::space()).append(expr.to_doc()),

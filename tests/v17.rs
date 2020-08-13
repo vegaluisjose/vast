@@ -158,7 +158,7 @@ fn test_expr_ipath_with_index() {
 fn test_expr_return() {
     let ret = Sequential::new_return(Expr::new_ref("y"));
     let res = ret.to_string();
-    let exp = "return y".to_string();
+    let exp = "return y;".to_string();
     assert_eq!(res, exp, "\n\nresult:\n{}\nexpected:\n{}\n\n", res, exp);
 }
 
@@ -255,7 +255,7 @@ fn test_seq_event_posedge_clock() {
 fn test_seq_error() {
     let err = Sequential::new_error("this is an error");
     let res = err.to_string();
-    let exp = r#"$error("this is an error")"#;
+    let exp = r#"$error("this is an error");"#;
     assert_eq!(res, exp, "\n\nresult:\n{}\nexpected:\n{}\n\n", res, exp);
 }
 
@@ -285,7 +285,7 @@ fn test_seq_assert_with_error() {
     let err = Sequential::new_error("some error");
     let assert = Sequential::new_assert_with_else(expr, err);
     let res = assert.to_string();
-    let exp = r#"assert(a == b) else $error("some error")"#;
+    let exp = r#"assert(a == b) else $error("some error");"#;
     assert_eq!(res, exp, "\n\nresult:\n{}\nexpected:\n{}\n\n", res, exp);
 }
 
@@ -295,7 +295,7 @@ fn test_seq_assign_blk_ref() {
     let rexpr = Expr::new_ulit_bin(2, "10");
     let assign = Sequential::new_blk_assign(lexpr, rexpr);
     let res = assign.to_string();
-    let exp = "a = 2'b10".to_string();
+    let exp = "a = 2'b10;".to_string();
     assert_eq!(res, exp, "\n\nresult:\n{}\nexpected:\n{}\n\n", res, exp);
 }
 
@@ -305,7 +305,7 @@ fn test_seq_assign_non_blk_ref() {
     let rexpr = Expr::new_ref("a");
     let assign = Sequential::new_non_blk_assign(lexpr, rexpr);
     let res = assign.to_string();
-    let exp = "y <= a".to_string();
+    let exp = "y <= a;".to_string();
     assert_eq!(res, exp, "\n\nresult:\n{}\nexpected:\n{}\n\n", res, exp);
 }
 
