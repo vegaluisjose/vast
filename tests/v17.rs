@@ -163,6 +163,17 @@ fn test_expr_return() {
 }
 
 #[test]
+fn test_expr_call() {
+    let mut params: Vec<Expr> = Vec::new();
+    params.push(Expr::new_ref("a"));
+    params.push(Expr::new_ref("b"));
+    let call = Expr::new_call("func", params);
+    let res = call.to_string();
+    let exp = "func(a, b)".to_string();
+    assert_eq!(res, exp, "\n\nresult:\n{}\nexpected:\n{}\n\n", res, exp);
+}
+
+#[test]
 fn test_decl_logic_width_32() {
     let logic = Decl::Logic("foo".to_string(), Ty::Width(32));
     let res = logic.to_string();

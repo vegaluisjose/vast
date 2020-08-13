@@ -70,6 +70,13 @@ impl PrettyPrint for Expr {
                 .append(op.to_doc())
                 .append(RcDoc::space())
                 .append(rhs.to_doc()),
+            Expr::Call(name, params) => RcDoc::as_string(name).append(
+                intersperse(
+                    params.iter().map(RcDoc::as_string),
+                    RcDoc::text(",").append(RcDoc::space()),
+                )
+                .parens(),
+            ),
             Expr::Terop(Terop::Mux, cond, tru, fal) => cond
                 .to_doc()
                 .append(RcDoc::space())
