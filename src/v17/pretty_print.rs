@@ -10,11 +10,10 @@ impl PrettyPrint for Ty {
             Ty::Width(w) => match w {
                 0 => panic!("Error: width must be greater than zero"),
                 1 => RcDoc::nil(),
-                n => RcDoc::text("[")
-                    .append(RcDoc::as_string(n - 1))
+                n => RcDoc::as_string(n - 1)
                     .append(RcDoc::text(":"))
                     .append(RcDoc::text("0"))
-                    .append(RcDoc::text("]")),
+                    .brackets(),
             },
         }
     }
