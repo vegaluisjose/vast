@@ -3,88 +3,106 @@ use vast::v05::ast::*;
 
 #[test]
 fn test_expr_str() {
-    assert_eq!(
-        r#""multiply""#.to_string(),
-        Expr::new_str("multiply").to_string()
-    );
+    let expr = Expr::new_str("multiply");
+    let exp = r#""multiply""#.to_string();
+    let res = expr.to_string();
+    assert_eq!(res, exp, "\n\nresult:\n{}\nexpected:\n{}\n\n", res, exp);
 }
 
 #[test]
 fn test_expr_ulit_bin() {
-    assert_eq!(
-        "4'b1000".to_string(),
-        Expr::new_ulit_bin(4, "1000").to_string()
-    );
+    let expr = Expr::new_ulit_bin(4, "1000");
+    let exp = "4'b1000".to_string();
+    let res = expr.to_string();
+    assert_eq!(res, exp, "\n\nresult:\n{}\nexpected:\n{}\n\n", res, exp);
 }
 
 #[test]
 fn test_expr_ulit_hex() {
-    assert_eq!("8'hff".to_string(), Expr::new_ulit_hex(8, "ff").to_string());
+    let expr = Expr::new_ulit_hex(8, "ff");
+    let exp = "8'hff".to_string();
+    let res = expr.to_string();
+    assert_eq!(res, exp, "\n\nresult:\n{}\nexpected:\n{}\n\n", res, exp);
 }
 
 #[test]
 fn test_expr_ulit_dec() {
-    assert_eq!(
-        "16'd78".to_string(),
-        Expr::new_ulit_dec(16, "78").to_string()
-    );
+    let expr = Expr::new_ulit_dec(16, "78");
+    let exp = "16'd78".to_string();
+    let res = expr.to_string();
+    assert_eq!(res, exp, "\n\nresult:\n{}\nexpected:\n{}\n\n", res, exp);
 }
 
 #[test]
 fn test_expr_ref() {
-    assert_eq!("a".to_string(), Expr::new_ref("a").to_string());
+    let expr = Expr::new_ref("a");
+    let exp = "a".to_string();
+    let res = expr.to_string();
+    assert_eq!(res, exp, "\n\nresult:\n{}\nexpected:\n{}\n\n", res, exp);
 }
 
 #[test]
 fn test_decl_wire_width_32() {
-    assert_eq!(
-        "wire [31:0] foo".to_string(),
-        Decl::new_wire("foo", 32).to_string()
-    );
+    let wire = Decl::new_wire("foo", 32);
+    let exp = "wire [31:0] foo".to_string();
+    let res = wire.to_string();
+    assert_eq!(res, exp, "\n\nresult:\n{}\nexpected:\n{}\n\n", res, exp);
 }
 
 #[test]
 fn test_decl_wire_width_1() {
-    assert_eq!("wire foo".to_string(), Decl::new_wire("foo", 1).to_string());
+    let wire = Decl::new_wire("foo", 1);
+    let exp = "wire foo".to_string();
+    let res = wire.to_string();
+    assert_eq!(res, exp, "\n\nresult:\n{}\nexpected:\n{}\n\n", res, exp);
 }
 
 #[test]
 fn test_decl_reg_width_32() {
-    assert_eq!(
-        "reg [31:0] foo".to_string(),
-        Decl::new_reg("foo", 32).to_string()
-    );
+    let reg = Decl::new_reg("foo", 32);
+    let exp = "reg [31:0] foo".to_string();
+    let res = reg.to_string();
+    assert_eq!(res, exp, "\n\nresult:\n{}\nexpected:\n{}\n\n", res, exp);
 }
 
 #[test]
 fn test_decl_reg_width_1() {
-    assert_eq!("reg foo".to_string(), Decl::new_reg("foo", 1).to_string());
+    let reg = Decl::new_reg("foo", 1);
+    let exp = "reg foo".to_string();
+    let res = reg.to_string();
+    assert_eq!(res, exp, "\n\nresult:\n{}\nexpected:\n{}\n\n", res, exp);
 }
 
 #[test]
 fn test_decl_param_uint() {
-    assert_eq!(
-        "parameter width = 32'd3".to_string(),
-        Decl::new_param_uint("width", 3).to_string(),
-    );
+    let param = Decl::new_param_uint("width", 3);
+    let exp = "parameter width = 32'd3".to_string();
+    let res = param.to_string();
+    assert_eq!(res, exp, "\n\nresult:\n{}\nexpected:\n{}\n\n", res, exp);
 }
 
 #[test]
 fn test_event_ty_posedge() {
-    assert_eq!("posedge".to_string(), EventTy::Posedge.to_string(),);
+    let event = EventTy::Posedge;
+    let exp = "posedge".to_string();
+    let res = event.to_string();
+    assert_eq!(res, exp, "\n\nresult:\n{}\nexpected:\n{}\n\n", res, exp);
 }
 
 #[test]
 fn test_event_ty_negedge() {
-    assert_eq!("negedge".to_string(), EventTy::Negedge.to_string(),);
+    let event = EventTy::Negedge;
+    let exp = "negedge".to_string();
+    let res = event.to_string();
+    assert_eq!(res, exp, "\n\nresult:\n{}\nexpected:\n{}\n\n", res, exp);
 }
 
 #[test]
 fn test_sequential_event_posedge_clock() {
-    assert_eq!(
-        "posedge clock".to_string(),
-        Sequential::Event(EventTy::Posedge, Expr::Ref("clock".to_string())).to_string(),
-    );
+    let seq = Sequential::Event(EventTy::Posedge, Expr::Ref("clock".to_string()));
+    let exp = "posedge clock".to_string();
+    let res = seq.to_string();
+    assert_eq!(res, exp, "\n\nresult:\n{}\nexpected:\n{}\n\n", res, exp);
 }
 
 #[test]
@@ -96,14 +114,14 @@ fn test_module_simple() {
     input wire [31:0] a);
 endmodule
 "#;
-    assert_eq!(res, exp);
+    assert_eq!(res, exp, "\n\nresult:\n{}\nexpected:\n{}\n\n", res, exp);
 }
 
 #[test]
 fn test_module_empty() {
     let exp = read_to_string("regression/v05/module_empty.v");
     let res = Module::new_with_name("empty").to_string();
-    assert_eq!(exp, res);
+    assert_eq!(res, exp, "\n\nresult:\n{}\nexpected:\n{}\n\n", res, exp);
 }
 
 #[test]
@@ -112,7 +130,7 @@ fn test_module_one_input() {
     let mut module = Module::new_with_name("one_input");
     module.add_input("a", 5);
     let res = module.to_string();
-    assert_eq!(exp, res);
+    assert_eq!(res, exp, "\n\nresult:\n{}\nexpected:\n{}\n\n", res, exp);
 }
 
 #[test]
@@ -123,7 +141,7 @@ fn test_module_three_inputs() {
     module.add_input("b", 61);
     module.add_input("c", 1);
     let res = module.to_string();
-    assert_eq!(exp, res);
+    assert_eq!(res, exp, "\n\nresult:\n{}\nexpected:\n{}\n\n", res, exp);
 }
 
 #[test]
@@ -133,7 +151,7 @@ fn test_module_one_param() {
     module.add_param_uint("width", 32);
     module.add_input("data", 4);
     let res = module.to_string();
-    assert_eq!(exp, res);
+    assert_eq!(res, exp, "\n\nresult:\n{}\nexpected:\n{}\n\n", res, exp);
 }
 
 #[test]
@@ -144,7 +162,7 @@ fn test_module_two_params() {
     module.add_param_uint("length", 8);
     module.add_input("data", 4);
     let res = module.to_string();
-    assert_eq!(exp, res);
+    assert_eq!(res, exp, "\n\nresult:\n{}\nexpected:\n{}\n\n", res, exp);
 }
 
 #[test]
@@ -156,7 +174,7 @@ fn test_module_mix_params() {
     module.add_param_str("name", "foo");
     module.add_input("data", 4);
     let res = module.to_string();
-    assert_eq!(exp, res);
+    assert_eq!(res, exp, "\n\nresult:\n{}\nexpected:\n{}\n\n", res, exp);
 }
 
 #[test]
