@@ -62,7 +62,7 @@ impl Port {
 
 impl Parallel {
     pub fn new_inst(inst: Instance) -> Parallel {
-        Parallel::Inst(inst)
+        Parallel::from(inst)
     }
 
     pub fn id(&self) -> String {
