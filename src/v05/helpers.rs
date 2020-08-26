@@ -102,6 +102,10 @@ impl Module {
         self.params.push(Decl::new_param_str(name, value));
     }
 
+    pub fn add_port(&mut self, port: Port) {
+        self.ports.push(port);
+    }
+
     pub fn add_input(&mut self, name: &str, width: u64) {
         self.ports.push(Port::new_input(name, width));
     }
