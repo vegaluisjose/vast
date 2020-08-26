@@ -11,3 +11,9 @@ impl From<Parallel> for Stmt {
         Stmt::Parallel(par)
     }
 }
+
+impl From<Instance> for Stmt {
+    fn from(inst: Instance) -> Self {
+        Stmt::from(Parallel::from(inst))
+    }
+}
