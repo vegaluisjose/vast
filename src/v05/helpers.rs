@@ -122,6 +122,10 @@ impl Module {
         self.body.push(Stmt::new_parallel(Parallel::new_inst(inst)));
     }
 
+    pub fn add_stmt(&mut self, stmt: Stmt) {
+        self.body.push(stmt);
+    }
+
     pub fn name(&self) -> String {
         self.name.to_string()
     }

@@ -5,3 +5,9 @@ impl From<Instance> for Parallel {
         Parallel::Inst(inst)
     }
 }
+
+impl From<Parallel> for Stmt {
+    fn from(par: Parallel) -> Self {
+        Stmt::Parallel(par)
+    }
+}
