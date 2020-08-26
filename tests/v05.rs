@@ -107,7 +107,7 @@ fn test_sequential_event_posedge_clock() {
 
 #[test]
 fn test_module_simple() {
-    let mut module = Module::new_with_name("foo");
+    let mut module = Module::new("foo");
     module.add_input("a", 32);
     let res = module.to_string();
     let exp = r#"module foo (
@@ -120,14 +120,14 @@ endmodule
 #[test]
 fn test_module_empty() {
     let exp = read_to_string("regression/v05/module_empty.v");
-    let res = Module::new_with_name("empty").to_string();
+    let res = Module::new("empty").to_string();
     assert_eq!(res, exp, "\n\nresult:\n{}\nexpected:\n{}\n\n", res, exp);
 }
 
 #[test]
 fn test_module_one_input() {
     let exp = read_to_string("regression/v05/module_one_input.v");
-    let mut module = Module::new_with_name("one_input");
+    let mut module = Module::new("one_input");
     module.add_input("a", 5);
     let res = module.to_string();
     assert_eq!(res, exp, "\n\nresult:\n{}\nexpected:\n{}\n\n", res, exp);
@@ -136,7 +136,7 @@ fn test_module_one_input() {
 #[test]
 fn test_module_three_inputs() {
     let exp = read_to_string("regression/v05/module_three_inputs.v");
-    let mut module = Module::new_with_name("three_inputs");
+    let mut module = Module::new("three_inputs");
     module.add_input("a", 5);
     module.add_input("b", 61);
     module.add_input("c", 1);
@@ -147,7 +147,7 @@ fn test_module_three_inputs() {
 #[test]
 fn test_module_one_param() {
     let exp = read_to_string("regression/v05/module_one_param.v");
-    let mut module = Module::new_with_name("one_param");
+    let mut module = Module::new("one_param");
     module.add_param_uint("width", 32);
     module.add_input("data", 4);
     let res = module.to_string();
@@ -157,7 +157,7 @@ fn test_module_one_param() {
 #[test]
 fn test_module_two_params() {
     let exp = read_to_string("regression/v05/module_two_params.v");
-    let mut module = Module::new_with_name("two_params");
+    let mut module = Module::new("two_params");
     module.add_param_uint("width", 4);
     module.add_param_uint("length", 8);
     module.add_input("data", 4);
@@ -168,7 +168,7 @@ fn test_module_two_params() {
 #[test]
 fn test_module_mix_params() {
     let exp = read_to_string("regression/v05/module_mix_params.v");
-    let mut module = Module::new_with_name("mix_params");
+    let mut module = Module::new("mix_params");
     module.add_param_uint("width", 4);
     module.add_param_uint("length", 8);
     module.add_param_str("name", "foo");
@@ -191,7 +191,7 @@ fn test_module_with_instances() {
     i0.connect("port_a", e0);
     i1.connect("port_a", e1);
     i2.connect("port_a", e2);
-    let mut module = Module::new_with_name("module_with_instances");
+    let mut module = Module::new("module_with_instances");
     module.add_instance(i0);
     module.add_instance(i1);
     module.add_instance(i2);

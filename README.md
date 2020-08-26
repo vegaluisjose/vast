@@ -20,7 +20,7 @@ vast = "0.1.0"
 use vast::v05::ast::Module;
 
 fn main() {
-    let mut module = Module::new_with_name("foo");
+    let mut module = Module::new("foo");
     module.add_input("a", 32);
     let res = module.to_string();
     let exp = r#"module foo (
@@ -37,7 +37,7 @@ endmodule
 use vast::v17::ast::Module;
 
 fn main() {
-    let mut module = Module::new_with_name("foo");
+    let mut module = Module::new("foo");
     module.add_input("a", 32);
     let res = module.to_string();
     let exp = r#"module foo (

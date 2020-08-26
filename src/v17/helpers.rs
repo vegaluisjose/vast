@@ -237,7 +237,7 @@ impl Decl {
 }
 
 impl Module {
-    pub fn new_with_name(name: &str) -> Module {
+    pub fn new(name: &str) -> Module {
         Module {
             name: name.to_string(),
             params: Vec::new(),

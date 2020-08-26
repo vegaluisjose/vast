@@ -319,7 +319,7 @@ fn test_port_input_width_1() {
 
 #[test]
 fn test_module_simple() {
-    let mut module = Module::new_with_name("foo");
+    let mut module = Module::new("foo");
     module.add_input("a", 32);
     let res = module.to_string();
     let exp = r#"module foo (
@@ -333,14 +333,14 @@ endmodule
 #[test]
 fn test_module_empty() {
     let exp = read_to_string("regression/v17/module_empty.v");
-    let res = Module::new_with_name("empty").to_string();
+    let res = Module::new("empty").to_string();
     assert_eq!(exp, res);
 }
 
 #[test]
 fn test_module_one_input() {
     let exp = read_to_string("regression/v17/module_one_input.v");
-    let mut module = Module::new_with_name("one_input");
+    let mut module = Module::new("one_input");
     module.add_input("a", 5);
     let res = module.to_string();
     assert_eq!(res, exp, "\n\nresult:\n{}\nexpected:\n{}\n\n", res, exp);
@@ -349,7 +349,7 @@ fn test_module_one_input() {
 #[test]
 fn test_module_four_inputs() {
     let exp = read_to_string("regression/v17/module_four_inputs.v");
-    let mut module = Module::new_with_name("four_inputs");
+    let mut module = Module::new("four_inputs");
     module.add_input("a", 2);
     module.add_input("b", 7);
     module.add_input("c", 4);
@@ -372,7 +372,7 @@ fn test_module_with_instances() {
     i0.connect("port_a", e0);
     i1.connect("port_a", e1);
     i2.connect("port_a", e2);
-    let mut module = Module::new_with_name("module_with_instances");
+    let mut module = Module::new("module_with_instances");
     module.add_instance(i0);
     module.add_instance(i1);
     module.add_instance(i2);
@@ -391,7 +391,7 @@ fn test_module_with_function() {
     let mut func = Function::new("check", Ty::Void);
     func.add_input("value", 32);
     func.add_stmt(assert);
-    let mut module = Module::new_with_name("module_with_function");
+    let mut module = Module::new("module_with_function");
     module.add_function(func);
     let res = module.to_string();
     assert_eq!(res, exp, "\n\nresult:\n{}\nexpected:\n{}\n\n", res, exp);
@@ -409,7 +409,7 @@ fn test_module_with_function_add_one() {
     func.add_logic("res", 32);
     func.add_stmt(Sequential::new_blk_assign(var_res.clone(), add_expr));
     func.add_stmt(Sequential::new_return(var_res));
-    let mut module = Module::new_with_name("module_with_function_add_one");
+    let mut module = Module::new("module_with_function_add_one");
     module.add_function(func);
     let res = module.to_string();
     assert_eq!(res, exp, "\n\nresult:\n{}\nexpected:\n{}\n\n", res, exp);
@@ -420,7 +420,7 @@ fn test_module_with_always_comb() {
     let exp = read_to_string("regression/v17/module_with_always_comb.v");
     let mut always = AlwaysComb::default();
     always.add_stmt(Sequential::new_display("hello world"));
-    let mut module = Module::new_with_name("module_with_always_comb");
+    let mut module = Module::new("module_with_always_comb");
     module.add_always_comb(always);
     let res = module.to_string();
     assert_eq!(res, exp, "\n\nresult:\n{}\nexpected:\n{}\n\n", res, exp);
@@ -444,7 +444,7 @@ fn test_module_with_case() {
     case.set_default(invalid);
     let mut always = AlwaysComb::default();
     always.add_case(case);
-    let mut module = Module::new_with_name("module_with_case");
+    let mut module = Module::new("module_with_case");
     module.add_input("opcode", 5);
     module.add_always_comb(always);
     let res = module.to_string();
@@ -470,7 +470,7 @@ fn test_module_with_nested_case() {
     case_opcode.add_branch(opcode_1);
     let mut always = AlwaysComb::default();
     always.add_case(case_opcode);
-    let mut module = Module::new_with_name("module_with_nested_case");
+    let mut module = Module::new("module_with_nested_case");
     module.add_input("opcode", 1);
     module.add_input("id", 1);
     module.add_always_comb(always);
