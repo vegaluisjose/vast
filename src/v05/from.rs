@@ -6,6 +6,12 @@ impl From<Instance> for Parallel {
     }
 }
 
+impl From<Decl> for Stmt {
+    fn from(decl: Decl) -> Self {
+        Stmt::Decl(decl)
+    }
+}
+
 impl From<Parallel> for Stmt {
     fn from(par: Parallel) -> Self {
         Stmt::Parallel(par)
