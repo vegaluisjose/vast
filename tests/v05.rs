@@ -146,6 +146,16 @@ fn test_module_three_inputs() {
 }
 
 #[test]
+fn test_module_one_wire() {
+    let exp = read_to_string("regression/v05/module_one_wire.v");
+    let mut module = Module::new("one_wire");
+    let wire = Decl::new_wire("one_wire", 8);
+    module.add_stmt(Stmt::from(wire));
+    let res = module.to_string();
+    assert_eq!(res, exp, "\n\nresult:\n{}\nexpected:\n{}\n\n", res, exp);
+}
+
+#[test]
 fn test_module_one_param() {
     let exp = read_to_string("regression/v05/module_one_param.v");
     let mut module = Module::new("one_param");
