@@ -1,3 +1,4 @@
 module one_input (
-    input wire [4:0] a);
+    input wire [4:0] a
+);
 endmodule

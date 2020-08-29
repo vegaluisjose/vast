@@ -111,7 +111,8 @@ fn test_module_simple() {
     module.add_input("a", 32);
     let res = module.to_string();
     let exp = r#"module foo (
-    input wire [31:0] a);
+    input wire [31:0] a
+);
 endmodule
 "#;
     assert_eq!(res, exp, "\n\nresult:\n{}\nexpected:\n{}\n\n", res, exp);
