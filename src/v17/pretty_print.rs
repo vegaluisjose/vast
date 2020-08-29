@@ -255,6 +255,14 @@ impl PrettyPrint for Port {
 
 impl PrettyPrint for Module {
     fn to_doc(&self) -> RcDoc<()> {
+        let params = if self.params().is_empty() {
+            RcDoc::nil()
+        } else {
+            intersperse(
+                self.params().iter().map(|x| x.to_doc()),
+                RcDoc::text(",").append(RcDoc::hardline()),
+            )
+        };
         let ports = if self.ports().is_empty() {
             RcDoc::nil()
         } else {
@@ -263,12 +271,27 @@ impl PrettyPrint for Module {
                 RcDoc::text(",").append(RcDoc::hardline()),
             )
         };
-        let name = if self.ports().is_empty() {
+        let name = if self.params.is_empty() && self.ports.is_empty() {
             RcDoc::as_string(&self.name)
                 .append(RcDoc::space())
                 .append(RcDoc::nil().parens())
-        } else {
+        } else if self.params.is_empty() {
             block_with_parens(RcDoc::as_string(&self.name), ports)
+        } else if self.ports.is_empty() {
+            block_with_parens(
+                RcDoc::as_string(&self.name)
+                    .append(RcDoc::space())
+                    .append(RcDoc::text("#")),
+                params,
+            )
+        } else {
+            block_with_parens(
+                RcDoc::as_string(&self.name)
+                    .append(RcDoc::space())
+                    .append(RcDoc::text("#")),
+                params,
+            )
+            .append(block_with_parens(RcDoc::nil(), ports))
         };
         let body = if self.body().is_empty() {
             RcDoc::hardline()
