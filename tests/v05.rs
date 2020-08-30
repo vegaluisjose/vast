@@ -106,6 +106,16 @@ fn test_sequential_event_posedge_clock() {
 }
 
 #[test]
+fn test_par_assign() {
+    let val = Expr::new_ulit_dec(32, "3");
+    let var = Expr::new_ref("a");
+    let par = Parallel::ParAssign(var, val);
+    let exp = "assign a = 32'd3;".to_string();
+    let res = par.to_string();
+    assert_eq!(res, exp, "\n\nresult:\n{}\nexpected:\n{}\n\n", res, exp);
+}
+
+#[test]
 fn test_module_simple() {
     let mut module = Module::new("foo");
     module.add_input("a", 32);

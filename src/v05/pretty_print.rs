@@ -79,7 +79,9 @@ impl PrettyPrint for Parallel {
                 .append(lexpr.to_doc())
                 .append(RcDoc::space())
                 .append(RcDoc::text("="))
-                .append(rexpr.to_doc()),
+                .append(RcDoc::space())
+                .append(rexpr.to_doc())
+                .append(RcDoc::text(";")),
             Parallel::Always => RcDoc::text("always"),
         }
     }
