@@ -46,6 +46,11 @@ pub struct InstancePath {
     pub path: Vec<Id>,
 }
 
+#[derive(Default, Clone, Debug)]
+pub struct ExprConcat {
+    pub exprs: Vec<Expr>,
+}
+
 #[derive(Clone, Debug)]
 pub enum Expr {
     Ref(Id),
@@ -56,6 +61,7 @@ pub enum Expr {
     Unop(Unop, Rc<Expr>),
     Binop(Binop, Rc<Expr>, Rc<Expr>),
     Terop(Terop, Rc<Expr>, Rc<Expr>, Rc<Expr>),
+    Concat(ExprConcat),
     Call(Id, Vec<Expr>),
 }
 

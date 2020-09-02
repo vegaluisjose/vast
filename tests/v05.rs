@@ -42,6 +42,17 @@ fn test_expr_ref() {
 }
 
 #[test]
+fn test_expr_concat() {
+    let mut concat = ExprConcat::default();
+    concat.add_expr(Expr::new_ref("a"));
+    concat.add_expr(Expr::new_ulit_bin(1, "0"));
+    let expr = Expr::from(concat);
+    let exp = "{1'b0, a}".to_string();
+    let res = expr.to_string();
+    assert_eq!(res, exp, "\n\nresult:\n{}\nexpected:\n{}\n\n", res, exp);
+}
+
+#[test]
 fn test_decl_wire_width_32() {
     let wire = Decl::new_wire("foo", 32);
     let exp = "wire [31:0] foo".to_string();

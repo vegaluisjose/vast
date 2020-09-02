@@ -46,6 +46,16 @@ impl PrettyPrint for InstancePath {
     }
 }
 
+impl PrettyPrint for ExprConcat {
+    fn to_doc(&self) -> RcDoc<()> {
+        intersperse(
+            self.exprs().iter().rev().map(|x| x.to_doc()),
+            RcDoc::text(",").append(RcDoc::space()),
+        )
+        .braces()
+    }
+}
+
 impl PrettyPrint for Expr {
     fn to_doc(&self) -> RcDoc<()> {
         match self {
@@ -103,6 +113,7 @@ impl PrettyPrint for Expr {
                     .append(width.to_doc())
                     .brackets(),
             ),
+            Expr::Concat(concat) => concat.to_doc(),
         }
     }
 }

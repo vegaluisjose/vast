@@ -16,6 +16,16 @@ impl InstancePath {
     }
 }
 
+impl ExprConcat {
+    pub fn exprs(&self) -> &Vec<Expr> {
+        &self.exprs
+    }
+
+    pub fn add_expr(&mut self, expr: Expr) {
+        self.exprs.push(expr);
+    }
+}
+
 impl Expr {
     pub fn id(&self) -> String {
         match self {
