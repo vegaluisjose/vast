@@ -132,7 +132,7 @@ fn test_expr_index_slice_var() {
 
 #[test]
 fn test_expr_bit() {
-    let bit = Expr::new_bit("a", 9);
+    let bit = Expr::new_index_bit("a", 9);
     let res = bit.to_string();
     let exp = "a[9]".to_string();
     assert_eq!(res, exp, "\n\nresult:\n{}\nexpected:\n{}\n\n", res, exp);

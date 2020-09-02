@@ -89,8 +89,12 @@ impl Expr {
         )
     }
 
-    pub fn new_bit(var: &str, bit: i32) -> Expr {
-        Expr::Bit(Rc::new(Expr::new_ref(var)), Rc::new(Expr::new_int(bit)))
+    pub fn new_index_bit(var: &str, bit: i32) -> Expr {
+        Expr::Binop(
+            Binop::IndexBit,
+            Rc::new(Expr::new_ref(var)),
+            Rc::new(Expr::new_int(bit)),
+        )
     }
 
     pub fn new_int(value: i32) -> Expr {

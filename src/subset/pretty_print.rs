@@ -25,6 +25,7 @@ impl PrettyPrint for Binop {
             Binop::Lt => RcDoc::text("<"),
             Binop::Equal => RcDoc::text("=="),
             Binop::NotEqual => RcDoc::text("!="),
+            Binop::IndexBit => RcDoc::nil(),
         }
     }
 }
@@ -63,7 +64,7 @@ impl PrettyPrint for Expr {
                 }
             }
             Expr::Unop(op, input) => op.to_doc().append(input.to_doc()),
-            Expr::Bit(var, index) => var.to_doc().append(index.to_doc().brackets()),
+            Expr::Binop(Binop::IndexBit, lhs, rhs) => lhs.to_doc().append(rhs.to_doc().brackets()),
             Expr::Binop(op, lhs, rhs) => lhs
                 .to_doc()
                 .append(RcDoc::space())

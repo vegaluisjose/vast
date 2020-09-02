@@ -24,6 +24,7 @@ pub enum Binop {
     Lt,
     Equal,
     NotEqual,
+    IndexBit,
 }
 
 #[derive(Clone, Debug)]
@@ -54,9 +55,8 @@ pub enum Expr {
     IPath(InstancePath, Option<Rc<Expr>>),
     Unop(Unop, Rc<Expr>),
     Binop(Binop, Rc<Expr>, Rc<Expr>),
-    Bit(Rc<Expr>, Rc<Expr>),
-    Call(Id, Vec<Expr>),
     Terop(Terop, Rc<Expr>, Rc<Expr>, Rc<Expr>),
+    Call(Id, Vec<Expr>),
 }
 
 #[derive(Clone, Debug)]
