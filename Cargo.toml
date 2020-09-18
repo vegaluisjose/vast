@@ -8,7 +8,7 @@ repository = "https://github.com/vegaluisjose/vast"
 readme = "README.md"
 license = "Apache-2.0"
 keywords = ["verilog"]
-categories = ["hardware","ast"]
+categories = ["development-tools","data-structures"]
 
 [dependencies]
 pretty = "0.10.0"
