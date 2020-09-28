@@ -132,6 +132,30 @@ impl Expr {
     }
 }
 
+impl AttributeTy {
+    pub fn new_val(value: &str) -> AttributeTy {
+        AttributeTy::Val(value.to_string())
+    }
+
+    pub fn new_stmt(id: &str, value: &str) -> AttributeTy {
+        AttributeTy::Stmt(id.to_string(), value.to_string())
+    }
+}
+
+impl Attribute {
+    pub fn attrs(&self) -> &Vec<AttributeTy> {
+        &self.attrs
+    }
+
+    pub fn add_val(&mut self, value: &str) {
+        self.attrs.push(AttributeTy::new_val(value));
+    }
+
+    pub fn add_stmt(&mut self, id: &str, value: &str) {
+        self.attrs.push(AttributeTy::new_stmt(id, value));
+    }
+}
+
 impl Instance {
     pub fn new(id: &str, prim: &str) -> Instance {
         Instance {
@@ -139,7 +163,28 @@ impl Instance {
             prim: prim.to_string(),
             params: Map::new(),
             ports: Map::new(),
+            attr: Attribute::default(),
         }
+    }
+
+    pub fn id(&self) -> String {
+        self.id.to_string()
+    }
+
+    pub fn prim(&self) -> String {
+        self.prim.to_string()
+    }
+
+    pub fn attr(&self) -> &Attribute {
+        &self.attr
+    }
+
+    pub fn param_map(&self) -> &Map {
+        &self.params
+    }
+
+    pub fn port_map(&self) -> &Map {
+        &self.ports
     }
 
     pub fn set_id(&mut self, id: &str) {
@@ -148,6 +193,10 @@ impl Instance {
 
     pub fn set_prim(&mut self, prim: &str) {
         self.prim = prim.to_string();
+    }
+
+    pub fn set_attr(&mut self, attr: Attribute) {
+        self.attr = attr;
     }
 
     pub fn add_param(&mut self, param: &str, value: Expr) {
@@ -171,21 +220,5 @@ impl Instance {
 
     pub fn connect_ref(&mut self, port: &str, id: &str) {
         self.ports.insert(port.to_string(), Expr::new_ref(id));
-    }
-
-    pub fn id(&self) -> String {
-        self.id.to_string()
-    }
-
-    pub fn prim(&self) -> String {
-        self.prim.to_string()
-    }
-
-    pub fn param_map(&self) -> &Map {
-        &self.params
-    }
-
-    pub fn port_map(&self) -> &Map {
-        &self.ports
     }
 }

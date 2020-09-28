@@ -61,6 +61,24 @@ fn test_expr_concat() {
 }
 
 #[test]
+fn test_attr_val() {
+    let mut attr = Attribute::default();
+    attr.add_val("full_case");
+    let exp = "(*full_case*)".to_string();
+    let res = attr.to_string();
+    assert_eq!(res, exp, "\n\nresult:\n{}\nexpected:\n{}\n\n", res, exp);
+}
+
+#[test]
+fn test_attr_stmt() {
+    let mut attr = Attribute::default();
+    attr.add_stmt("x", "3");
+    let exp = "(*x = \"3\"*)".to_string();
+    let res = attr.to_string();
+    assert_eq!(res, exp, "\n\nresult:\n{}\nexpected:\n{}\n\n", res, exp);
+}
+
+#[test]
 fn test_decl_wire_width_32() {
     let wire = Decl::new_wire("foo", 32);
     let exp = "wire [31:0] foo".to_string();

@@ -7,6 +7,7 @@ impl Default for Instance {
             prim: String::new(),
             params: Map::new(),
             ports: Map::new(),
+            attr: Attribute::default(),
         }
     }
 }

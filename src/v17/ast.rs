@@ -5,6 +5,7 @@ pub type Id = subset::ast::Id;
 pub type InstancePath = subset::ast::InstancePath;
 pub type Expr = subset::ast::Expr;
 pub type EventTy = subset::ast::EventTy;
+pub type Attribute = subset::ast::Attribute;
 pub type AssignTy = subset::ast::AssignTy;
 pub type Instance = subset::ast::Instance;
 pub type CaseBranch = subset::ast::GenericCaseBranch<Sequential>;

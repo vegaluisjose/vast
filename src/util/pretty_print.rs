@@ -36,6 +36,10 @@ pub trait PrettyHelper<'a>: Sized {
         self.surround("\"", "\"")
     }
 
+    fn stars(self) -> Self {
+        self.surround("*", "*")
+    }
+
     fn begin_end(self) -> Self {
         self.surround("begin", "end")
     }

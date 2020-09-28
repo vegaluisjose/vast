@@ -243,6 +243,7 @@ impl Module {
             params: Vec::new(),
             ports: Vec::new(),
             body: Vec::new(),
+            attr: Attribute::default(),
         }
     }
 

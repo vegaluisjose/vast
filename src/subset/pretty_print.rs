@@ -121,6 +121,30 @@ impl PrettyPrint for Expr {
     }
 }
 
+impl PrettyPrint for AttributeTy {
+    fn to_doc(&self) -> RcDoc<()> {
+        match self {
+            AttributeTy::Val(name) => RcDoc::as_string(name),
+            AttributeTy::Stmt(id, value) => RcDoc::as_string(id)
+                .append(RcDoc::space())
+                .append(RcDoc::text("="))
+                .append(RcDoc::space())
+                .append(RcDoc::as_string(value).quotes()),
+        }
+    }
+}
+
+impl PrettyPrint for Attribute {
+    fn to_doc(&self) -> RcDoc<()> {
+        intersperse(
+            self.attrs().iter().rev().map(|x| x.to_doc()),
+            RcDoc::text(",").append(RcDoc::space()),
+        )
+        .stars()
+        .parens()
+    }
+}
+
 impl PrettyPrint for EventTy {
     fn to_doc(&self) -> RcDoc<()> {
         match self {
@@ -168,7 +192,13 @@ impl PrettyPrint for Instance {
         } else {
             RcDoc::space().append(block(self.port_map().to_doc()).parens())
         };
-        RcDoc::as_string(self.prim())
+        let attr_doc = if self.attr().attrs().is_empty() {
+            RcDoc::nil()
+        } else {
+            self.attr().to_doc().append(RcDoc::hardline())
+        };
+        attr_doc
+            .append(RcDoc::as_string(self.prim()))
             .append(params_doc)
             .append(RcDoc::as_string(self.id()))
             .append(ports_doc)

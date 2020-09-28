@@ -67,6 +67,17 @@ pub enum Expr {
 }
 
 #[derive(Clone, Debug)]
+pub enum AttributeTy {
+    Val(String),
+    Stmt(Id, String),
+}
+
+#[derive(Clone, Debug, Default)]
+pub struct Attribute {
+    pub attrs: Vec<AttributeTy>,
+}
+
+#[derive(Clone, Debug)]
 pub enum EventTy {
     Posedge,
     Negedge,
@@ -78,6 +89,7 @@ pub struct Instance {
     pub prim: Id,
     pub params: Map,
     pub ports: Map,
+    pub attr: Attribute,
 }
 
 #[derive(Clone, Debug)]
@@ -142,4 +154,5 @@ pub struct GenericModule<T, U> {
     pub params: Vec<T>,
     pub ports: Vec<GenericPort<T>>,
     pub body: Vec<GenericStmt<T, U>>,
+    pub attr: Attribute,
 }
