@@ -57,6 +57,7 @@ pub enum Expr {
     Int(i32),
     ULit(u32, Radix, String),
     Str(String),
+    Signed(Rc<Expr>),
     IPath(InstancePath, Option<Rc<Expr>>),
     Unop(Unop, Rc<Expr>),
     Binop(Binop, Rc<Expr>, Rc<Expr>),

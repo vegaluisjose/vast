@@ -42,6 +42,14 @@ fn test_expr_ref() {
 }
 
 #[test]
+fn test_expr_signed() {
+    let expr = Expr::new_signed_ref("a");
+    let exp = "$signed(a)".to_string();
+    let res = expr.to_string();
+    assert_eq!(res, exp, "\n\nresult:\n{}\nexpected:\n{}\n\n", res, exp);
+}
+
+#[test]
 fn test_expr_concat() {
     let mut concat = ExprConcat::default();
     concat.add_expr(Expr::new_ref("a"));

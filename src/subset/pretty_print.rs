@@ -66,6 +66,9 @@ impl PrettyPrint for Expr {
                 .append(radix.to_doc())
                 .append(RcDoc::as_string(value)),
             Expr::Str(value) => RcDoc::as_string(value).quotes(),
+            Expr::Signed(expr) => RcDoc::text("$")
+                .append(RcDoc::text("signed"))
+                .append(expr.to_doc().parens()),
             Expr::IPath(path, index) => {
                 if let Some(expr) = index.as_ref() {
                     path.to_doc().append(expr.to_doc().brackets())

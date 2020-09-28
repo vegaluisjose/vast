@@ -38,6 +38,14 @@ impl Expr {
         Expr::Ref(name.to_string())
     }
 
+    pub fn new_signed_ref(name: &str) -> Expr {
+        Expr::Signed(Rc::new(Expr::Ref(name.to_string())))
+    }
+
+    pub fn new_signed(expr: Expr) -> Expr {
+        Expr::Signed(Rc::new(expr))
+    }
+
     pub fn new_str(value: &str) -> Expr {
         Expr::Str(value.to_string())
     }
