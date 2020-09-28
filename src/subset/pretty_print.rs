@@ -178,7 +178,7 @@ impl PrettyPrint for Map {
 
 impl PrettyPrint for Instance {
     fn to_doc(&self) -> RcDoc<()> {
-        let params_doc = if self.param_map().is_empty() {
+        let params = if self.param_map().is_empty() {
             RcDoc::space()
         } else {
             RcDoc::space()
@@ -187,21 +187,20 @@ impl PrettyPrint for Instance {
                 .append(block(self.param_map().to_doc()).parens())
                 .append(RcDoc::space())
         };
-        let ports_doc = if self.port_map().is_empty() {
+        let ports = if self.port_map().is_empty() {
             RcDoc::space().parens()
         } else {
             RcDoc::space().append(block(self.port_map().to_doc()).parens())
         };
-        let attr_doc = if self.attr().attrs().is_empty() {
+        let attr = if self.attr().attrs().is_empty() {
             RcDoc::nil()
         } else {
             self.attr().to_doc().append(RcDoc::hardline())
         };
-        attr_doc
-            .append(RcDoc::as_string(self.prim()))
-            .append(params_doc)
+        attr.append(RcDoc::as_string(self.prim()))
+            .append(params)
             .append(RcDoc::as_string(self.id()))
-            .append(ports_doc)
+            .append(ports)
             .append(RcDoc::text(";"))
     }
 }
