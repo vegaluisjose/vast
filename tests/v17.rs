@@ -321,7 +321,7 @@ fn test_seq_assign_blk_ref() {
 fn test_seq_assign_non_blk_ref() {
     let lexpr = Expr::new_ref("y");
     let rexpr = Expr::new_ref("a");
-    let assign = Sequential::new_non_blk_assign(lexpr, rexpr);
+    let assign = Sequential::new_nonblk_assign(lexpr, rexpr);
     let res = assign.to_string();
     let exp = "y <= a;".to_string();
     assert_eq!(res, exp, "\n\nresult:\n{}\nexpected:\n{}\n\n", res, exp);

@@ -125,7 +125,7 @@ impl Sequential {
         Sequential::SeqAssign(lexpr, rexpr, AssignTy::Blocking)
     }
 
-    pub fn new_non_blk_assign(lexpr: Expr, rexpr: Expr) -> Sequential {
+    pub fn new_nonblk_assign(lexpr: Expr, rexpr: Expr) -> Sequential {
         Sequential::SeqAssign(lexpr, rexpr, AssignTy::NonBlocking)
     }
 
