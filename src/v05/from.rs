@@ -12,6 +12,12 @@ impl From<Decl> for Stmt {
     }
 }
 
+impl From<ParallelAlways> for Parallel {
+    fn from(always: ParallelAlways) -> Self {
+        Parallel::Always(always)
+    }
+}
+
 impl From<Parallel> for Stmt {
     fn from(par: Parallel) -> Self {
         Stmt::Parallel(par)
