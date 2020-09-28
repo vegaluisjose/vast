@@ -143,6 +143,21 @@ fn test_sequential_event_posedge_clock() {
 }
 
 #[test]
+fn test_sequential_ifelse() {
+    let cond = Expr::new_ref("reset");
+    let y = Expr::new_ref("y");
+    let a = Expr::new_ref("a");
+    let seq = Sequential::new_nonblk_assign(y, a);
+    let mut ifelse = SequentialIfElse::new(cond);
+    ifelse.add_to_true_body(seq);
+    let exp = r#"if(reset) begin
+    y <= a;
+end"#;
+    let res = ifelse.to_string();
+    assert_eq!(res, exp, "\n\nresult:\n{}\nexpected:\n{}\n\n", res, exp);
+}
+
+#[test]
 fn test_parallel_assign() {
     let val = Expr::new_ulit_dec(32, "3");
     let var = Expr::new_ref("a");

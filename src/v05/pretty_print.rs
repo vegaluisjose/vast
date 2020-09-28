@@ -61,7 +61,26 @@ impl PrettyPrint for Decl {
 
 impl PrettyPrint for SequentialIfElse {
     fn to_doc(&self) -> RcDoc<()> {
-        unimplemented!()
+        let cond = RcDoc::text("if").append(self.cond().to_doc().parens());
+        let true_body = if self.true_body().is_empty() {
+            RcDoc::nil()
+        } else {
+            block(intersperse(
+                self.true_body().iter().map(|x| x.to_doc()),
+                RcDoc::hardline(),
+            ))
+            .begin_end()
+        };
+        let false_body = if self.false_body().is_empty() {
+            RcDoc::nil()
+        } else {
+            block(intersperse(
+                self.false_body().iter().map(|x| x.to_doc()),
+                RcDoc::hardline(),
+            ))
+            .begin_end()
+        };
+        cond.append(RcDoc::space()).append(true_body).append(false_body)
     }
 }
 

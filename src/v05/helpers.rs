@@ -60,6 +60,36 @@ impl Port {
     }
 }
 
+impl SequentialIfElse {
+    pub fn new(cond: Expr) -> Self {
+        SequentialIfElse {
+            cond,
+            tru: Vec::new(),
+            fal: Vec::new(),
+        }
+    }
+
+    pub fn cond(&self) -> &Expr {
+        &self.cond
+    }
+
+    pub fn true_body(&self) -> &Vec<Sequential> {
+        &self.tru
+    }
+
+    pub fn false_body(&self) -> &Vec<Sequential> {
+        &self.fal
+    }
+
+    pub fn add_to_true_body(&mut self, seq: Sequential) {
+        self.tru.push(seq);
+    }
+
+    pub fn add_to_false_body(&mut self, seq: Sequential) {
+        self.fal.push(seq);
+    }
+}
+
 impl Sequential {
     pub fn new_posedge(name: &str) -> Self {
         let expr = Expr::new_ref(name);
