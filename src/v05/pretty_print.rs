@@ -157,11 +157,17 @@ impl PrettyPrint for Module {
                 RcDoc::hardline(),
             ))
         };
-        RcDoc::space()
+        let attr = if self.attr().attrs().is_empty() {
+            RcDoc::nil()
+        } else {
+            self.attr().to_doc().append(RcDoc::hardline())
+        };
+        let module = RcDoc::space()
             .append(name)
             .append(RcDoc::text(";"))
             .append(body)
             .module_endmodule()
-            .append(RcDoc::hardline())
+            .append(RcDoc::hardline());
+        attr.append(module)
     }
 }

@@ -173,6 +173,17 @@ fn test_module_empty() {
 }
 
 #[test]
+fn test_module_attribute() {
+    let exp = read_to_string("regression/v05/module_attribute.v");
+    let mut attr = Attribute::default();
+    attr.add_stmt("use", "yes");
+    let mut module = Module::new("attribute");
+    module.set_attr(attr);
+    let res = module.to_string();
+    assert_eq!(res, exp, "\n\nresult:\n{}\nexpected:\n{}\n\n", res, exp);
+}
+
+#[test]
 fn test_module_one_input() {
     let exp = read_to_string("regression/v05/module_one_input.v");
     let mut module = Module::new("one_input");

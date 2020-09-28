@@ -247,6 +247,26 @@ impl Module {
         }
     }
 
+    pub fn name(&self) -> String {
+        self.name.to_string()
+    }
+
+    pub fn body(&self) -> &Vec<Stmt> {
+        &self.body
+    }
+
+    pub fn ports(&self) -> &Vec<Port> {
+        &self.ports
+    }
+
+    pub fn params(&self) -> &Vec<Decl> {
+        &self.params
+    }
+
+    pub fn attr(&self) -> &Attribute {
+        &self.attr
+    }
+
     pub fn add_input(&mut self, name: &str, width: u64) {
         self.ports.push(Port::new_input(name, width));
     }
@@ -268,19 +288,7 @@ impl Module {
             .push(Stmt::new_parallel(Parallel::new_always_comb(always)));
     }
 
-    pub fn name(&self) -> String {
-        self.name.to_string()
-    }
-
-    pub fn body(&self) -> &Vec<Stmt> {
-        &self.body
-    }
-
-    pub fn ports(&self) -> &Vec<Port> {
-        &self.ports
-    }
-
-    pub fn params(&self) -> &Vec<Decl> {
-        &self.params
+    pub fn set_attr(&mut self, attr: Attribute) {
+        self.attr = attr;
     }
 }

@@ -95,6 +95,26 @@ impl Module {
         }
     }
 
+    pub fn name(&self) -> String {
+        self.name.to_string()
+    }
+
+    pub fn body(&self) -> &Vec<Stmt> {
+        &self.body
+    }
+
+    pub fn ports(&self) -> &Vec<Port> {
+        &self.ports
+    }
+
+    pub fn params(&self) -> &Vec<Decl> {
+        &self.params
+    }
+
+    pub fn attr(&self) -> &Attribute {
+        &self.attr
+    }
+
     pub fn add_param_uint(&mut self, name: &str, value: u32) {
         self.params.push(Decl::new_param_uint(name, value));
     }
@@ -127,19 +147,7 @@ impl Module {
         self.body.push(stmt);
     }
 
-    pub fn name(&self) -> String {
-        self.name.to_string()
-    }
-
-    pub fn body(&self) -> &Vec<Stmt> {
-        &self.body
-    }
-
-    pub fn ports(&self) -> &Vec<Port> {
-        &self.ports
-    }
-
-    pub fn params(&self) -> &Vec<Decl> {
-        &self.params
+    pub fn set_attr(&mut self, attr: Attribute) {
+        self.attr = attr;
     }
 }
