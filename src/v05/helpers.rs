@@ -60,6 +60,42 @@ impl Port {
     }
 }
 
+impl Sequential {
+    pub fn new_posedge(name: &str) -> Self {
+        let expr = Expr::new_ref(name);
+        Sequential::Event(EventTy::Posedge, expr)
+    }
+
+    pub fn new_blk_assign(lexpr: Expr, rexpr: Expr) -> Sequential {
+        Sequential::Assign(lexpr, rexpr, AssignTy::Blocking)
+    }
+
+    pub fn new_nonblk_assign(lexpr: Expr, rexpr: Expr) -> Sequential {
+        Sequential::Assign(lexpr, rexpr, AssignTy::NonBlocking)
+    }
+}
+
+impl ParallelAlways {
+    pub fn new(event: Sequential) -> Self {
+        ParallelAlways {
+            event,
+            body: Vec::new(),
+        }
+    }
+
+    pub fn event(&self) -> &Sequential {
+        &self.event
+    }
+
+    pub fn body(&self) -> &Vec<Sequential> {
+        &self.body
+    }
+
+    pub fn add_seq(&mut self, seq: Sequential) {
+        self.body.push(seq);
+    }
+}
+
 impl Parallel {
     pub fn new_inst(inst: Instance) -> Parallel {
         Parallel::from(inst)
@@ -68,7 +104,7 @@ impl Parallel {
     pub fn id(&self) -> String {
         match self {
             Parallel::Inst(inst) => inst.id(),
-            Parallel::ParAssign(lexpr, _) => lexpr.id(),
+            Parallel::Assign(lexpr, _) => lexpr.id(),
             _ => panic!("Error: always do not support id"),
         }
     }

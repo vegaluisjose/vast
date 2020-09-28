@@ -143,12 +143,27 @@ fn test_sequential_event_posedge_clock() {
 }
 
 #[test]
-fn test_par_assign() {
+fn test_parallel_assign() {
     let val = Expr::new_ulit_dec(32, "3");
     let var = Expr::new_ref("a");
-    let par = Parallel::ParAssign(var, val);
+    let par = Parallel::Assign(var, val);
     let exp = "assign a = 32'd3;".to_string();
     let res = par.to_string();
+    assert_eq!(res, exp, "\n\nresult:\n{}\nexpected:\n{}\n\n", res, exp);
+}
+
+#[test]
+fn test_parallel_always() {
+    let event = Sequential::new_posedge("clock");
+    let y = Expr::new_ref("y");
+    let a = Expr::new_ref("a");
+    let seq = Sequential::new_nonblk_assign(y, a);
+    let mut always = ParallelAlways::new(event);
+    always.add_seq(seq);
+    let exp = r#"always(posedge clock) begin
+    y <= a;
+end"#;
+    let res = always.to_string();
     assert_eq!(res, exp, "\n\nresult:\n{}\nexpected:\n{}\n\n", res, exp);
 }
 

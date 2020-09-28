@@ -59,14 +59,45 @@ impl PrettyPrint for Decl {
     }
 }
 
+impl PrettyPrint for SequentialIfElse {
+    fn to_doc(&self) -> RcDoc<()> {
+        unimplemented!()
+    }
+}
+
 impl PrettyPrint for Sequential {
     fn to_doc(&self) -> RcDoc<()> {
         match self {
             // wildcard for sensitivity list
             Sequential::Wildcard => RcDoc::text("*"),
             Sequential::Event(ty, expr) => ty.to_doc().append(RcDoc::space()).append(expr.to_doc()),
-            Sequential::If(_, _, _) => unimplemented!(),
+            Sequential::IfElse(ifelse) => ifelse.to_doc(),
+            Sequential::Assign(lexpr, rexpr, ty) => lexpr
+                .to_doc()
+                .append(RcDoc::space())
+                .append(ty.to_doc())
+                .append(RcDoc::space())
+                .append(rexpr.to_doc())
+                .append(RcDoc::text(";")),
         }
+    }
+}
+
+impl PrettyPrint for ParallelAlways {
+    fn to_doc(&self) -> RcDoc<()> {
+        let body = if self.body().is_empty() {
+            RcDoc::nil()
+        } else {
+            block(intersperse(
+                self.body().iter().map(|x| x.to_doc()),
+                RcDoc::hardline(),
+            ))
+            .begin_end()
+        };
+        RcDoc::text("always")
+            .append(self.event().to_doc().parens())
+            .append(RcDoc::space())
+            .append(body)
     }
 }
 
@@ -74,7 +105,7 @@ impl PrettyPrint for Parallel {
     fn to_doc(&self) -> RcDoc<()> {
         match self {
             Parallel::Inst(ty) => ty.to_doc(),
-            Parallel::ParAssign(lexpr, rexpr) => RcDoc::text("assign")
+            Parallel::Assign(lexpr, rexpr) => RcDoc::text("assign")
                 .append(RcDoc::space())
                 .append(lexpr.to_doc())
                 .append(RcDoc::space())
@@ -82,7 +113,7 @@ impl PrettyPrint for Parallel {
                 .append(RcDoc::space())
                 .append(rexpr.to_doc())
                 .append(RcDoc::text(";")),
-            Parallel::Always => RcDoc::text("always"),
+            Parallel::Always(always) => always.to_doc(),
         }
     }
 }

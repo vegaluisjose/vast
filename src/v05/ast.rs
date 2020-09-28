@@ -5,6 +5,7 @@ pub type Expr = subset::ast::Expr;
 pub type ExprConcat = subset::ast::ExprConcat;
 pub type EventTy = subset::ast::EventTy;
 pub type Attribute = subset::ast::Attribute;
+pub type AssignTy = subset::ast::AssignTy;
 pub type Instance = subset::ast::Instance;
 pub type Stmt = subset::ast::GenericStmt<Decl, Parallel>;
 pub type Port = subset::ast::GenericPort<Decl>;
@@ -26,15 +27,29 @@ pub enum Decl {
 }
 
 #[derive(Clone, Debug)]
+pub struct SequentialIfElse {
+    pub cond: Expr,
+    pub tru: Vec<Sequential>,
+    pub fal: Vec<Sequential>,
+}
+
+#[derive(Clone, Debug)]
 pub enum Sequential {
     Wildcard,
     Event(EventTy, Expr),
-    If(Expr, Vec<Sequential>, Vec<Sequential>),
+    Assign(Expr, Expr, AssignTy),
+    IfElse(SequentialIfElse),
+}
+
+#[derive(Clone, Debug)]
+pub struct ParallelAlways {
+    pub event: Sequential,
+    pub body: Vec<Sequential>,
 }
 
 #[derive(Clone, Debug)]
 pub enum Parallel {
     Inst(Instance),
-    ParAssign(Expr, Expr),
-    Always,
+    Assign(Expr, Expr),
+    Always(ParallelAlways),
 }
