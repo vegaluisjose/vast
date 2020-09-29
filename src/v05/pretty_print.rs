@@ -80,7 +80,9 @@ impl PrettyPrint for SequentialIfElse {
             ))
             .begin_end()
         };
-        cond.append(RcDoc::space()).append(true_body).append(false_body)
+        cond.append(RcDoc::space())
+            .append(true_body)
+            .append(false_body)
     }
 }
 
