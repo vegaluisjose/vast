@@ -12,6 +12,12 @@ impl From<Decl> for Stmt {
     }
 }
 
+impl From<SequentialIfElse> for Sequential {
+    fn from(seq: SequentialIfElse) -> Self {
+        Sequential::IfElse(seq)
+    }
+}
+
 impl From<ParallelAlways> for Parallel {
     fn from(always: ParallelAlways) -> Self {
         Parallel::Always(always)

@@ -1,4 +1,5 @@
 use crate::subset;
+use std::rc::Rc;
 
 pub type Id = subset::ast::Id;
 pub type Expr = subset::ast::Expr;
@@ -29,8 +30,8 @@ pub enum Decl {
 #[derive(Clone, Debug)]
 pub struct SequentialIfElse {
     pub cond: Expr,
-    pub tru: Vec<Sequential>,
-    pub fal: Vec<Sequential>,
+    pub body: Vec<Sequential>,
+    pub elsebr: Option<Rc<Sequential>>,
 }
 
 #[derive(Clone, Debug)]

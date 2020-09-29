@@ -1,4 +1,5 @@
 use crate::v05::ast::*;
+use std::rc::Rc;
 
 impl Ty {
     pub fn new_int() -> Ty {
@@ -64,8 +65,8 @@ impl SequentialIfElse {
     pub fn new(cond: Expr) -> Self {
         SequentialIfElse {
             cond,
-            tru: Vec::new(),
-            fal: Vec::new(),
+            body: Vec::new(),
+            elsebr: None,
         }
     }
 
@@ -73,20 +74,20 @@ impl SequentialIfElse {
         &self.cond
     }
 
-    pub fn true_body(&self) -> &Vec<Sequential> {
-        &self.tru
+    pub fn body(&self) -> &Vec<Sequential> {
+        &self.body
     }
 
-    pub fn false_body(&self) -> &Vec<Sequential> {
-        &self.fal
+    pub fn else_branch(&self) -> Option<&Sequential> {
+        self.elsebr.as_deref()
     }
 
-    pub fn add_to_true_body(&mut self, seq: Sequential) {
-        self.tru.push(seq);
+    pub fn add_seq(&mut self, seq: Sequential) {
+        self.body.push(seq);
     }
 
-    pub fn add_to_false_body(&mut self, seq: Sequential) {
-        self.fal.push(seq);
+    pub fn set_else(&mut self, seq: Sequential) {
+        self.elsebr = Some(Rc::new(seq));
     }
 }
 
