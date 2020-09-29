@@ -27,9 +27,9 @@ pub enum Decl {
     Param(Id, Expr),
 }
 
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct SequentialIfElse {
-    pub cond: Expr,
+    pub cond: Option<Expr>,
     pub body: Vec<Sequential>,
     pub elsebr: Option<Rc<Sequential>>,
 }

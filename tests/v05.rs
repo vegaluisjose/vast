@@ -158,7 +158,29 @@ end"#;
 }
 
 #[test]
-fn test_sequential_ifelse() {
+fn test_sequential_if_else() {
+    let c0 = Expr::new_ref("reset");
+    let y = Expr::new_ref("y");
+    let a = Expr::new_ref("a");
+    let val = Expr::new_int(0);
+    let s0 = Sequential::new_nonblk_assign(y.clone(), val);
+    let s1 = Sequential::new_nonblk_assign(y, a);
+    let mut i0 = SequentialIfElse::new(c0);
+    let mut i1 = SequentialIfElse::default();
+    i0.add_seq(s0);
+    i1.add_seq(s1);
+    i0.set_else(i1.into());
+    let exp = r#"if(reset) begin
+    y <= 0;
+end else begin
+    y <= a;
+end"#;
+    let res = i0.to_string();
+    assert_eq!(res, exp, "\n\nresult:\n{}\nexpected:\n{}\n\n", res, exp);
+}
+
+#[test]
+fn test_sequential_if_else_if() {
     let c0 = Expr::new_ref("reset");
     let c1 = Expr::new_ref("en");
     let y = Expr::new_ref("y");

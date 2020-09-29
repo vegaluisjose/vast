@@ -64,14 +64,14 @@ impl Port {
 impl SequentialIfElse {
     pub fn new(cond: Expr) -> Self {
         SequentialIfElse {
-            cond,
+            cond: Some(cond),
             body: Vec::new(),
             elsebr: None,
         }
     }
 
-    pub fn cond(&self) -> &Expr {
-        &self.cond
+    pub fn cond(&self) -> Option<&Expr> {
+        self.cond.as_ref()
     }
 
     pub fn body(&self) -> &Vec<Sequential> {
