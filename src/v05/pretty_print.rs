@@ -119,6 +119,8 @@ impl PrettyPrint for ParallelAlways {
             .begin_end()
         };
         RcDoc::text("always")
+            .append(RcDoc::space())
+            .append(RcDoc::text("@"))
             .append(self.event().to_doc().parens())
             .append(RcDoc::space())
             .append(body)

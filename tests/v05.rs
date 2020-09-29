@@ -220,7 +220,7 @@ fn test_parallel_always() {
     let seq = Sequential::new_nonblk_assign(y, a);
     let mut always = ParallelAlways::new(event);
     always.add_seq(seq);
-    let exp = r#"always(posedge clock) begin
+    let exp = r#"always @(posedge clock) begin
     y <= a;
 end"#;
     let res = always.to_string();
