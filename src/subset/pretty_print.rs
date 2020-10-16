@@ -20,12 +20,17 @@ impl PrettyPrint for Unop {
 impl PrettyPrint for Binop {
     fn to_doc(&self) -> RcDoc<()> {
         match self {
+            Binop::LogOr => RcDoc::text("|"),
+            Binop::LogAnd => RcDoc::text("&"),
             Binop::Add => RcDoc::text("+"),
             Binop::Mul => RcDoc::text("*"),
             Binop::Lt => RcDoc::text("<"),
             Binop::Equal => RcDoc::text("=="),
             Binop::NotEqual => RcDoc::text("!="),
             Binop::IndexBit => RcDoc::nil(),
+            Binop::Gt => RcDoc::text(">"),
+            Binop::Geq => RcDoc::text(">="),
+            Binop::Leq => RcDoc::text("<"),
         }
     }
 }

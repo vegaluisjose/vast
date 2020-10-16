@@ -15,6 +15,9 @@ pub type Function = subset::ast::GenericFunction<Decl, Sequential, Ty>;
 pub type Stmt = subset::ast::GenericStmt<Decl, Parallel>;
 pub type Port = subset::ast::GenericPort<Decl>;
 pub type Module = subset::ast::GenericModule<Decl, Parallel>;
+pub type Binop = subset::ast::Binop;
+pub type Unop = subset::ast::Unop;
+pub type Radix = subset::ast::Radix;
 
 #[derive(Clone, Debug)]
 pub enum Ty {

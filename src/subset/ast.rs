@@ -19,9 +19,14 @@ pub enum Unop {
 
 #[derive(Clone, Debug)]
 pub enum Binop {
+    LogOr,
+    LogAnd,
     Add,
     Mul,
+    Gt,
     Lt,
+    Geq,
+    Leq,
     Equal,
     NotEqual,
     IndexBit,
