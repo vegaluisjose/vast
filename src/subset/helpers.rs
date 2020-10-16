@@ -109,6 +109,10 @@ impl Expr {
         Expr::Terop(Terop::Mux, Rc::new(cond), Rc::new(tru), Rc::new(fal))
     }
 
+    pub fn new_not(exp: Expr) -> Expr {
+        Expr::Unop(Unop::Not, Rc::new(exp))
+    }
+
     pub fn new_slice(var: &str, hi: Expr, lo: Expr) -> Expr {
         Expr::Terop(
             Terop::Slice,
