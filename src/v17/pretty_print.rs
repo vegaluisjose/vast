@@ -198,8 +198,48 @@ impl PrettyPrint for Sequential {
                     cond
                 }
             }
-            _ => unimplemented!(),
+            Sequential::If(cond, tr, fa) => {
+                let tr_doc_wrapped = if tr.len() == 1 && matches!(tr[0], Sequential::If(..)) {
+                    tr.to_doc()
+                } else {
+                    RcDoc::text("begin")
+                        .append(
+                            RcDoc::line()
+                                .append(tr.to_doc())
+                                .nest(2)
+                                .append(RcDoc::line()),
+                        )
+                        .append("end")
+                };
+                let fa_doc_wrapped = if fa.len() == 1 && matches!(fa[0], Sequential::If(..)) {
+                    fa.to_doc()
+                } else {
+                    RcDoc::text("begin")
+                        .append(
+                            RcDoc::line()
+                                .append(fa.to_doc())
+                                .nest(2)
+                                .append(RcDoc::line()),
+                        )
+                        .append("end")
+                };
+                RcDoc::text("if")
+                    .append(RcDoc::space())
+                    .append(cond.to_doc().parens())
+                    .append(RcDoc::space())
+                    .append(tr_doc_wrapped)
+                    .append(RcDoc::space())
+                    .append("else")
+                    .append(RcDoc::space())
+                    .append(fa_doc_wrapped)
+            }
         }
+    }
+}
+
+impl PrettyPrint for Vec<Sequential> {
+    fn to_doc(&self) -> RcDoc<()> {
+        RcDoc::intersperse(self.iter().map(PrettyPrint::to_doc), RcDoc::line())
     }
 }
 
