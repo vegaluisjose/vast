@@ -41,8 +41,15 @@ pub enum Sequential {
     SeqCase(Case),
     SeqCall(Expr),
     Event(EventTy, Expr),
-    If(Expr, Vec<Sequential>, Vec<Sequential>),
+    If(SequentialIfElse),
     Assert(Expr, Option<Rc<Sequential>>),
+}
+
+#[derive(Clone, Debug)]
+pub struct SequentialIfElse {
+    pub cond: Expr,
+    pub true_branch: Vec<Sequential>,
+    pub false_branch: Vec<Sequential>,
 }
 
 #[derive(Clone, Debug)]

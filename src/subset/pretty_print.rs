@@ -25,12 +25,12 @@ impl PrettyPrint for Binop {
             Binop::Add => RcDoc::text("+"),
             Binop::Mul => RcDoc::text("*"),
             Binop::Lt => RcDoc::text("<"),
+            Binop::Gt => RcDoc::text(">"),
+            Binop::Geq => RcDoc::text(">="),
+            Binop::Leq => RcDoc::text("<="),
             Binop::Equal => RcDoc::text("=="),
             Binop::NotEqual => RcDoc::text("!="),
             Binop::IndexBit => RcDoc::nil(),
-            Binop::Gt => RcDoc::text(">"),
-            Binop::Geq => RcDoc::text(">="),
-            Binop::Leq => RcDoc::text("<"),
         }
     }
 }

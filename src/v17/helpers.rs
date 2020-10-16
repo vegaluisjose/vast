@@ -138,6 +138,24 @@ impl Sequential {
     }
 }
 
+impl SequentialIfElse {
+    pub fn new(cond: Expr) -> Self {
+        SequentialIfElse {
+            cond,
+            true_branch: vec![],
+            false_branch: vec![],
+        }
+    }
+
+    pub fn add_true_seq(&mut self, seq: Sequential) {
+        self.true_branch.push(seq);
+    }
+
+    pub fn add_false_seq(&mut self, seq: Sequential) {
+        self.false_branch.push(seq);
+    }
+}
+
 impl Default for AlwaysComb {
     fn default() -> AlwaysComb {
         AlwaysComb { body: Vec::new() }

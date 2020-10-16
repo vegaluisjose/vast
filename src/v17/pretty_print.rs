@@ -198,42 +198,42 @@ impl PrettyPrint for Sequential {
                     cond
                 }
             }
-            Sequential::If(cond, tr, fa) => {
-                let tr_doc_wrapped = if tr.len() == 1 && matches!(tr[0], Sequential::If(..)) {
-                    tr.to_doc()
-                } else {
-                    RcDoc::text("begin")
-                        .append(
-                            RcDoc::line()
-                                .append(tr.to_doc())
-                                .nest(2)
-                                .append(RcDoc::line()),
-                        )
-                        .append("end")
-                };
-                let fa_doc_wrapped = if fa.len() == 1 && matches!(fa[0], Sequential::If(..)) {
-                    fa.to_doc()
-                } else {
-                    RcDoc::text("begin")
-                        .append(
-                            RcDoc::line()
-                                .append(fa.to_doc())
-                                .nest(2)
-                                .append(RcDoc::line()),
-                        )
-                        .append("end")
-                };
-                RcDoc::text("if")
-                    .append(RcDoc::space())
-                    .append(cond.to_doc().parens())
-                    .append(RcDoc::space())
-                    .append(tr_doc_wrapped)
-                    .append(RcDoc::space())
-                    .append("else")
-                    .append(RcDoc::space())
-                    .append(fa_doc_wrapped)
-            }
+            Sequential::If(seq_if) => seq_if.to_doc(),
         }
+    }
+}
+
+impl PrettyPrint for SequentialIfElse {
+    fn to_doc(&self) -> RcDoc<()> {
+        let cond = RcDoc::text("if").append(self.cond.to_doc().parens());
+
+        let true_body = if self.true_branch.len() == 1 {
+            block(self.true_branch.to_doc())
+        } else {
+            RcDoc::space().append(block(self.true_branch.to_doc()).begin_end())
+        };
+
+        let false_body = if self.false_branch.is_empty() {
+            RcDoc::nil()
+        } else {
+            let beg_spacing = if self.true_branch.len() > 1 {
+                RcDoc::space()
+            } else {
+                RcDoc::nil()
+            };
+            let body = if self.false_branch.len() == 1 {
+                if matches!(self.false_branch[0], Sequential::If(..)) {
+                    RcDoc::space().append(self.false_branch.to_doc())
+                } else {
+                    RcDoc::nil().append(block(self.false_branch.to_doc()))
+                }
+            } else {
+                RcDoc::space().append(block(self.false_branch.to_doc()).begin_end())
+            };
+            beg_spacing.append("else").append(body)
+        };
+
+        cond.append(true_body).append(false_body)
     }
 }
 

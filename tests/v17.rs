@@ -34,6 +34,26 @@ fn test_expr_ulit_dec() {
 }
 
 #[test]
+fn test_expr_logor() {
+    let lhs = Expr::new_ref("a");
+    let rhs = Expr::new_ulit_dec(1, "1");
+    let logor = Expr::new_logical_or(lhs, rhs);
+    let res = logor.to_string();
+    let exp = "a || 1'd1".to_string();
+    assert_eq!(res, exp, "\n\nresult:\n{}\nexpected:\n{}\n\n", res, exp);
+}
+
+#[test]
+fn test_expr_logand() {
+    let lhs = Expr::new_ref("a");
+    let rhs = Expr::new_ulit_dec(1, "1");
+    let logand = Expr::new_logical_and(lhs, rhs);
+    let res = logand.to_string();
+    let exp = "a && 1'd1".to_string();
+    assert_eq!(res, exp, "\n\nresult:\n{}\nexpected:\n{}\n\n", res, exp);
+}
+
+#[test]
 fn test_expr_add() {
     let lhs = Expr::new_ref("a");
     let rhs = Expr::new_ulit_dec(8, "1");
@@ -44,12 +64,42 @@ fn test_expr_add() {
 }
 
 #[test]
+fn test_expr_gt() {
+    let lhs = Expr::new_ref("mask");
+    let rhs = Expr::new_ulit_dec(32, "1");
+    let gt = Expr::new_gt(lhs, rhs);
+    let res = gt.to_string();
+    let exp = "mask > 32'd1".to_string();
+    assert_eq!(res, exp, "\n\nresult:\n{}\nexpected:\n{}\n\n", res, exp);
+}
+
+#[test]
 fn test_expr_lt() {
     let lhs = Expr::new_ref("mask");
     let rhs = Expr::new_ulit_dec(32, "1");
     let lt = Expr::new_lt(lhs, rhs);
     let res = lt.to_string();
     let exp = "mask < 32'd1".to_string();
+    assert_eq!(res, exp, "\n\nresult:\n{}\nexpected:\n{}\n\n", res, exp);
+}
+
+#[test]
+fn test_expr_geq() {
+    let lhs = Expr::new_ref("mask");
+    let rhs = Expr::new_ulit_dec(32, "1");
+    let geq = Expr::new_geq(lhs, rhs);
+    let res = geq.to_string();
+    let exp = "mask >= 32'd1".to_string();
+    assert_eq!(res, exp, "\n\nresult:\n{}\nexpected:\n{}\n\n", res, exp);
+}
+
+#[test]
+fn test_expr_leq() {
+    let lhs = Expr::new_ref("mask");
+    let rhs = Expr::new_ulit_dec(32, "1");
+    let leq = Expr::new_leq(lhs, rhs);
+    let res = leq.to_string();
+    let exp = "mask <= 32'd1".to_string();
     assert_eq!(res, exp, "\n\nresult:\n{}\nexpected:\n{}\n\n", res, exp);
 }
 
@@ -504,5 +554,120 @@ fn test_module_with_nested_case() {
     module.add_input("id", 1);
     module.add_always_comb(always);
     let res = module.to_string();
+    assert_eq!(res, exp, "\n\nresult:\n{}\nexpected:\n{}\n\n", res, exp);
+}
+
+#[test]
+fn test_sequential_if() {
+    let cond = Expr::new_ref("reset");
+    let y = Expr::new_ref("y");
+    let a = Expr::new_ref("a");
+    let seq = Sequential::new_nonblk_assign(y, a);
+    let mut ifelse = SequentialIfElse::new(cond);
+    ifelse.add_true_seq(seq);
+    let exp = r#"if(reset)
+    y <= a;
+"#;
+    let res = ifelse.to_string();
+    assert_eq!(res, exp, "\n\nresult:\n{}\nexpected:\n{}\n\n", res, exp);
+}
+
+#[test]
+fn test_sequential_if_else() {
+    let c0 = Expr::new_ref("reset");
+    let y = Expr::new_ref("y");
+    let a = Expr::new_ref("a");
+    let val = Expr::new_int(0);
+    let s0 = Sequential::new_nonblk_assign(y.clone(), val);
+    let s1 = Sequential::new_nonblk_assign(y, a);
+    let mut i0 = SequentialIfElse::new(c0);
+    i0.add_true_seq(s0);
+    i0.add_false_seq(s1);
+    let exp = r#"if(reset)
+    y <= 0;
+else
+    y <= a;
+"#;
+    let res = i0.to_string();
+    assert_eq!(res, exp, "\n\nresult:\n'{}'\nexpected:\n'{}'\n\n", res, exp);
+}
+
+#[test]
+fn test_sequential_if_else_block() {
+    let c0 = Expr::new_ref("reset");
+    let y = Expr::new_ref("y");
+    let a = Expr::new_ref("a");
+    let b = Expr::new_ref("b");
+    let val = Expr::new_int(0);
+    let t0 = Sequential::new_nonblk_assign(y.clone(), val);
+    let t1 = Sequential::new_nonblk_assign(y.clone(), Expr::new_int(1));
+    let f0 = Sequential::new_nonblk_assign(y.clone(), a);
+    let f1 = Sequential::new_nonblk_assign(y, b);
+    let mut i0 = SequentialIfElse::new(c0);
+    i0.add_true_seq(t0);
+    i0.add_true_seq(t1);
+    i0.add_false_seq(f0);
+    i0.add_false_seq(f1);
+    let exp = r#"if(reset) begin
+    y <= 0;
+    y <= 1;
+end else begin
+    y <= a;
+    y <= b;
+end"#;
+    let res = i0.to_string();
+    assert_eq!(res, exp, "\n\nresult:\n{}\nexpected:\n{}\n\n", res, exp);
+}
+
+#[test]
+fn test_sequential_if_else_if() {
+    let c0 = Expr::new_ref("reset");
+    let c1 = Expr::new_ref("en");
+    let y = Expr::new_ref("y");
+    let a = Expr::new_ref("a");
+    let val = Expr::new_int(0);
+    let s0 = Sequential::new_nonblk_assign(y.clone(), val);
+    let s1 = Sequential::new_nonblk_assign(y, a);
+    let mut i0 = SequentialIfElse::new(c0);
+    let mut i1 = SequentialIfElse::new(c1);
+    i0.add_true_seq(s0);
+    i1.add_true_seq(s1);
+    i0.add_false_seq(i1.into());
+    let exp = r#"if(reset)
+    y <= 0;
+else if(en)
+    y <= a;
+"#;
+    let res = i0.to_string();
+    assert_eq!(res, exp, "\n\nresult:\n{}\nexpected:\n{}\n\n", res, exp);
+}
+
+#[test]
+fn test_sequential_if_else_if_block() {
+    let c0 = Expr::new_ref("reset");
+    let c1 = Expr::new_ref("en");
+    let y = Expr::new_ref("y");
+    let a = Expr::new_ref("a");
+    let b = Expr::new_ref("b");
+    let val = Expr::new_int(0);
+    let t0 = Sequential::new_nonblk_assign(y.clone(), val);
+    let t1 = Sequential::new_nonblk_assign(y.clone(), Expr::new_int(1));
+    let f0 = Sequential::new_nonblk_assign(y.clone(), a);
+    let f1 = Sequential::new_nonblk_assign(y, b);
+    let mut i0 = SequentialIfElse::new(c0);
+    let mut i1 = SequentialIfElse::new(c1);
+    i0.add_true_seq(t0);
+    i0.add_true_seq(t1);
+    i1.add_true_seq(f0);
+    i1.add_true_seq(f1);
+    i0.add_false_seq(i1.into());
+    let exp = r#"if(reset) begin
+    y <= 0;
+    y <= 1;
+end else if(en) begin
+    y <= a;
+    y <= b;
+end"#;
+    let res = i0.to_string();
     assert_eq!(res, exp, "\n\nresult:\n{}\nexpected:\n{}\n\n", res, exp);
 }
