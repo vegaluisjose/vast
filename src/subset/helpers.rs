@@ -34,8 +34,11 @@ impl Expr {
         }
     }
 
-    pub fn new_ref(name: &str) -> Expr {
-        Expr::Ref(name.to_string())
+    pub fn new_ref<S>(name: S) -> Expr
+    where
+        S: AsRef<str>,
+    {
+        Expr::Ref(name.as_ref().to_string())
     }
 
     pub fn new_signed_ref(name: &str) -> Expr {
