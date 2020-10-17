@@ -132,7 +132,7 @@ impl PrettyPrint for Function {
 
 impl PrettyPrint for Decl {
     fn to_doc(&self) -> RcDoc<()> {
-        let doc = match self {
+        match self {
             Decl::Int(name, ty) => ty
                 .to_doc()
                 .append(RcDoc::space())
@@ -158,8 +158,7 @@ impl PrettyPrint for Decl {
                 .append(RcDoc::text("="))
                 .append(RcDoc::space())
                 .append(expr.to_doc()),
-        };
-        doc.append(";")
+        }
     }
 }
 
