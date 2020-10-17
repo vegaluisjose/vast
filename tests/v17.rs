@@ -564,10 +564,10 @@ fn test_sequential_if() {
     let a = Expr::new_ref("a");
     let seq = Sequential::new_nonblk_assign(y, a);
     let mut ifelse = SequentialIfElse::new(cond);
-    ifelse.add_true_seq(seq);
-    let exp = r#"if(reset)
+    ifelse.add_seq(seq);
+    let exp = r#"if(reset) begin
     y <= a;
-"#;
+end"#;
     let res = ifelse.to_string();
     assert_eq!(res, exp, "\n\nresult:\n{}\nexpected:\n{}\n\n", res, exp);
 }
@@ -581,42 +581,17 @@ fn test_sequential_if_else() {
     let s0 = Sequential::new_nonblk_assign(y.clone(), val);
     let s1 = Sequential::new_nonblk_assign(y, a);
     let mut i0 = SequentialIfElse::new(c0);
-    i0.add_true_seq(s0);
-    i0.add_false_seq(s1);
-    let exp = r#"if(reset)
-    y <= 0;
-else
-    y <= a;
-"#;
-    let res = i0.to_string();
-    assert_eq!(res, exp, "\n\nresult:\n'{}'\nexpected:\n'{}'\n\n", res, exp);
-}
-
-#[test]
-fn test_sequential_if_else_block() {
-    let c0 = Expr::new_ref("reset");
-    let y = Expr::new_ref("y");
-    let a = Expr::new_ref("a");
-    let b = Expr::new_ref("b");
-    let val = Expr::new_int(0);
-    let t0 = Sequential::new_nonblk_assign(y.clone(), val);
-    let t1 = Sequential::new_nonblk_assign(y.clone(), Expr::new_int(1));
-    let f0 = Sequential::new_nonblk_assign(y.clone(), a);
-    let f1 = Sequential::new_nonblk_assign(y, b);
-    let mut i0 = SequentialIfElse::new(c0);
-    i0.add_true_seq(t0);
-    i0.add_true_seq(t1);
-    i0.add_false_seq(f0);
-    i0.add_false_seq(f1);
+    let mut else_s = SequentialIfElse::default();
+    i0.add_seq(s0);
+    else_s.add_seq(s1);
+    i0.set_else(else_s.into());
     let exp = r#"if(reset) begin
     y <= 0;
-    y <= 1;
 end else begin
     y <= a;
-    y <= b;
 end"#;
     let res = i0.to_string();
-    assert_eq!(res, exp, "\n\nresult:\n{}\nexpected:\n{}\n\n", res, exp);
+    assert_eq!(res, exp, "\n\nresult:\n'{}'\nexpected:\n'{}'\n\n", res, exp);
 }
 
 #[test]
@@ -628,46 +603,16 @@ fn test_sequential_if_else_if() {
     let val = Expr::new_int(0);
     let s0 = Sequential::new_nonblk_assign(y.clone(), val);
     let s1 = Sequential::new_nonblk_assign(y, a);
-    let mut i0 = SequentialIfElse::new(c0);
-    let mut i1 = SequentialIfElse::new(c1);
-    i0.add_true_seq(s0);
-    i1.add_true_seq(s1);
-    i0.add_false_seq(i1.into());
-    let exp = r#"if(reset)
-    y <= 0;
-else if(en)
-    y <= a;
-"#;
-    let res = i0.to_string();
-    assert_eq!(res, exp, "\n\nresult:\n{}\nexpected:\n{}\n\n", res, exp);
-}
-
-#[test]
-fn test_sequential_if_else_if_block() {
-    let c0 = Expr::new_ref("reset");
-    let c1 = Expr::new_ref("en");
-    let y = Expr::new_ref("y");
-    let a = Expr::new_ref("a");
-    let b = Expr::new_ref("b");
-    let val = Expr::new_int(0);
-    let t0 = Sequential::new_nonblk_assign(y.clone(), val);
-    let t1 = Sequential::new_nonblk_assign(y.clone(), Expr::new_int(1));
-    let f0 = Sequential::new_nonblk_assign(y.clone(), a);
-    let f1 = Sequential::new_nonblk_assign(y, b);
-    let mut i0 = SequentialIfElse::new(c0);
-    let mut i1 = SequentialIfElse::new(c1);
-    i0.add_true_seq(t0);
-    i0.add_true_seq(t1);
-    i1.add_true_seq(f0);
-    i1.add_true_seq(f1);
-    i0.add_false_seq(i1.into());
+    let mut tbr = SequentialIfElse::new(c0);
+    let mut fbr = SequentialIfElse::new(c1);
+    tbr.add_seq(s0);
+    fbr.add_seq(s1);
+    tbr.set_else(fbr.into());
     let exp = r#"if(reset) begin
     y <= 0;
-    y <= 1;
 end else if(en) begin
     y <= a;
-    y <= b;
 end"#;
-    let res = i0.to_string();
+    let res = tbr.to_string();
     assert_eq!(res, exp, "\n\nresult:\n{}\nexpected:\n{}\n\n", res, exp);
 }

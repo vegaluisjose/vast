@@ -32,6 +32,13 @@ pub enum Decl {
     Param(Id, Ty, Expr),
 }
 
+#[derive(Clone, Debug, Default)]
+pub struct SequentialIfElse {
+    pub cond: Option<Expr>,
+    pub body: Vec<Sequential>,
+    pub else_branch: Option<Rc<Sequential>>,
+}
+
 #[derive(Clone, Debug)]
 pub enum Sequential {
     Error(String),
@@ -43,13 +50,6 @@ pub enum Sequential {
     Event(EventTy, Expr),
     If(SequentialIfElse),
     Assert(Expr, Option<Rc<Sequential>>),
-}
-
-#[derive(Clone, Debug)]
-pub struct SequentialIfElse {
-    pub cond: Expr,
-    pub true_branch: Vec<Sequential>,
-    pub false_branch: Vec<Sequential>,
 }
 
 #[derive(Clone, Debug)]

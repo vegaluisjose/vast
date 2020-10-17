@@ -141,18 +141,18 @@ impl Sequential {
 impl SequentialIfElse {
     pub fn new(cond: Expr) -> Self {
         SequentialIfElse {
-            cond,
-            true_branch: vec![],
-            false_branch: vec![],
+            cond: Some(cond),
+            body: vec![],
+            else_branch: None,
         }
     }
 
-    pub fn add_true_seq(&mut self, seq: Sequential) {
-        self.true_branch.push(seq);
+    pub fn add_seq(&mut self, seq: Sequential) {
+        self.body.push(seq);
     }
 
-    pub fn add_false_seq(&mut self, seq: Sequential) {
-        self.false_branch.push(seq);
+    pub fn set_else(&mut self, seq: Sequential) {
+        self.else_branch = Some(Rc::new(seq));
     }
 }
 

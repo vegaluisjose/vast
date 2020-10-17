@@ -205,35 +205,31 @@ impl PrettyPrint for Sequential {
 
 impl PrettyPrint for SequentialIfElse {
     fn to_doc(&self) -> RcDoc<()> {
-        let cond = RcDoc::text("if").append(self.cond.to_doc().parens());
-
-        let true_body = if self.true_branch.len() == 1 {
-            block(self.true_branch.to_doc())
+        let cond = if let Some(c) = &self.cond {
+            RcDoc::text("if")
+                .append(c.to_doc().parens())
+                .append(RcDoc::space())
         } else {
-            RcDoc::space().append(block(self.true_branch.to_doc()).begin_end())
+            RcDoc::nil()
         };
-
-        let false_body = if self.false_branch.is_empty() {
+        let body = if self.body.is_empty() {
             RcDoc::nil()
         } else {
-            let beg_spacing = if self.true_branch.len() > 1 {
-                RcDoc::space()
-            } else {
-                RcDoc::nil()
-            };
-            let body = if self.false_branch.len() == 1 {
-                if matches!(self.false_branch[0], Sequential::If(..)) {
-                    RcDoc::space().append(self.false_branch.to_doc())
-                } else {
-                    RcDoc::nil().append(block(self.false_branch.to_doc()))
-                }
-            } else {
-                RcDoc::space().append(block(self.false_branch.to_doc()).begin_end())
-            };
-            beg_spacing.append("else").append(body)
+            block(intersperse(
+                self.body.iter().map(|x| x.to_doc()),
+                RcDoc::hardline(),
+            ))
+            .begin_end()
         };
-
-        cond.append(true_body).append(false_body)
+        let else_branch = if let Some(branch) = &self.else_branch {
+            RcDoc::space()
+                .append(RcDoc::text("else"))
+                .append(RcDoc::space())
+                .append(branch.to_doc())
+        } else {
+            RcDoc::nil()
+        };
+        cond.append(body).append(else_branch)
     }
 }
 
