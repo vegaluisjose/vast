@@ -198,8 +198,44 @@ impl PrettyPrint for Sequential {
                     cond
                 }
             }
-            _ => unimplemented!(),
+            Sequential::If(seq_if) => seq_if.to_doc(),
         }
+    }
+}
+
+impl PrettyPrint for SequentialIfElse {
+    fn to_doc(&self) -> RcDoc<()> {
+        let cond = if let Some(c) = &self.cond {
+            RcDoc::text("if")
+                .append(c.to_doc().parens())
+                .append(RcDoc::space())
+        } else {
+            RcDoc::nil()
+        };
+        let body = if self.body.is_empty() {
+            RcDoc::nil()
+        } else {
+            block(intersperse(
+                self.body.iter().map(|x| x.to_doc()),
+                RcDoc::hardline(),
+            ))
+            .begin_end()
+        };
+        let else_branch = if let Some(branch) = &self.else_branch {
+            RcDoc::space()
+                .append(RcDoc::text("else"))
+                .append(RcDoc::space())
+                .append(branch.to_doc())
+        } else {
+            RcDoc::nil()
+        };
+        cond.append(body).append(else_branch)
+    }
+}
+
+impl PrettyPrint for Vec<Sequential> {
+    fn to_doc(&self) -> RcDoc<()> {
+        RcDoc::intersperse(self.iter().map(PrettyPrint::to_doc), RcDoc::line())
     }
 }
 

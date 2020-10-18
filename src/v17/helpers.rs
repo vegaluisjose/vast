@@ -138,6 +138,24 @@ impl Sequential {
     }
 }
 
+impl SequentialIfElse {
+    pub fn new(cond: Expr) -> Self {
+        SequentialIfElse {
+            cond: Some(cond),
+            body: vec![],
+            else_branch: None,
+        }
+    }
+
+    pub fn add_seq(&mut self, seq: Sequential) {
+        self.body.push(seq);
+    }
+
+    pub fn set_else(&mut self, seq: Sequential) {
+        self.else_branch = Some(Rc::new(seq));
+    }
+}
+
 impl Default for AlwaysComb {
     fn default() -> AlwaysComb {
         AlwaysComb { body: Vec::new() }
@@ -227,8 +245,11 @@ impl Decl {
         )
     }
 
-    pub fn new_logic(name: &str, width: u64) -> Decl {
-        Decl::Logic(name.to_string(), Ty::new_width(width))
+    pub fn new_logic<S>(name: S, width: u64) -> Decl
+    where
+        S: AsRef<str>,
+    {
+        Decl::Logic(name.as_ref().to_string(), Ty::new_width(width))
     }
 
     pub fn new_func(func: Function) -> Decl {
@@ -273,6 +294,10 @@ impl Module {
 
     pub fn add_output(&mut self, name: &str, width: u64) {
         self.ports.push(Port::new_output(name, width));
+    }
+
+    pub fn add_decl(&mut self, decl: Decl) {
+        self.body.push(Stmt::new_decl(decl));
     }
 
     pub fn add_function(&mut self, func: Function) {

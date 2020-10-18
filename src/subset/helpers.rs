@@ -34,8 +34,11 @@ impl Expr {
         }
     }
 
-    pub fn new_ref(name: &str) -> Expr {
-        Expr::Ref(name.to_string())
+    pub fn new_ref<S>(name: S) -> Expr
+    where
+        S: AsRef<str>,
+    {
+        Expr::Ref(name.as_ref().to_string())
     }
 
     pub fn new_signed_ref(name: &str) -> Expr {
@@ -65,12 +68,32 @@ impl Expr {
         Expr::ULit(width, Radix::Bin, value.to_string())
     }
 
+    pub fn new_logical_or(lhs: Expr, rhs: Expr) -> Expr {
+        Expr::Binop(Binop::LogOr, Rc::new(lhs), Rc::new(rhs))
+    }
+
+    pub fn new_logical_and(lhs: Expr, rhs: Expr) -> Expr {
+        Expr::Binop(Binop::LogAnd, Rc::new(lhs), Rc::new(rhs))
+    }
+
     pub fn new_add(lhs: Expr, rhs: Expr) -> Expr {
         Expr::Binop(Binop::Add, Rc::new(lhs), Rc::new(rhs))
     }
 
+    pub fn new_gt(lhs: Expr, rhs: Expr) -> Expr {
+        Expr::Binop(Binop::Gt, Rc::new(lhs), Rc::new(rhs))
+    }
+
     pub fn new_lt(lhs: Expr, rhs: Expr) -> Expr {
         Expr::Binop(Binop::Lt, Rc::new(lhs), Rc::new(rhs))
+    }
+
+    pub fn new_geq(lhs: Expr, rhs: Expr) -> Expr {
+        Expr::Binop(Binop::Geq, Rc::new(lhs), Rc::new(rhs))
+    }
+
+    pub fn new_leq(lhs: Expr, rhs: Expr) -> Expr {
+        Expr::Binop(Binop::Leq, Rc::new(lhs), Rc::new(rhs))
     }
 
     pub fn new_eq(lhs: Expr, rhs: Expr) -> Expr {
@@ -87,6 +110,10 @@ impl Expr {
 
     pub fn new_mux(cond: Expr, tru: Expr, fal: Expr) -> Expr {
         Expr::Terop(Terop::Mux, Rc::new(cond), Rc::new(tru), Rc::new(fal))
+    }
+
+    pub fn new_not(exp: Expr) -> Expr {
+        Expr::Unop(Unop::Not, Rc::new(exp))
     }
 
     pub fn new_slice(var: &str, hi: Expr, lo: Expr) -> Expr {
