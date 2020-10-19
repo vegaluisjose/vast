@@ -41,12 +41,14 @@ impl CaseBranch {
         }
     }
 
-    pub fn add_seq(&mut self, seq: Sequential) {
+    pub fn add_seq(&mut self, seq: Sequential) -> &mut Self {
         self.body.push(seq);
+        self
     }
 
-    pub fn add_case(&mut self, case: Case) {
+    pub fn add_case(&mut self, case: Case) -> &mut Self {
         self.body.push(Sequential::new_case(case));
+        self
     }
 
     pub fn body(&self) -> &Vec<Sequential> {
@@ -55,8 +57,9 @@ impl CaseBranch {
 }
 
 impl CaseDefault {
-    pub fn add_seq(&mut self, seq: Sequential) {
+    pub fn add_seq(&mut self, seq: Sequential) -> &mut Self {
         self.body.push(seq);
+        self
     }
 
     pub fn body(&self) -> &Vec<Sequential> {
@@ -79,8 +82,9 @@ impl Case {
         }
     }
 
-    pub fn add_branch(&mut self, branch: CaseBranch) {
+    pub fn add_branch(&mut self, branch: CaseBranch) -> &mut Self {
         self.branches.push(branch);
+        self
     }
 
     pub fn set_default(&mut self, branch: CaseDefault) {
@@ -147,8 +151,9 @@ impl SequentialIfElse {
         }
     }
 
-    pub fn add_seq(&mut self, seq: Sequential) {
+    pub fn add_seq(&mut self, seq: Sequential) -> &mut Self {
         self.body.push(seq);
+        self
     }
 
     pub fn set_else(&mut self, seq: Sequential) {
@@ -201,12 +206,14 @@ impl ParallelProcess {
         self.event.as_ref()
     }
 
-    pub fn add_seq(&mut self, seq: Sequential) {
+    pub fn add_seq(&mut self, seq: Sequential) -> &mut Self {
         self.body.push(seq);
+        self
     }
 
-    pub fn add_case(&mut self, case: Case) {
+    pub fn add_case(&mut self, case: Case) -> &mut Self {
         self.body.push(Sequential::new_case(case));
+        self
     }
 
     pub fn set_event(&mut self, seq: Sequential) {
@@ -261,16 +268,19 @@ impl Function {
         &self.body
     }
 
-    pub fn add_input(&mut self, name: &str, width: u64) {
+    pub fn add_input(&mut self, name: &str, width: u64) -> &mut Self {
         self.inputs.push(Port::new_input(name, width));
+        self
     }
 
-    pub fn add_logic(&mut self, name: &str, width: u64) {
+    pub fn add_logic(&mut self, name: &str, width: u64) -> &mut Self {
         self.decls.push(Decl::new_logic(name, width));
+        self
     }
 
-    pub fn add_stmt(&mut self, stmt: Sequential) {
+    pub fn add_stmt(&mut self, stmt: Sequential) -> &mut Self {
         self.body.push(stmt);
+        self
     }
 
     pub fn set_return_type(&mut self, ret: Ty) {
@@ -330,32 +340,40 @@ impl Module {
         &self.attr
     }
 
-    pub fn add_input(&mut self, name: &str, width: u64) {
+    pub fn add_input(&mut self, name: &str, width: u64) -> &mut Self {
         self.ports.push(Port::new_input(name, width));
+        self
     }
 
-    pub fn add_output(&mut self, name: &str, width: u64) {
+    pub fn add_output(&mut self, name: &str, width: u64) -> &mut Self {
         self.ports.push(Port::new_output(name, width));
+        self
     }
 
-    pub fn add_decl(&mut self, decl: Decl) {
+    pub fn add_decl(&mut self, decl: Decl) -> &mut Self {
         self.body.push(Stmt::new_decl(decl));
+        self
     }
 
-    pub fn add_function(&mut self, func: Function) {
+    pub fn add_function(&mut self, func: Function) -> &mut Self {
         self.body.push(Stmt::new_decl(Decl::new_func(func)));
+        self
     }
 
-    pub fn add_instance(&mut self, inst: Instance) {
+    pub fn add_instance(&mut self, inst: Instance) -> &mut Self {
         self.body.push(Stmt::new_parallel(Parallel::new_inst(inst)));
+        self
     }
 
-    pub fn add_process(&mut self, proc: ParallelProcess) {
-        self.body.push(Stmt::new_parallel(Parallel::new_process(proc)))
+    pub fn add_process(&mut self, proc: ParallelProcess) -> &mut Self {
+        self.body
+            .push(Stmt::new_parallel(Parallel::new_process(proc)));
+        self
     }
 
-    pub fn add_stmt(&mut self, stmt: Stmt) {
+    pub fn add_stmt(&mut self, stmt: Stmt) -> &mut Self {
         self.body.push(stmt);
+        self
     }
 
     pub fn set_attr(&mut self, attr: Attribute) {
