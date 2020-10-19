@@ -297,6 +297,7 @@ impl PrettyPrint for Stmt {
                 }
             }
             Stmt::Parallel(par) => par.to_doc(),
+            Stmt::RawStr(s) => RcDoc::text(s),
         }
     }
 }

@@ -182,6 +182,8 @@ pub enum GenericStmt<T, U> {
     Decl(T),
     /// A parallel task.
     Parallel(U),
+    /// A raw string that represents a valid Verilog statement
+    RawStr(String),
 }
 
 // T ~> Declaration type

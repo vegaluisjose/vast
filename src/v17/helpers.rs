@@ -228,6 +228,10 @@ impl Stmt {
     pub fn new_decl(decl: Decl) -> Stmt {
         Stmt::Decl(decl)
     }
+
+    pub fn new_rawstr(s: String) -> Stmt {
+        Stmt::RawStr(s)
+    }
 }
 
 impl Function {

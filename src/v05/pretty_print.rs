@@ -149,6 +149,7 @@ impl PrettyPrint for Stmt {
         match self {
             Stmt::Decl(decl) => decl.to_doc().append(RcDoc::text(";")),
             Stmt::Parallel(par) => par.to_doc(),
+            Stmt::RawStr(s) => RcDoc::text(s),
         }
     }
 }
