@@ -270,7 +270,13 @@ impl PrettyPrint for Parallel {
 impl PrettyPrint for Stmt {
     fn to_doc(&self) -> RcDoc<()> {
         match self {
-            Stmt::Decl(decl) => decl.to_doc(),
+            Stmt::Decl(decl) => {
+                if let Decl::Func(_) = decl {
+                    decl.to_doc()
+                } else {
+                    decl.to_doc().append(RcDoc::text(";"))
+                }
+            }
             Stmt::Parallel(par) => par.to_doc(),
         }
     }
@@ -291,6 +297,7 @@ impl PrettyPrint for Port {
 
 impl PrettyPrint for Module {
     fn to_doc(&self) -> RcDoc<()> {
+        // Parameters for this module.
         let params = if self.params().is_empty() {
             RcDoc::nil()
         } else {
@@ -299,6 +306,7 @@ impl PrettyPrint for Module {
                 RcDoc::text(",").append(RcDoc::hardline()),
             )
         };
+        // Ports for this module.
         let ports = if self.ports().is_empty() {
             RcDoc::nil()
         } else {
@@ -307,6 +315,7 @@ impl PrettyPrint for Module {
                 RcDoc::text(",").append(RcDoc::hardline()),
             )
         };
+        // Name of the module.
         let name = if self.params.is_empty() && self.ports.is_empty() {
             RcDoc::as_string(&self.name)
                 .append(RcDoc::space())
@@ -329,6 +338,7 @@ impl PrettyPrint for Module {
             )
             .append(block_with_parens(RcDoc::nil(), ports))
         };
+        // Body of the module.
         let body = if self.body().is_empty() {
             RcDoc::hardline()
         } else {

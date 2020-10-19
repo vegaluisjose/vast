@@ -4,7 +4,7 @@ use std::rc::Rc;
 pub type Id = String;
 pub type Map = HashMap<Id, Expr>;
 
-// Reduce ops
+/// Unary reduction operators.
 #[derive(Clone, Debug)]
 pub enum Unop {
     LogNot,
@@ -17,6 +17,7 @@ pub enum Unop {
     Xnor,
 }
 
+/// Binary operators.
 #[derive(Clone, Debug)]
 pub enum Binop {
     LogOr,
@@ -32,6 +33,7 @@ pub enum Binop {
     IndexBit,
 }
 
+/// Ternaray operations
 #[derive(Clone, Debug)]
 pub enum Terop {
     Mux,
@@ -77,57 +79,81 @@ pub enum AttributeTy {
     Stmt(Id, String),
 }
 
+/// Representation for attributes
 #[derive(Clone, Debug, Default)]
 pub struct Attribute {
     pub attrs: Vec<AttributeTy>,
 }
 
+/// Event type for a task.
 #[derive(Clone, Debug)]
 pub enum EventTy {
+    /// A positive edge triggered event.
     Posedge,
+    /// A negative edge triggered event.
     Negedge,
 }
 
+/// Instance of a module.
 #[derive(Clone, Debug)]
 pub struct Instance {
+    /// Name of this instance.
     pub id: Id,
+    /// XXX
     pub prim: Id,
+    /// Values for the parameters.
     pub params: Map,
+    /// Wires for the ports.
     pub ports: Map,
+    /// Attributes for the instance.
     pub attr: Attribute,
 }
 
+/// The type of assignment.
 #[derive(Clone, Debug)]
 pub enum AssignTy {
+    /// A blocking assignment.
     Blocking,
+    /// A non-blocking assignment.
     NonBlocking,
 }
 
+/// Representation for the case statement
 // T ~> Sequential type
 #[derive(Clone, Debug)]
 pub struct GenericCaseBranch<T> {
+    /// The conditional guard for this case.
     pub cond: Expr,
+    /// The body for this case.
     pub body: Vec<T>,
 }
 
+/// Representation for the default case in a case statement.
 // T ~> Sequential type
 #[derive(Clone, Debug)]
 pub struct GenericCaseDefault<T> {
     pub body: Vec<T>,
 }
 
+/// A case expression.
 // T ~> Sequential type
 #[derive(Clone, Debug)]
 pub struct GenericCase<T> {
+    /// The condition of the case expression.
     pub cond: Expr,
+    /// Conditional branches for the case.
     pub branches: Vec<GenericCaseBranch<T>>,
+    /// The default case for case statement.
     pub default: Option<GenericCaseDefault<T>>,
 }
 
+/// A port of a module or a function.
 // T ~> Declaration type
 #[derive(Clone, Debug)]
 pub enum GenericPort<T> {
+    /// An input port.
     Input(T),
+    /// An output port.
     Output(T),
 }
 
@@ -136,10 +162,15 @@ pub enum GenericPort<T> {
 // V ~> Data Type
 #[derive(Clone, Debug)]
 pub struct GenericFunction<T, U, V> {
+    /// Name of the function.
     pub name: Id,
+    /// Ports of the function.
     pub inputs: Vec<GenericPort<T>>,
+    /// Declarations in this function.
     pub decls: Vec<T>,
+    /// Body of this function.
     pub body: Vec<U>,
+    /// Return value from this function.
     pub ret: V,
 }
 
@@ -147,7 +178,9 @@ pub struct GenericFunction<T, U, V> {
 // U ~> Parallel type
 #[derive(Clone, Debug)]
 pub enum GenericStmt<T, U> {
+    /// A declaration parameterized on the verilog standard.
     Decl(T),
+    /// A parallel task.
     Parallel(U),
 }
 
@@ -155,9 +188,14 @@ pub enum GenericStmt<T, U> {
 // U ~> Parallel type
 #[derive(Clone, Debug)]
 pub struct GenericModule<T, U> {
+    /// Name of the module.
     pub name: String,
+    /// Parameters for the module.
     pub params: Vec<T>,
+    /// Ports of this module.
     pub ports: Vec<GenericPort<T>>,
+    /// Body of this module.
     pub body: Vec<GenericStmt<T, U>>,
+    /// Attributes for this module.
     pub attr: Attribute,
 }
