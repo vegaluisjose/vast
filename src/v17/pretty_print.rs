@@ -165,6 +165,7 @@ impl PrettyPrint for Decl {
 impl PrettyPrint for Sequential {
     fn to_doc(&self) -> RcDoc<()> {
         match self {
+            Sequential::ExprStmt(expr) => expr.to_doc(),
             Sequential::Error(msg) => RcDoc::text("$")
                 .append(RcDoc::text("error"))
                 .append(RcDoc::as_string(msg).quotes().parens())
