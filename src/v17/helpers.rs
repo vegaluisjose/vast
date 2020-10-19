@@ -41,8 +41,8 @@ impl CaseBranch {
         }
     }
 
-    pub fn add_stmt(&mut self, stmt: Sequential) {
-        self.body.push(stmt);
+    pub fn add_seq(&mut self, seq: Sequential) {
+        self.body.push(seq);
     }
 
     pub fn add_case(&mut self, case: Case) {

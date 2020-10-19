@@ -292,7 +292,7 @@ fn test_event_ty_negedge() {
 #[test]
 fn test_case_branch() {
     let mut branch = CaseBranch::new(Expr::new_ulit_dec(32, "0"));
-    branch.add_stmt(Sequential::new_display("branch 0"));
+    branch.add_seq(Sequential::new_display("branch 0"));
     let res = branch.to_string();
     let exp = r#"32'd0 : begin
     $display("branch 0");
@@ -548,11 +548,11 @@ fn test_module_with_final() {
 fn test_module_with_case() {
     let exp = read_to_string("regression/v17/module_with_case.v");
     let mut nop = CaseBranch::new(Expr::new_ulit_dec(5, "0"));
-    nop.add_stmt(Sequential::new_display("nop"));
+    nop.add_seq(Sequential::new_display("nop"));
     let mut add = CaseBranch::new(Expr::new_ulit_dec(5, "1"));
-    add.add_stmt(Sequential::new_display("add"));
+    add.add_seq(Sequential::new_display("add"));
     let mut sub = CaseBranch::new(Expr::new_ulit_dec(5, "2"));
-    sub.add_stmt(Sequential::new_display("sub"));
+    sub.add_seq(Sequential::new_display("sub"));
     let mut invalid = CaseDefault::default();
     invalid.add_seq(Sequential::new_display("invalid"));
     let mut case = Case::new(Expr::new_ref("opcode"));
@@ -574,16 +574,16 @@ fn test_module_with_case() {
 fn test_module_with_nested_case() {
     let exp = read_to_string("regression/v17/module_with_nested_case.v");
     let mut id_0 = CaseBranch::new(Expr::new_ulit_dec(1, "0"));
-    id_0.add_stmt(Sequential::new_display("id 0"));
+    id_0.add_seq(Sequential::new_display("id 0"));
     let mut id_1 = CaseBranch::new(Expr::new_ulit_dec(1, "1"));
-    id_1.add_stmt(Sequential::new_display("id 1"));
+    id_1.add_seq(Sequential::new_display("id 1"));
     let mut case_id = Case::new(Expr::new_ref("id"));
     case_id.add_branch(id_0);
     case_id.add_branch(id_1);
     let mut opcode_0 = CaseBranch::new(Expr::new_ulit_dec(1, "0"));
     opcode_0.add_case(case_id);
     let mut opcode_1 = CaseBranch::new(Expr::new_ulit_dec(1, "1"));
-    opcode_1.add_stmt(Sequential::new_display("invalid"));
+    opcode_1.add_seq(Sequential::new_display("invalid"));
     let mut case_opcode = Case::new(Expr::new_ref("opcode"));
     case_opcode.add_branch(opcode_0);
     case_opcode.add_branch(opcode_1);
