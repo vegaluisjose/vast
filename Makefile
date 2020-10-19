@@ -29,6 +29,7 @@ lint-v17:
 	verilator --lint-only +1800-2017ext+v $(V17_DIR)/module_with_function.v
 	verilator --lint-only +1800-2017ext+v $(V17_DIR)/module_with_function_add_one.v
 	verilator --lint-only +1800-2017ext+v $(V17_DIR)/module_with_always_comb.v
+	verilator --lint-only +1800-2017ext+v $(V17_DIR)/module_with_always_ff.v
 	verilator --lint-only +1800-2017ext+v $(V17_DIR)/module_with_case.v
 	verilator --lint-only +1800-2017ext+v $(V17_DIR)/module_with_initial.v
 	verilator --lint-only +1800-2017ext+v $(V17_DIR)/module_with_final.v

@@ -243,7 +243,7 @@ impl PrettyPrint for ProcessTy {
     fn to_doc(&self) -> RcDoc<()> {
         match self {
             ProcessTy::AlwaysComb => RcDoc::text("always_comb"),
-            ProcessTy::AlwaysFF => RcDoc::text("alwaysff"),
+            ProcessTy::AlwaysFF => RcDoc::text("always_ff"),
             ProcessTy::Initial => RcDoc::text("initial"),
             ProcessTy::Final => RcDoc::text("final"),
         }

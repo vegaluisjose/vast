@@ -165,7 +165,7 @@ impl ParallelProcess {
         }
     }
 
-    pub fn new_alwaysff() -> Self {
+    pub fn new_always_ff() -> Self {
         ParallelProcess {
             ty: ProcessTy::AlwaysFF,
             event: None,

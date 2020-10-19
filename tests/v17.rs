@@ -507,15 +507,16 @@ fn test_module_with_always_comb() {
 }
 
 #[test]
-fn test_module_with_alwaysff() {
-    let exp = read_to_string("regression/v17/module_with_alwaysff.v");
+fn test_module_with_always_ff() {
+    let exp = read_to_string("regression/v17/module_with_always_ff.v");
     let event = Sequential::Event(EventTy::Posedge, Expr::Ref("clock".to_string()));
-    let mut always = ParallelProcess::new_alwaysff();
+    let mut always = ParallelProcess::new_always_ff();
     always.add_seq(Sequential::new_display("hello sync world"));
     always.set_event(event);
     let stmt = Stmt::from(always);
-    let mut module = Module::new("module_with_alwaysff");
+    let mut module = Module::new("module_with_always_ff");
     module.add_stmt(stmt);
+    module.add_input("clock", 1);
     let res = module.to_string();
     assert_eq!(res, exp, "\n\nresult:\n{}\nexpected:\n{}\n\n", res, exp);
 }
