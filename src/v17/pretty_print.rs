@@ -270,7 +270,13 @@ impl PrettyPrint for Parallel {
 impl PrettyPrint for Stmt {
     fn to_doc(&self) -> RcDoc<()> {
         match self {
-            Stmt::Decl(decl) => decl.to_doc().append(RcDoc::text(";")),
+            Stmt::Decl(decl) => {
+                if let Decl::Func(_) = decl {
+                    decl.to_doc()
+                } else {
+                    decl.to_doc().append(RcDoc::text(";"))
+                }
+            }
             Stmt::Parallel(par) => par.to_doc(),
         }
     }
