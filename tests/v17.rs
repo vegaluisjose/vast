@@ -498,9 +498,23 @@ fn test_module_with_function_add_one() {
 fn test_module_with_always_comb() {
     let exp = read_to_string("regression/v17/module_with_always_comb.v");
     let mut always = ParallelProcess::new_always_comb();
-    always.add_stmt(Sequential::new_display("hello world"));
+    always.add_seq(Sequential::new_display("hello world"));
     let stmt = Stmt::from(always);
     let mut module = Module::new("module_with_always_comb");
+    module.add_stmt(stmt);
+    let res = module.to_string();
+    assert_eq!(res, exp, "\n\nresult:\n{}\nexpected:\n{}\n\n", res, exp);
+}
+
+#[test]
+fn test_module_with_alwaysff() {
+    let exp = read_to_string("regression/v17/module_with_alwaysff.v");
+    let event = Sequential::Event(EventTy::Posedge, Expr::Ref("clock".to_string()));
+    let mut always = ParallelProcess::new_alwaysff();
+    always.add_seq(Sequential::new_display("hello sync world"));
+    always.set_event(event);
+    let stmt = Stmt::from(always);
+    let mut module = Module::new("module_with_alwaysff");
     module.add_stmt(stmt);
     let res = module.to_string();
     assert_eq!(res, exp, "\n\nresult:\n{}\nexpected:\n{}\n\n", res, exp);
@@ -510,7 +524,7 @@ fn test_module_with_always_comb() {
 fn test_module_with_initial() {
     let exp = read_to_string("regression/v17/module_with_initial.v");
     let mut initial = ParallelProcess::new_initial();
-    initial.add_stmt(Sequential::new_display("initial"));
+    initial.add_seq(Sequential::new_display("initial"));
     let stmt = Stmt::from(initial);
     let mut module = Module::new("module_with_initial");
     module.add_stmt(stmt);
@@ -522,7 +536,7 @@ fn test_module_with_initial() {
 fn test_module_with_final() {
     let exp = read_to_string("regression/v17/module_with_final.v");
     let mut fnal = ParallelProcess::new_final();
-    fnal.add_stmt(Sequential::new_display("final"));
+    fnal.add_seq(Sequential::new_display("final"));
     let stmt = Stmt::from(fnal);
     let mut module = Module::new("module_with_final");
     module.add_stmt(stmt);

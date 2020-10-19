@@ -243,6 +243,7 @@ impl PrettyPrint for ProcessTy {
     fn to_doc(&self) -> RcDoc<()> {
         match self {
             ProcessTy::AlwaysComb => RcDoc::text("always_comb"),
+            ProcessTy::AlwaysFF => RcDoc::text("alwaysff"),
             ProcessTy::Initial => RcDoc::text("initial"),
             ProcessTy::Final => RcDoc::text("final"),
         }
@@ -260,7 +261,18 @@ impl PrettyPrint for ParallelProcess {
             ))
             .begin_end()
         };
-        self.ty().to_doc().append(RcDoc::space()).append(body)
+        let event = if let Some(e) = self.event() {
+            RcDoc::space()
+                .append(RcDoc::text("@"))
+                .append(e.to_doc().parens())
+        } else {
+            RcDoc::nil()
+        };
+        self.ty()
+            .to_doc()
+            .append(event)
+            .append(RcDoc::space())
+            .append(body)
     }
 }
 
@@ -270,7 +282,6 @@ impl PrettyPrint for Parallel {
             Parallel::Inst(ty) => ty.to_doc(),
             Parallel::ParAssign(_, _) => unimplemented!(),
             Parallel::Process(proc) => proc.to_doc(),
-            Parallel::AlwaysFF(_, _) => unimplemented!(),
         }
     }
 }

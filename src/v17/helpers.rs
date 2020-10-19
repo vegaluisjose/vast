@@ -160,6 +160,15 @@ impl ParallelProcess {
     pub fn new_always_comb() -> Self {
         ParallelProcess {
             ty: ProcessTy::AlwaysComb,
+            event: None,
+            body: Vec::new(),
+        }
+    }
+
+    pub fn new_alwaysff() -> Self {
+        ParallelProcess {
+            ty: ProcessTy::AlwaysFF,
+            event: None,
             body: Vec::new(),
         }
     }
@@ -167,6 +176,7 @@ impl ParallelProcess {
     pub fn new_initial() -> Self {
         ParallelProcess {
             ty: ProcessTy::Initial,
+            event: None,
             body: Vec::new(),
         }
     }
@@ -174,6 +184,7 @@ impl ParallelProcess {
     pub fn new_final() -> Self {
         ParallelProcess {
             ty: ProcessTy::Final,
+            event: None,
             body: Vec::new(),
         }
     }
@@ -186,12 +197,20 @@ impl ParallelProcess {
         &self.body
     }
 
-    pub fn add_stmt(&mut self, stmt: Sequential) {
-        self.body.push(stmt);
+    pub fn event(&self) -> Option<&Sequential> {
+        self.event.as_ref()
+    }
+
+    pub fn add_seq(&mut self, seq: Sequential) {
+        self.body.push(seq);
     }
 
     pub fn add_case(&mut self, case: Case) {
         self.body.push(Sequential::new_case(case));
+    }
+
+    pub fn set_event(&mut self, seq: Sequential) {
+        self.event = Some(seq)
     }
 }
 
