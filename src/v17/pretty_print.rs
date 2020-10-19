@@ -185,7 +185,7 @@ impl PrettyPrint for Sequential {
                 .append(rexpr.to_doc())
                 .append(RcDoc::text(";")),
             Sequential::SeqCase(case) => case.to_doc(),
-            Sequential::SeqCall(call) => call.to_doc().append(RcDoc::text(";")),
+            Sequential::Call(call) => call.to_doc().append(RcDoc::text(";")),
             Sequential::Event(ty, expr) => ty.to_doc().append(RcDoc::space()).append(expr.to_doc()),
             Sequential::Assert(expr, branch) => {
                 let cond = RcDoc::text("assert").append(expr.to_doc().parens());

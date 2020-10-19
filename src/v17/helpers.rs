@@ -134,7 +134,7 @@ impl Sequential {
     }
 
     pub fn new_call(call: Expr) -> Sequential {
-        Sequential::SeqCall(call)
+        Sequential::Call(call)
     }
 }
 
