@@ -253,15 +253,13 @@ impl PrettyPrint for ProcessTy {
 
 impl PrettyPrint for ParallelProcess {
     fn to_doc(&self) -> RcDoc<()> {
-        let body = if self.body().is_empty() {
-            RcDoc::nil()
-        } else {
-            block(intersperse(
-                self.body().iter().map(|x| x.to_doc()),
-                RcDoc::hardline(),
-            ))
-            .begin_end()
-        };
+        if self.body().is_empty() {
+            return RcDoc::nil();
+        }
+        let body = block(intersperse(
+            self.body().iter().map(|x| x.to_doc()),
+            RcDoc::hardline(),
+        )).begin_end();
         let event = if let Some(e) = self.event() {
             RcDoc::space()
                 .append(RcDoc::text("@"))
