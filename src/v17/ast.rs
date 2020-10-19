@@ -53,7 +53,15 @@ pub enum Sequential {
 }
 
 #[derive(Clone, Debug)]
-pub struct AlwaysComb {
+pub enum ProcessTy {
+    AlwaysComb,
+    Initial,
+    Final,
+}
+
+#[derive(Clone, Debug)]
+pub struct ParallelProcess {
+    pub ty: ProcessTy,
     pub body: Vec<Sequential>,
 }
 
@@ -61,6 +69,6 @@ pub struct AlwaysComb {
 pub enum Parallel {
     Inst(Instance),
     ParAssign(Expr, Expr),
-    ParAlwaysComb(AlwaysComb),
+    Process(ParallelProcess),
     AlwaysFF(Sequential, Vec<Sequential>),
 }

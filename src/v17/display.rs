@@ -38,6 +38,12 @@ impl fmt::Display for SequentialIfElse {
     }
 }
 
+impl fmt::Display for ParallelProcess {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        write!(f, "{}", self.to_pretty())
+    }
+}
+
 impl fmt::Display for Parallel {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         write!(f, "{}", self.to_pretty())

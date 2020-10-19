@@ -239,7 +239,17 @@ impl PrettyPrint for Vec<Sequential> {
     }
 }
 
-impl PrettyPrint for AlwaysComb {
+impl PrettyPrint for ProcessTy {
+    fn to_doc(&self) -> RcDoc<()> {
+        match self {
+            ProcessTy::AlwaysComb => RcDoc::text("always_comb"),
+            ProcessTy::Initial => RcDoc::text("initial"),
+            ProcessTy::Final => RcDoc::text("final"),
+        }
+    }
+}
+
+impl PrettyPrint for ParallelProcess {
     fn to_doc(&self) -> RcDoc<()> {
         let body = if self.body().is_empty() {
             RcDoc::nil()
@@ -250,9 +260,7 @@ impl PrettyPrint for AlwaysComb {
             ))
             .begin_end()
         };
-        RcDoc::text("always_comb")
-            .append(RcDoc::space())
-            .append(body)
+        self.ty().to_doc().append(RcDoc::space()).append(body)
     }
 }
 
@@ -261,7 +269,7 @@ impl PrettyPrint for Parallel {
         match self {
             Parallel::Inst(ty) => ty.to_doc(),
             Parallel::ParAssign(_, _) => unimplemented!(),
-            Parallel::ParAlwaysComb(always) => always.to_doc(),
+            Parallel::Process(proc) => proc.to_doc(),
             Parallel::AlwaysFF(_, _) => unimplemented!(),
         }
     }

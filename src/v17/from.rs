@@ -5,3 +5,21 @@ impl From<SequentialIfElse> for Sequential {
         Sequential::If(seq)
     }
 }
+
+impl From<ParallelProcess> for Parallel {
+    fn from(process: ParallelProcess) -> Self {
+        Parallel::Process(process)
+    }
+}
+
+impl From<Parallel> for Stmt {
+    fn from(parallel: Parallel) -> Self {
+        Stmt::Parallel(parallel)
+    }
+}
+
+impl From<ParallelProcess> for Stmt {
+    fn from(process: ParallelProcess) -> Self {
+        Stmt::from(Parallel::from(process))
+    }
+}
