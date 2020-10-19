@@ -303,7 +303,7 @@ end"#;
 #[test]
 fn test_case_default() {
     let mut default = CaseDefault::default();
-    default.add_stmt(Sequential::new_display("default branch"));
+    default.add_seq(Sequential::new_display("default branch"));
     let res = default.to_string();
     let exp = r#"default : begin
     $display("default branch");
@@ -554,7 +554,7 @@ fn test_module_with_case() {
     let mut sub = CaseBranch::new(Expr::new_ulit_dec(5, "2"));
     sub.add_stmt(Sequential::new_display("sub"));
     let mut invalid = CaseDefault::default();
-    invalid.add_stmt(Sequential::new_display("invalid"));
+    invalid.add_seq(Sequential::new_display("invalid"));
     let mut case = Case::new(Expr::new_ref("opcode"));
     case.add_branch(nop);
     case.add_branch(add);
