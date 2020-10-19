@@ -218,6 +218,10 @@ impl Parallel {
     pub fn new_inst(inst: Instance) -> Parallel {
         Parallel::Inst(inst)
     }
+
+    pub fn new_process(par_process: ParallelProcess) -> Parallel {
+        Parallel::Process(par_process)
+    }
 }
 
 impl Stmt {
@@ -344,6 +348,10 @@ impl Module {
 
     pub fn add_instance(&mut self, inst: Instance) {
         self.body.push(Stmt::new_parallel(Parallel::new_inst(inst)));
+    }
+
+    pub fn add_process(&mut self, proc: ParallelProcess) {
+        self.body.push(Stmt::new_parallel(Parallel::new_process(proc)))
     }
 
     pub fn add_stmt(&mut self, stmt: Stmt) {
