@@ -477,9 +477,15 @@ fn test_module_empty() {
 }
 
 #[test]
-fn test_module_with_seq_expr() {
-    let exp = read_to_string("regression/v17/module_seq_expr.v");
+fn test_module_with_import_function() {
+    let exp = read_to_string("regression/v17/module_with_import_function.v");
+    let mut func = Function::new("foo", Ty::Void);
+    func.add_input_int("a");
+    func.add_input_int("b");
+    func.import();
     let mut main = Module::new("main");
+    main.add_decl(Decl::new_int("x"));
+    main.add_decl(Decl::from(func));
     let mut comb = ParallelProcess::new_always_comb();
     comb.add_seq(Sequential::SeqExpr(Expr::new_call(
         "foo",

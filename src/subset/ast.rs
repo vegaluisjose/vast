@@ -159,11 +159,14 @@ pub enum GenericPort<T> {
     Output(T),
 }
 
+// F ~> Functiom type
 // T ~> Declaration type
 // U ~> Sequential type
 // V ~> Data Type
 #[derive(Clone, Debug)]
-pub struct GenericFunction<T, U, V> {
+pub struct GenericFunction<F, T, U, V> {
+    /// Function type (DPI-C).
+    pub ty: F,
     /// Name of the function.
     pub name: Id,
     /// Ports of the function.

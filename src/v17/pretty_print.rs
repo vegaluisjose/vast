@@ -113,13 +113,26 @@ impl PrettyPrint for Function {
             .append(RcDoc::as_string(&self.name))
             .append(ports.parens())
             .append(RcDoc::text(";"));
-        if self.decls().is_empty() && self.body().is_empty() {
+        let func = if self.decls().is_empty() && self.body().is_empty() {
             RcDoc::text("function").append(args)
         } else if self.body().is_empty() {
             args.append(block(decls)).func_endfunc()
         } else {
             args.append(block(decls.append(block(body).begin_end())))
                 .func_endfunc()
+        };
+        match self.ty() {
+            FunctionTy::Export => RcDoc::text("export")
+                .append(RcDoc::space())
+                .append(RcDoc::text("DPI-C").quotes())
+                .append(RcDoc::space())
+                .append(func),
+            FunctionTy::Import => RcDoc::text("import")
+                .append(RcDoc::space())
+                .append(RcDoc::text("DPI-C").quotes())
+                .append(RcDoc::space())
+                .append(func),
+            FunctionTy::Default => func,
         }
     }
 }
@@ -142,7 +155,7 @@ impl PrettyPrint for Decl {
                     .append(extra_space)
                     .append(RcDoc::as_string(name))
             }
-            Decl::Func(function) => function.to_doc(),
+            Decl::Func(func) => func.to_doc(),
             Decl::Param(name, ty, expr) => RcDoc::text("parameter")
                 .append(RcDoc::space())
                 .append(ty.to_doc())

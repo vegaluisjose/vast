@@ -26,6 +26,11 @@ impl Port {
         Port::Input(logic)
     }
 
+    pub fn new_input_int(name: &str) -> Port {
+        let inp = Decl::Int(name.to_string(), Ty::Int);
+        Port::Input(inp)
+    }
+
     pub fn new_output(name: &str, width: u64) -> Port {
         let ty = Ty::Width(width);
         let logic = Decl::Logic(name.to_string(), ty);
@@ -252,6 +257,7 @@ impl Stmt {
 impl Function {
     pub fn new(name: &str, ret: Ty) -> Function {
         Function {
+            ty: FunctionTy::Default,
             name: name.to_string(),
             ports: Vec::new(),
             decls: Vec::new(),
@@ -272,8 +278,17 @@ impl Function {
         &self.body
     }
 
+    pub fn ty(&self) -> &FunctionTy {
+        &self.ty
+    }
+
     pub fn add_input(&mut self, name: &str, width: u64) -> &mut Self {
         self.ports.push(Port::new_input(name, width));
+        self
+    }
+
+    pub fn add_input_int(&mut self, name: &str) -> &mut Self {
+        self.ports.push(Port::new_input_int(name));
         self
     }
 
@@ -295,6 +310,14 @@ impl Function {
     pub fn set_return_type(&mut self, ret: Ty) {
         self.ret = ret;
     }
+
+    pub fn export(&mut self) {
+        self.ty = FunctionTy::Export;
+    }
+
+    pub fn import(&mut self) {
+        self.ty = FunctionTy::Import;
+    }
 }
 
 impl Decl {
@@ -311,6 +334,13 @@ impl Decl {
         S: AsRef<str>,
     {
         Decl::Logic(name.as_ref().to_string(), Ty::new_width(width))
+    }
+
+    pub fn new_int<S>(name: S) -> Decl
+    where
+        S: AsRef<str>,
+    {
+        Decl::Int(name.as_ref().to_string(), Ty::Int)
     }
 
     pub fn new_func(func: Function) -> Decl {

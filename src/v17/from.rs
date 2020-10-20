@@ -23,3 +23,9 @@ impl From<ParallelProcess> for Stmt {
         Stmt::from(Parallel::from(process))
     }
 }
+
+impl From<Function> for Decl {
+    fn from(function: Function) -> Self {
+        Decl::Func(function)
+    }
+}

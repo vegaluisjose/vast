@@ -11,7 +11,7 @@ pub type Instance = subset::ast::Instance;
 pub type CaseBranch = subset::ast::GenericCaseBranch<Sequential>;
 pub type CaseDefault = subset::ast::GenericCaseDefault<Sequential>;
 pub type Case = subset::ast::GenericCase<Sequential>;
-pub type Function = subset::ast::GenericFunction<Decl, Sequential, Ty>;
+pub type Function = subset::ast::GenericFunction<FunctionTy, Decl, Sequential, Ty>;
 pub type Stmt = subset::ast::GenericStmt<Decl, Parallel>;
 pub type Port = subset::ast::GenericPort<Decl>;
 pub type Module = subset::ast::GenericModule<Decl, Parallel>;
@@ -23,6 +23,13 @@ pub enum Ty {
     Int,
     // maybe use nonzero64?
     Width(u64),
+}
+
+#[derive(Clone, Debug)]
+pub enum FunctionTy {
+    Default,
+    Export,
+    Import,
 }
 
 #[derive(Clone, Debug)]
