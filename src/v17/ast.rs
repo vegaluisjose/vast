@@ -51,7 +51,7 @@ pub enum Sequential {
     Event(EventTy, Expr),
     If(SequentialIfElse),
     Assert(Expr, Option<Rc<Sequential>>),
-    ExprStmt(Expr),
+    SeqExpr(Expr),
 }
 
 #[derive(Clone, Debug)]
