@@ -259,7 +259,8 @@ impl PrettyPrint for ParallelProcess {
         let body = block(intersperse(
             self.body().iter().map(|x| x.to_doc()),
             RcDoc::hardline(),
-        )).begin_end();
+        ))
+        .begin_end();
         let event = if let Some(e) = self.event() {
             RcDoc::space()
                 .append(RcDoc::text("@"))
