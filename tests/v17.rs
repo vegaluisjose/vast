@@ -1,12 +1,23 @@
 use vast::util::file::read_to_string;
 use vast::v17::ast::*;
 
+macro_rules! check {
+    ($res:expr, $exp:expr) => {
+        assert!(
+            $res == $exp,
+            "\n\nresult:\n{}\nexpected:\n{}\n\n",
+            $res,
+            $exp
+        );
+    };
+}
+
 #[test]
 fn test_expr_str() {
     let expr = Expr::new_str("multiply");
     let exp = r#""multiply""#.to_string();
     let res = expr.to_string();
-    assert_eq!(res, exp, "\n\nresult:\n{}\nexpected:\n{}\n\n", res, exp);
+    check!(res, exp);
 }
 
 #[test]
@@ -14,7 +25,7 @@ fn test_expr_ulit_bin() {
     let expr = Expr::new_ulit_bin(4, "1000");
     let exp = "4'b1000".to_string();
     let res = expr.to_string();
-    assert_eq!(res, exp, "\n\nresult:\n{}\nexpected:\n{}\n\n", res, exp);
+    check!(res, exp);
 }
 
 #[test]
@@ -22,7 +33,7 @@ fn test_expr_ulit_hex() {
     let expr = Expr::new_ulit_hex(8, "ff");
     let exp = "8'hff".to_string();
     let res = expr.to_string();
-    assert_eq!(res, exp, "\n\nresult:\n{}\nexpected:\n{}\n\n", res, exp);
+    check!(res, exp);
 }
 
 #[test]
@@ -30,7 +41,7 @@ fn test_expr_ulit_dec() {
     let expr = Expr::new_ulit_dec(16, "78");
     let exp = "16'd78".to_string();
     let res = expr.to_string();
-    assert_eq!(res, exp, "\n\nresult:\n{}\nexpected:\n{}\n\n", res, exp);
+    check!(res, exp);
 }
 
 #[test]
@@ -40,7 +51,7 @@ fn test_expr_logor() {
     let logor = Expr::new_logical_or(lhs, rhs);
     let res = logor.to_string();
     let exp = "a || 1'd1".to_string();
-    assert_eq!(res, exp, "\n\nresult:\n{}\nexpected:\n{}\n\n", res, exp);
+    check!(res, exp);
 }
 
 #[test]
@@ -50,7 +61,7 @@ fn test_expr_logand() {
     let logand = Expr::new_logical_and(lhs, rhs);
     let res = logand.to_string();
     let exp = "a && 1'd1".to_string();
-    assert_eq!(res, exp, "\n\nresult:\n{}\nexpected:\n{}\n\n", res, exp);
+    check!(res, exp);
 }
 
 #[test]
@@ -60,7 +71,7 @@ fn test_expr_add() {
     let add = Expr::new_add(lhs, rhs);
     let res = add.to_string();
     let exp = "a + 8'd1".to_string();
-    assert_eq!(res, exp, "\n\nresult:\n{}\nexpected:\n{}\n\n", res, exp);
+    check!(res, exp);
 }
 
 #[test]
@@ -70,7 +81,7 @@ fn test_expr_gt() {
     let gt = Expr::new_gt(lhs, rhs);
     let res = gt.to_string();
     let exp = "mask > 32'd1".to_string();
-    assert_eq!(res, exp, "\n\nresult:\n{}\nexpected:\n{}\n\n", res, exp);
+    check!(res, exp);
 }
 
 #[test]
@@ -80,7 +91,7 @@ fn test_expr_lt() {
     let lt = Expr::new_lt(lhs, rhs);
     let res = lt.to_string();
     let exp = "mask < 32'd1".to_string();
-    assert_eq!(res, exp, "\n\nresult:\n{}\nexpected:\n{}\n\n", res, exp);
+    check!(res, exp);
 }
 
 #[test]
@@ -90,7 +101,7 @@ fn test_expr_geq() {
     let geq = Expr::new_geq(lhs, rhs);
     let res = geq.to_string();
     let exp = "mask >= 32'd1".to_string();
-    assert_eq!(res, exp, "\n\nresult:\n{}\nexpected:\n{}\n\n", res, exp);
+    check!(res, exp);
 }
 
 #[test]
@@ -100,7 +111,7 @@ fn test_expr_leq() {
     let leq = Expr::new_leq(lhs, rhs);
     let res = leq.to_string();
     let exp = "mask <= 32'd1".to_string();
-    assert_eq!(res, exp, "\n\nresult:\n{}\nexpected:\n{}\n\n", res, exp);
+    check!(res, exp);
 }
 
 #[test]
@@ -110,7 +121,7 @@ fn test_expr_eq() {
     let eq = Expr::new_eq(lhs, rhs);
     let res = eq.to_string();
     let exp = "z == 8'd1".to_string();
-    assert_eq!(res, exp, "\n\nresult:\n{}\nexpected:\n{}\n\n", res, exp);
+    check!(res, exp);
 }
 
 #[test]
@@ -120,7 +131,7 @@ fn test_expr_neq() {
     let neq = Expr::new_neq(lhs, rhs);
     let res = neq.to_string();
     let exp = "a != b".to_string();
-    assert_eq!(res, exp, "\n\nresult:\n{}\nexpected:\n{}\n\n", res, exp);
+    check!(res, exp);
 }
 
 #[test]
@@ -130,7 +141,7 @@ fn test_expr_mul() {
     let mul = Expr::new_mul(lhs, rhs);
     let res = mul.to_string();
     let exp = "a * b".to_string();
-    assert_eq!(res, exp, "\n\nresult:\n{}\nexpected:\n{}\n\n", res, exp);
+    check!(res, exp);
 }
 
 #[test]
@@ -138,7 +149,7 @@ fn test_expr_int() {
     let expr = Expr::Int(3);
     let res = expr.to_string();
     let exp = "3".to_string();
-    assert_eq!(res, exp, "\n\nresult:\n{}\nexpected:\n{}\n\n", res, exp);
+    check!(res, exp);
 }
 
 #[test]
@@ -149,7 +160,7 @@ fn test_expr_mux() {
     let mux = Expr::new_mux(cond, tru, fal);
     let res = mux.to_string();
     let exp = "a == b ? a : b".to_string();
-    assert_eq!(res, exp, "\n\nresult:\n{}\nexpected:\n{}\n\n", res, exp);
+    check!(res, exp);
 }
 
 #[test]
@@ -159,7 +170,7 @@ fn test_expr_slice() {
     let slice = Expr::new_slice("a", hi, lo);
     let res = slice.to_string();
     let exp = "a[7:0]".to_string();
-    assert_eq!(res, exp, "\n\nresult:\n{}\nexpected:\n{}\n\n", res, exp);
+    check!(res, exp);
 }
 
 #[test]
@@ -168,7 +179,7 @@ fn test_expr_index_slice() {
     let slice = Expr::new_index_slice("a", lo, 8);
     let res = slice.to_string();
     let exp = "a[0 +: 8]".to_string();
-    assert_eq!(res, exp, "\n\nresult:\n{}\nexpected:\n{}\n\n", res, exp);
+    check!(res, exp);
 }
 
 #[test]
@@ -177,7 +188,7 @@ fn test_expr_index_slice_var() {
     let slice = Expr::new_index_slice("a", lo, 32);
     let res = slice.to_string();
     let exp = "a[x * 32 +: 32]".to_string();
-    assert_eq!(res, exp, "\n\nresult:\n{}\nexpected:\n{}\n\n", res, exp);
+    check!(res, exp);
 }
 
 #[test]
@@ -185,7 +196,7 @@ fn test_expr_bit() {
     let bit = Expr::new_index_bit("a", 9);
     let res = bit.to_string();
     let exp = "a[9]".to_string();
-    assert_eq!(res, exp, "\n\nresult:\n{}\nexpected:\n{}\n\n", res, exp);
+    check!(res, exp);
 }
 
 #[test]
@@ -193,7 +204,7 @@ fn test_expr_ipath() {
     let path = Expr::new_ipath("cpu.alu.a");
     let res = path.to_string();
     let exp = "cpu.alu.a".to_string();
-    assert_eq!(res, exp, "\n\nresult:\n{}\nexpected:\n{}\n\n", res, exp);
+    check!(res, exp);
 }
 
 #[test]
@@ -201,7 +212,7 @@ fn test_expr_ipath_with_index() {
     let path = Expr::new_ipath_with_index("cpu.mem", "addr");
     let res = path.to_string();
     let exp = "cpu.mem[addr]".to_string();
-    assert_eq!(res, exp, "\n\nresult:\n{}\nexpected:\n{}\n\n", res, exp);
+    check!(res, exp);
 }
 
 #[test]
@@ -209,7 +220,7 @@ fn test_expr_return() {
     let ret = Sequential::new_return(Expr::new_ref("y"));
     let res = ret.to_string();
     let exp = "return y;".to_string();
-    assert_eq!(res, exp, "\n\nresult:\n{}\nexpected:\n{}\n\n", res, exp);
+    check!(res, exp);
 }
 
 #[test]
@@ -220,7 +231,7 @@ fn test_expr_call() {
     let call = Expr::new_call("func", params);
     let res = call.to_string();
     let exp = "func(a, b)".to_string();
-    assert_eq!(res, exp, "\n\nresult:\n{}\nexpected:\n{}\n\n", res, exp);
+    check!(res, exp);
 }
 
 #[test]
@@ -229,7 +240,7 @@ fn test_attr_val() {
     attr.add_val("full_case");
     let exp = "(*full_case*)".to_string();
     let res = attr.to_string();
-    assert_eq!(res, exp, "\n\nresult:\n{}\nexpected:\n{}\n\n", res, exp);
+    check!(res, exp);
 }
 
 #[test]
@@ -238,7 +249,7 @@ fn test_attr_stmt() {
     attr.add_stmt("x", "3");
     let exp = "(*x = \"3\"*)".to_string();
     let res = attr.to_string();
-    assert_eq!(res, exp, "\n\nresult:\n{}\nexpected:\n{}\n\n", res, exp);
+    check!(res, exp);
 }
 
 #[test]
@@ -246,7 +257,7 @@ fn test_decl_logic_width_32() {
     let logic = Decl::Logic("foo".to_string(), Ty::Width(32));
     let res = logic.to_string();
     let exp = "logic [31:0] foo".to_string();
-    assert_eq!(res, exp, "\n\nresult:\n{}\nexpected:\n{}\n\n", res, exp);
+    check!(res, exp);
 }
 
 #[test]
@@ -254,7 +265,7 @@ fn test_decl_logic_width_1() {
     let logic = Decl::Logic("foo".to_string(), Ty::Width(1));
     let res = logic.to_string();
     let exp = "logic foo".to_string();
-    assert_eq!(res, exp, "\n\nresult:\n{}\nexpected:\n{}\n\n", res, exp);
+    check!(res, exp);
 }
 
 #[test]
@@ -262,7 +273,7 @@ fn test_decl_int() {
     let int = Decl::Int("a".to_string(), Ty::Int);
     let res = int.to_string();
     let exp = "int a".to_string();
-    assert_eq!(res, exp, "\n\nresult:\n{}\nexpected:\n{}\n\n", res, exp);
+    check!(res, exp);
 }
 
 #[test]
@@ -270,7 +281,7 @@ fn test_decl_param_uint() {
     let param = Decl::new_param_uint("width", 3);
     let res = param.to_string();
     let exp = "parameter int width = 32'd3".to_string();
-    assert_eq!(res, exp, "\n\nresult:\n{}\nexpected:\n{}\n\n", res, exp);
+    check!(res, exp);
 }
 
 #[test]
@@ -278,7 +289,7 @@ fn test_event_ty_posedge() {
     let event = EventTy::Posedge;
     let res = event.to_string();
     let exp = "posedge".to_string();
-    assert_eq!(res, exp, "\n\nresult:\n{}\nexpected:\n{}\n\n", res, exp);
+    check!(res, exp);
 }
 
 #[test]
@@ -286,7 +297,7 @@ fn test_event_ty_negedge() {
     let event = EventTy::Negedge;
     let res = event.to_string();
     let exp = "negedge".to_string();
-    assert_eq!(res, exp, "\n\nresult:\n{}\nexpected:\n{}\n\n", res, exp);
+    check!(res, exp);
 }
 
 #[test]
@@ -297,7 +308,7 @@ fn test_case_branch() {
     let exp = r#"32'd0 : begin
     $display("branch 0");
 end"#;
-    assert_eq!(res, exp, "\n\nresult:\n{}\nexpected:\n{}\n\n", res, exp);
+    check!(res, exp);
 }
 
 #[test]
@@ -308,7 +319,7 @@ fn test_case_default() {
     let exp = r#"default : begin
     $display("default branch");
 end"#;
-    assert_eq!(res, exp, "\n\nresult:\n{}\nexpected:\n{}\n\n", res, exp);
+    check!(res, exp);
 }
 
 #[test]
@@ -316,7 +327,7 @@ fn test_seq_event_posedge_clock() {
     let event = Sequential::Event(EventTy::Posedge, Expr::Ref("clock".to_string()));
     let res = event.to_string();
     let exp = "posedge clock".to_string();
-    assert_eq!(res, exp, "\n\nresult:\n{}\nexpected:\n{}\n\n", res, exp);
+    check!(res, exp);
 }
 
 #[test]
@@ -324,14 +335,14 @@ fn test_seq_error() {
     let err = Sequential::new_error("this is an error");
     let res = err.to_string();
     let exp = r#"$error("this is an error");"#;
-    assert_eq!(res, exp, "\n\nresult:\n{}\nexpected:\n{}\n\n", res, exp);
+    check!(res, exp);
 }
 
 #[test]
 fn test_seq_display() {
     let res = Sequential::new_display("this is a message").to_string();
     let exp = r#"$display("this is a message");"#;
-    assert_eq!(res, exp, "\n\nresult:\n{}\nexpected:\n{}\n\n", res, exp);
+    check!(res, exp);
 }
 
 #[test]
@@ -342,7 +353,7 @@ fn test_seq_assert() {
     let assert = Sequential::new_assert(expr);
     let res = assert.to_string();
     let exp = "assert(a == b)".to_string();
-    assert_eq!(res, exp, "\n\nresult:\n{}\nexpected:\n{}\n\n", res, exp);
+    check!(res, exp);
 }
 
 #[test]
@@ -354,7 +365,7 @@ fn test_seq_assert_with_error() {
     let assert = Sequential::new_assert_with_else(expr, err);
     let res = assert.to_string();
     let exp = r#"assert(a == b) else $error("some error");"#;
-    assert_eq!(res, exp, "\n\nresult:\n{}\nexpected:\n{}\n\n", res, exp);
+    check!(res, exp);
 }
 
 #[test]
@@ -364,7 +375,7 @@ fn test_seq_assign_blk_ref() {
     let assign = Sequential::new_blk_assign(lexpr, rexpr);
     let res = assign.to_string();
     let exp = "a = 2'b10;".to_string();
-    assert_eq!(res, exp, "\n\nresult:\n{}\nexpected:\n{}\n\n", res, exp);
+    check!(res, exp);
 }
 
 #[test]
@@ -374,7 +385,7 @@ fn test_seq_assign_non_blk_ref() {
     let assign = Sequential::new_nonblk_assign(lexpr, rexpr);
     let res = assign.to_string();
     let exp = "y <= a;".to_string();
-    assert_eq!(res, exp, "\n\nresult:\n{}\nexpected:\n{}\n\n", res, exp);
+    check!(res, exp);
 }
 
 #[test]
@@ -389,7 +400,7 @@ fn test_seq_if() {
     y <= a;
 end"#;
     let res = ifelse.to_string();
-    assert_eq!(res, exp, "\n\nresult:\n{}\nexpected:\n{}\n\n", res, exp);
+    check!(res, exp);
 }
 
 #[test]
@@ -411,7 +422,7 @@ end else begin
     y <= a;
 end"#;
     let res = i0.to_string();
-    assert_eq!(res, exp, "\n\nresult:\n'{}'\nexpected:\n'{}'\n\n", res, exp);
+    check!(res, exp);
 }
 
 #[test]
@@ -434,7 +445,7 @@ end else if(en) begin
     y <= a;
 end"#;
     let res = tbr.to_string();
-    assert_eq!(res, exp, "\n\nresult:\n{}\nexpected:\n{}\n\n", res, exp);
+    check!(res, exp);
 }
 
 #[test]
@@ -442,7 +453,7 @@ fn test_port_input_width_1() {
     let input = Port::Input(Decl::Logic("foo".to_string(), Ty::Width(1)));
     let res = input.to_string();
     let exp = "input logic foo".to_string();
-    assert_eq!(res, exp, "\n\nresult:\n{}\nexpected:\n{}\n\n", res, exp);
+    check!(res, exp);
 }
 
 #[test]
@@ -455,14 +466,14 @@ fn test_module_simple() {
 );
 endmodule
 "#;
-    assert_eq!(res, exp, "\n\nresult:\n{}\nexpected:\n{}\n\n", res, exp);
+    check!(res, exp);
 }
 
 #[test]
 fn test_module_empty() {
     let exp = read_to_string("regression/v17/module_empty.v");
     let res = Module::new("empty").to_string();
-    assert_eq!(exp, res);
+    check!(res, exp);
 }
 
 #[test]
@@ -475,7 +486,7 @@ fn test_module_with_seq_expr() {
         vec![Expr::new_int(2), Expr::new_ref("x")],
     )));
     let res = main.add_process(comb).to_string();
-    assert_eq!(exp, res);
+    check!(res, exp);
 }
 
 #[test]
@@ -486,7 +497,7 @@ fn test_module_attribute() {
     let mut module = Module::new("attribute");
     module.set_attr(attr);
     let res = module.to_string();
-    assert_eq!(res, exp, "\n\nresult:\n{}\nexpected:\n{}\n\n", res, exp);
+    check!(res, exp);
 }
 
 #[test]
@@ -495,7 +506,7 @@ fn test_module_one_input() {
     let mut module = Module::new("one_input");
     module.add_input("a", 5);
     let res = module.to_string();
-    assert_eq!(res, exp, "\n\nresult:\n{}\nexpected:\n{}\n\n", res, exp);
+    check!(res, exp);
 }
 
 #[test]
@@ -507,7 +518,7 @@ fn test_module_four_inputs() {
     module.add_input("c", 4);
     module.add_input("d", 1);
     let res = module.to_string();
-    assert_eq!(res, exp, "\n\nresult:\n{}\nexpected:\n{}\n\n", res, exp);
+    check!(res, exp);
 }
 
 #[test]
@@ -529,7 +540,7 @@ fn test_module_with_instances() {
     module.add_instance(i1);
     module.add_instance(i2);
     let res = module.to_string();
-    assert_eq!(res, exp, "\n\nresult:\n{}\nexpected:\n{}\n\n", res, exp);
+    check!(res, exp);
 }
 
 #[test]
@@ -546,7 +557,7 @@ fn test_module_with_function() {
     let mut module = Module::new("module_with_function");
     module.add_function(func);
     let res = module.to_string();
-    assert_eq!(res, exp, "\n\nresult:\n{}\nexpected:\n{}\n\n", res, exp);
+    check!(res, exp);
 }
 
 #[test]
@@ -564,7 +575,7 @@ fn test_module_with_function_add_one() {
     let mut module = Module::new("module_with_function_add_one");
     module.add_function(func);
     let res = module.to_string();
-    assert_eq!(res, exp, "\n\nresult:\n{}\nexpected:\n{}\n\n", res, exp);
+    check!(res, exp);
 }
 
 #[test]
@@ -576,7 +587,7 @@ fn test_module_with_always_comb() {
     let mut module = Module::new("module_with_always_comb");
     module.add_stmt(stmt);
     let res = module.to_string();
-    assert_eq!(res, exp, "\n\nresult:\n{}\nexpected:\n{}\n\n", res, exp);
+    check!(res, exp);
 }
 
 #[test]
@@ -591,7 +602,7 @@ fn test_module_with_always_ff() {
     module.add_stmt(stmt);
     module.add_input("clock", 1);
     let res = module.to_string();
-    assert_eq!(res, exp, "\n\nresult:\n{}\nexpected:\n{}\n\n", res, exp);
+    check!(res, exp);
 }
 
 #[test]
@@ -603,7 +614,7 @@ fn test_module_with_initial() {
     let mut module = Module::new("module_with_initial");
     module.add_stmt(stmt);
     let res = module.to_string();
-    assert_eq!(res, exp, "\n\nresult:\n{}\nexpected:\n{}\n\n", res, exp);
+    check!(res, exp);
 }
 
 #[test]
@@ -615,7 +626,7 @@ fn test_module_with_final() {
     let mut module = Module::new("module_with_final");
     module.add_stmt(stmt);
     let res = module.to_string();
-    assert_eq!(res, exp, "\n\nresult:\n{}\nexpected:\n{}\n\n", res, exp);
+    check!(res, exp);
 }
 
 #[test]
@@ -641,7 +652,7 @@ fn test_module_with_case() {
     module.add_input("opcode", 5);
     module.add_stmt(stmt);
     let res = module.to_string();
-    assert_eq!(res, exp, "\n\nresult:\n{}\nexpected:\n{}\n\n", res, exp);
+    check!(res, exp);
 }
 
 #[test]
@@ -669,5 +680,5 @@ fn test_module_with_nested_case() {
     let stmt = Stmt::from(always);
     module.add_stmt(stmt);
     let res = module.to_string();
-    assert_eq!(res, exp, "\n\nresult:\n{}\nexpected:\n{}\n\n", res, exp);
+    check!(res, exp);
 }
