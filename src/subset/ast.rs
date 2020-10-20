@@ -167,7 +167,7 @@ pub struct GenericFunction<T, U, V> {
     /// Name of the function.
     pub name: Id,
     /// Ports of the function.
-    pub inputs: Vec<GenericPort<T>>,
+    pub ports: Vec<GenericPort<T>>,
     /// Declarations in this function.
     pub decls: Vec<T>,
     /// Body of this function.

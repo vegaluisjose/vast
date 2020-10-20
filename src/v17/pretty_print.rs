@@ -83,14 +83,12 @@ impl PrettyPrint for Case {
 
 impl PrettyPrint for Function {
     fn to_doc(&self) -> RcDoc<()> {
-        let inputs = if self.inputs().is_empty() {
+        let ports = if self.ports().is_empty() {
             RcDoc::nil()
         } else {
             intersperse(
-                self.inputs()
-                    .iter()
-                    .map(|x| x.to_doc().append(RcDoc::text(";"))),
-                RcDoc::hardline(),
+                self.ports().iter().map(|x| x.to_doc()),
+                RcDoc::text(",").append(RcDoc::line()),
             )
         };
         let decls = if self.decls().is_empty() {
@@ -102,31 +100,27 @@ impl PrettyPrint for Function {
                     .map(|x| x.to_doc().append(RcDoc::text(";"))),
                 RcDoc::hardline(),
             )
-        };
-        let preamble = if self.inputs().is_empty() && self.decls().is_empty() {
-            RcDoc::nil()
-        } else if self.inputs().is_empty() {
-            decls.append(RcDoc::hardline())
-        } else if self.decls().is_empty() {
-            inputs.append(RcDoc::hardline())
-        } else {
-            inputs
-                .append(RcDoc::hardline())
-                .append(decls)
-                .append(RcDoc::hardline())
+            .append(RcDoc::hardline())
         };
         let body = if self.body().is_empty() {
             RcDoc::nil()
         } else {
             intersperse(self.body().iter().map(|x| x.to_doc()), RcDoc::hardline())
         };
-        RcDoc::space()
+        let args = RcDoc::space()
             .append(self.ret.to_doc())
             .append(RcDoc::space())
             .append(RcDoc::as_string(&self.name))
-            .append(RcDoc::text(";"))
-            .append(block(preamble.append(block(body).begin_end())))
-            .func_endfunc()
+            .append(ports.parens())
+            .append(RcDoc::text(";"));
+        if self.decls().is_empty() && self.body().is_empty() {
+            RcDoc::text("function").append(args)
+        } else if self.body().is_empty() {
+            args.append(block(decls)).func_endfunc()
+        } else {
+            args.append(block(decls.append(block(body).begin_end())))
+                .func_endfunc()
+        }
     }
 }
 

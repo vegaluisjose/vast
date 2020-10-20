@@ -253,15 +253,15 @@ impl Function {
     pub fn new(name: &str, ret: Ty) -> Function {
         Function {
             name: name.to_string(),
-            inputs: Vec::new(),
+            ports: Vec::new(),
             decls: Vec::new(),
             body: Vec::new(),
             ret,
         }
     }
 
-    pub fn inputs(&self) -> &Vec<Port> {
-        &self.inputs
+    pub fn ports(&self) -> &Vec<Port> {
+        &self.ports
     }
 
     pub fn decls(&self) -> &Vec<Decl> {
@@ -273,7 +273,12 @@ impl Function {
     }
 
     pub fn add_input(&mut self, name: &str, width: u64) -> &mut Self {
-        self.inputs.push(Port::new_input(name, width));
+        self.ports.push(Port::new_input(name, width));
+        self
+    }
+
+    pub fn add_output(&mut self, name: &str, width: u64) -> &mut Self {
+        self.ports.push(Port::new_output(name, width));
         self
     }
 
