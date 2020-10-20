@@ -466,6 +466,19 @@ fn test_module_empty() {
 }
 
 #[test]
+fn test_module_with_seq_expr() {
+    let exp = read_to_string("regression/v17/module_seq_expr.v");
+    let mut main = Module::new("main");
+    let mut comb = ParallelProcess::new_always_comb();
+    comb.add_seq(Sequential::SeqExpr(Expr::new_call(
+        "foo",
+        vec![Expr::new_int(2), Expr::new_ref("x")],
+    )));
+    let res = main.add_process(comb).to_string();
+    assert_eq!(exp, res);
+}
+
+#[test]
 fn test_module_attribute() {
     let exp = read_to_string("regression/v17/module_attribute.v");
     let mut attr = Attribute::default();

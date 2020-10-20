@@ -68,6 +68,14 @@ impl Expr {
         Expr::ULit(width, Radix::Bin, value.to_string())
     }
 
+    pub fn new_bit_or(lhs: Expr, rhs: Expr) -> Expr {
+        Expr::Binop(Binop::BitOr, Rc::new(lhs), Rc::new(rhs))
+    }
+
+    pub fn new_bit_and(lhs: Expr, rhs: Expr) -> Expr {
+        Expr::Binop(Binop::BitAnd, Rc::new(lhs), Rc::new(rhs))
+    }
+
     pub fn new_logical_or(lhs: Expr, rhs: Expr) -> Expr {
         Expr::Binop(Binop::LogOr, Rc::new(lhs), Rc::new(rhs))
     }

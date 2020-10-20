@@ -105,6 +105,10 @@ impl Case {
 }
 
 impl Sequential {
+    pub fn new_seqexpr(expr: Expr) -> Sequential {
+        Sequential::SeqExpr(expr)
+    }
+
     pub fn new_error(msg: &str) -> Sequential {
         Sequential::Error(msg.to_string())
     }

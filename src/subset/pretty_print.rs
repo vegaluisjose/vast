@@ -20,6 +20,8 @@ impl PrettyPrint for Unop {
 impl PrettyPrint for Binop {
     fn to_doc(&self) -> RcDoc<()> {
         match self {
+            Binop::BitOr => RcDoc::text("|"),
+            Binop::BitAnd => RcDoc::text("&"),
             Binop::LogOr => RcDoc::text("||"),
             Binop::LogAnd => RcDoc::text("&&"),
             Binop::Add => RcDoc::text("+"),

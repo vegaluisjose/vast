@@ -31,6 +31,8 @@ pub enum Binop {
     Equal,
     NotEqual,
     IndexBit,
+    BitAnd,
+    BitOr,
 }
 
 /// Ternaray operations

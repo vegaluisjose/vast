@@ -15,6 +15,7 @@ pub type Function = subset::ast::GenericFunction<Decl, Sequential, Ty>;
 pub type Stmt = subset::ast::GenericStmt<Decl, Parallel>;
 pub type Port = subset::ast::GenericPort<Decl>;
 pub type Module = subset::ast::GenericModule<Decl, Parallel>;
+pub type ExprConcat = subset::ast::ExprConcat;
 
 #[derive(Clone, Debug)]
 pub enum Ty {
@@ -50,6 +51,7 @@ pub enum Sequential {
     Event(EventTy, Expr),
     If(SequentialIfElse),
     Assert(Expr, Option<Rc<Sequential>>),
+    SeqExpr(Expr),
 }
 
 #[derive(Clone, Debug)]
