@@ -90,7 +90,8 @@ impl PrettyPrint for Expr {
                 .append(RcDoc::space())
                 .append(op.to_doc())
                 .append(RcDoc::space())
-                .append(rhs.to_doc()),
+                .append(rhs.to_doc())
+                .parens(),
             Expr::Call(name, params) => RcDoc::as_string(name).append(
                 intersperse(
                     params.iter().map(RcDoc::as_string),
