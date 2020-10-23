@@ -176,7 +176,7 @@ impl PrettyPrint for Map {
     fn to_doc(&self) -> RcDoc<()> {
         intersperse(
             self.iter()
-                .sorted_by_key(|(id, _)| id.clone())
+                .sorted_by_key(|(id, _)| (*id).clone())
                 .map(|(id, expr)| {
                     RcDoc::text(".")
                         .append(RcDoc::as_string(id))
