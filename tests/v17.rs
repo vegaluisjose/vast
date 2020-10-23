@@ -50,7 +50,7 @@ fn test_expr_logor() {
     let rhs = Expr::new_ulit_dec(1, "1");
     let logor = Expr::new_logical_or(lhs, rhs);
     let res = logor.to_string();
-    let exp = "a || 1'd1".to_string();
+    let exp = "(a || 1'd1)".to_string();
     check!(res, exp);
 }
 
@@ -60,7 +60,7 @@ fn test_expr_logand() {
     let rhs = Expr::new_ulit_dec(1, "1");
     let logand = Expr::new_logical_and(lhs, rhs);
     let res = logand.to_string();
-    let exp = "a && 1'd1".to_string();
+    let exp = "(a && 1'd1)".to_string();
     check!(res, exp);
 }
 
@@ -70,7 +70,7 @@ fn test_expr_add() {
     let rhs = Expr::new_ulit_dec(8, "1");
     let add = Expr::new_add(lhs, rhs);
     let res = add.to_string();
-    let exp = "a + 8'd1".to_string();
+    let exp = "(a + 8'd1)".to_string();
     check!(res, exp);
 }
 
@@ -80,7 +80,7 @@ fn test_expr_gt() {
     let rhs = Expr::new_ulit_dec(32, "1");
     let gt = Expr::new_gt(lhs, rhs);
     let res = gt.to_string();
-    let exp = "mask > 32'd1".to_string();
+    let exp = "(mask > 32'd1)".to_string();
     check!(res, exp);
 }
 
@@ -90,7 +90,7 @@ fn test_expr_lt() {
     let rhs = Expr::new_ulit_dec(32, "1");
     let lt = Expr::new_lt(lhs, rhs);
     let res = lt.to_string();
-    let exp = "mask < 32'd1".to_string();
+    let exp = "(mask < 32'd1)".to_string();
     check!(res, exp);
 }
 
@@ -100,7 +100,7 @@ fn test_expr_geq() {
     let rhs = Expr::new_ulit_dec(32, "1");
     let geq = Expr::new_geq(lhs, rhs);
     let res = geq.to_string();
-    let exp = "mask >= 32'd1".to_string();
+    let exp = "(mask >= 32'd1)".to_string();
     check!(res, exp);
 }
 
@@ -110,7 +110,7 @@ fn test_expr_leq() {
     let rhs = Expr::new_ulit_dec(32, "1");
     let leq = Expr::new_leq(lhs, rhs);
     let res = leq.to_string();
-    let exp = "mask <= 32'd1".to_string();
+    let exp = "(mask <= 32'd1)".to_string();
     check!(res, exp);
 }
 
@@ -120,7 +120,7 @@ fn test_expr_eq() {
     let rhs = Expr::new_ulit_dec(8, "1");
     let eq = Expr::new_eq(lhs, rhs);
     let res = eq.to_string();
-    let exp = "z == 8'd1".to_string();
+    let exp = "(z == 8'd1)".to_string();
     check!(res, exp);
 }
 
@@ -130,7 +130,7 @@ fn test_expr_neq() {
     let rhs = Expr::new_ref("b");
     let neq = Expr::new_neq(lhs, rhs);
     let res = neq.to_string();
-    let exp = "a != b".to_string();
+    let exp = "(a != b)".to_string();
     check!(res, exp);
 }
 
@@ -140,7 +140,7 @@ fn test_expr_mul() {
     let rhs = Expr::new_ref("b");
     let mul = Expr::new_mul(lhs, rhs);
     let res = mul.to_string();
-    let exp = "a * b".to_string();
+    let exp = "(a * b)".to_string();
     check!(res, exp);
 }
 
@@ -159,7 +159,7 @@ fn test_expr_mux() {
     let fal = Expr::new_ref("b");
     let mux = Expr::new_mux(cond, tru, fal);
     let res = mux.to_string();
-    let exp = "a == b ? a : b".to_string();
+    let exp = "(a == b) ? a : b".to_string();
     check!(res, exp);
 }
 
@@ -187,7 +187,7 @@ fn test_expr_index_slice_var() {
     let lo = Expr::new_mul(Expr::new_ref("x"), Expr::new_int(32));
     let slice = Expr::new_index_slice("a", lo, 32);
     let res = slice.to_string();
-    let exp = "a[x * 32 +: 32]".to_string();
+    let exp = "a[(x * 32) +: 32]".to_string();
     check!(res, exp);
 }
 
@@ -352,7 +352,7 @@ fn test_seq_assert() {
     let expr = Expr::new_eq(lhs, rhs);
     let assert = Sequential::new_assert(expr);
     let res = assert.to_string();
-    let exp = "assert(a == b)".to_string();
+    let exp = "assert((a == b))".to_string();
     check!(res, exp);
 }
 
@@ -364,7 +364,7 @@ fn test_seq_assert_with_error() {
     let err = Sequential::new_error("some error");
     let assert = Sequential::new_assert_with_else(expr, err);
     let res = assert.to_string();
-    let exp = r#"assert(a == b) else $error("some error");"#;
+    let exp = r#"assert((a == b)) else $error("some error");"#;
     check!(res, exp);
 }
 
