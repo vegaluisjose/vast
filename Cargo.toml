@@ -12,3 +12,4 @@ categories = ["development-tools","data-structures"]
 
 [dependencies]
 pretty = "0.10.0"
+itertools = "0.9.0"

@@ -1,5 +1,6 @@
 use crate::subset::ast::*;
 use crate::util::pretty_print::{block, intersperse, PrettyHelper, PrettyPrint};
+use itertools::Itertools;
 use pretty::RcDoc;
 
 impl PrettyPrint for Unop {
@@ -174,11 +175,13 @@ impl PrettyPrint for AssignTy {
 impl PrettyPrint for Map {
     fn to_doc(&self) -> RcDoc<()> {
         intersperse(
-            self.iter().map(|(id, expr)| {
-                RcDoc::text(".")
-                    .append(RcDoc::as_string(id))
-                    .append(expr.to_doc().parens())
-            }),
+            self.iter()
+                .sorted_by_key(|(id, _)| id.clone())
+                .map(|(id, expr)| {
+                    RcDoc::text(".")
+                        .append(RcDoc::as_string(id))
+                        .append(expr.to_doc().parens())
+                }),
             RcDoc::text(",").append(RcDoc::hardline()),
         )
     }
