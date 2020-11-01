@@ -353,3 +353,19 @@ fn test_module_with_instances() {
     let res = module.to_string();
     check!(res, exp);
 }
+
+#[test]
+fn test_module_with_instance_attribute() {
+    let exp = read_to_string("regression/v05/module_with_instance_attribute.v");
+    let mut attr = Attribute::default();
+    attr.add_stmt("TYPE", "LUT6");
+    attr.add_stmt("LOC", "X0Y0");
+    let mut i0 = Instance::new("i0", "prim");
+    let e0 = Expr::new_ulit_hex(4, "0");
+    i0.connect("port_a", e0);
+    i0.set_attr(attr);
+    let mut module = Module::new("module_with_instance_attribute");
+    module.add_instance(i0);
+    let res = module.to_string();
+    check!(res, exp);
+}
