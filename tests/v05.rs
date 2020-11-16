@@ -72,6 +72,36 @@ fn test_expr_concat() {
 }
 
 #[test]
+fn test_expr_mux() {
+    let cond = Expr::new_eq(Expr::new_ref("a"), Expr::new_ref("b"));
+    let tru = Expr::new_ref("a");
+    let fal = Expr::new_ref("b");
+    let mux = Expr::new_mux(cond, tru, fal);
+    let res = mux.to_string();
+    let exp = "(a == b) ? a : b".to_string();
+    check!(res, exp);
+}
+
+#[test]
+fn test_expr_slice() {
+    let hi = Expr::new_int(7);
+    let lo = Expr::new_int(0);
+    let slice = Expr::new_slice("a", hi, lo);
+    let res = slice.to_string();
+    let exp = "a[7:0]".to_string();
+    check!(res, exp);
+}
+
+#[test]
+fn test_expr_index_slice() {
+    let lo = Expr::new_int(0);
+    let slice = Expr::new_index_slice("a", lo, 8);
+    let res = slice.to_string();
+    let exp = "a[0 +: 8]".to_string();
+    check!(res, exp);
+}
+
+#[test]
 fn test_attr_val() {
     let mut attr = Attribute::default();
     attr.add_val("full_case");
