@@ -20,7 +20,7 @@ impl fmt::Display for Sequential {
     }
 }
 
-impl fmt::Display for ParallelAlways {
+impl fmt::Display for ParallelProcess {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         write!(f, "{}", self.to_pretty())
     }

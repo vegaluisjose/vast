@@ -107,7 +107,15 @@ impl PrettyPrint for Sequential {
     }
 }
 
-impl PrettyPrint for ParallelAlways {
+impl PrettyPrint for ProcessTy {
+    fn to_doc(&self) -> RcDoc<()> {
+        match self {
+            ProcessTy::Always => RcDoc::text("always"),
+        }
+    }
+}
+
+impl PrettyPrint for ParallelProcess {
     fn to_doc(&self) -> RcDoc<()> {
         let body = if self.body().is_empty() {
             RcDoc::nil()
@@ -118,10 +126,16 @@ impl PrettyPrint for ParallelAlways {
             ))
             .begin_end()
         };
-        RcDoc::text("always")
+        let event = if let Some(e) = self.event() {
+            e.to_doc()
+        } else {
+            RcDoc::nil()
+        };
+        self.ty()
+            .to_doc()
             .append(RcDoc::space())
             .append(RcDoc::text("@"))
-            .append(self.event().to_doc().parens())
+            .append(event.parens())
             .append(RcDoc::space())
             .append(body)
     }
@@ -139,7 +153,7 @@ impl PrettyPrint for Parallel {
                 .append(RcDoc::space())
                 .append(rexpr.to_doc())
                 .append(RcDoc::text(";")),
-            Parallel::Always(always) => always.to_doc(),
+            Parallel::Process(proc) => proc.to_doc(),
         }
     }
 }

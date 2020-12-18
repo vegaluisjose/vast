@@ -106,24 +106,34 @@ impl Sequential {
     }
 }
 
-impl ParallelAlways {
-    pub fn new(event: Sequential) -> Self {
-        ParallelAlways {
-            event,
+impl ParallelProcess {
+    pub fn new_always() -> Self {
+        ParallelProcess {
+            ty: ProcessTy::Always,
+            event: None,
             body: Vec::new(),
         }
     }
 
-    pub fn event(&self) -> &Sequential {
-        &self.event
+    pub fn ty(&self) -> &ProcessTy {
+        &self.ty
+    }
+
+    pub fn event(&self) -> Option<&Sequential> {
+        self.event.as_ref()
     }
 
     pub fn body(&self) -> &Vec<Sequential> {
         &self.body
     }
 
-    pub fn add_seq(&mut self, seq: Sequential) {
+    pub fn add_seq(&mut self, seq: Sequential) -> &mut Self {
         self.body.push(seq);
+        self
+    }
+
+    pub fn set_event(&mut self, seq: Sequential) {
+        self.event = Some(seq)
     }
 }
 

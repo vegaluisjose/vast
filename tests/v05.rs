@@ -259,7 +259,8 @@ fn test_parallel_always() {
     let y = Expr::new_ref("y");
     let a = Expr::new_ref("a");
     let seq = Sequential::new_nonblk_assign(y, a);
-    let mut always = ParallelAlways::new(event);
+    let mut always = ParallelProcess::new_always();
+    always.set_event(event);
     always.add_seq(seq);
     let exp = r#"always @(posedge clock) begin
     y <= a;

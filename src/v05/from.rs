@@ -18,15 +18,15 @@ impl From<SequentialIfElse> for Sequential {
     }
 }
 
-impl From<ParallelAlways> for Parallel {
-    fn from(always: ParallelAlways) -> Self {
-        Parallel::Always(always)
+impl From<ParallelProcess> for Parallel {
+    fn from(proc: ParallelProcess) -> Self {
+        Parallel::Process(proc)
     }
 }
 
-impl From<ParallelAlways> for Stmt {
-    fn from(always: ParallelAlways) -> Self {
-        Stmt::from(Parallel::from(always))
+impl From<ParallelProcess> for Stmt {
+    fn from(proc: ParallelProcess) -> Self {
+        Stmt::from(Parallel::from(proc))
     }
 }
 

@@ -43,8 +43,14 @@ pub enum Sequential {
 }
 
 #[derive(Clone, Debug)]
-pub struct ParallelAlways {
-    pub event: Sequential,
+pub enum ProcessTy {
+    Always,
+}
+
+#[derive(Clone, Debug)]
+pub struct ParallelProcess {
+    pub ty: ProcessTy,
+    pub event: Option<Sequential>,
     pub body: Vec<Sequential>,
 }
 
@@ -52,5 +58,5 @@ pub struct ParallelAlways {
 pub enum Parallel {
     Inst(Instance),
     Assign(Expr, Expr),
-    Always(ParallelAlways),
+    Process(ParallelProcess),
 }
