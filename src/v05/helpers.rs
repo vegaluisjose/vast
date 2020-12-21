@@ -220,6 +220,10 @@ impl Module {
         self.body.push(Stmt::new_parallel(Parallel::new_inst(inst)));
     }
 
+    pub fn add_decl(&mut self, decl: Decl) {
+        self.body.push(Stmt::from(decl));
+    }
+
     pub fn add_stmt(&mut self, stmt: Stmt) {
         self.body.push(stmt);
     }
