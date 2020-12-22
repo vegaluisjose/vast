@@ -12,14 +12,14 @@ pub type Stmt = subset::ast::GenericStmt<Decl, Parallel>;
 pub type Port = subset::ast::GenericPort<Decl>;
 pub type Module = subset::ast::GenericModule<Decl, Parallel>;
 
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, PartialEq, Eq, Hash)]
 pub enum Ty {
     Int,
     // maybe use nonzero64?
     Width(u64),
 }
 
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, PartialEq, Eq, Hash)]
 pub enum Decl {
     Int(Id, Ty),
     Wire(Id, Ty),

@@ -5,7 +5,7 @@ pub type Id = String;
 pub type Map = HashMap<Id, Expr>;
 
 /// Unary reduction operators.
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, PartialEq, Eq, Hash)]
 pub enum Unop {
     LogNot,
     Not,
@@ -18,7 +18,7 @@ pub enum Unop {
 }
 
 /// Binary operators.
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, PartialEq, Eq, Hash)]
 pub enum Binop {
     LogOr,
     LogAnd,
@@ -36,31 +36,31 @@ pub enum Binop {
 }
 
 /// Ternaray operations
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, PartialEq, Eq, Hash)]
 pub enum Terop {
     Mux,
     Slice,
     IndexSlice,
 }
 
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, PartialEq, Eq, Hash)]
 pub enum Radix {
     Dec,
     Bin,
     Hex,
 }
 
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, PartialEq, Eq, Hash)]
 pub struct InstancePath {
     pub path: Vec<Id>,
 }
 
-#[derive(Default, Clone, Debug)]
+#[derive(Default, Clone, Debug, PartialEq, Eq, Hash)]
 pub struct ExprConcat {
     pub exprs: Vec<Expr>,
 }
 
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, PartialEq, Eq, Hash)]
 pub enum Expr {
     Ref(Id),
     Int(i32),
