@@ -1,7 +1,90 @@
 use crate::subset::ast::*;
 use crate::util::pretty_print::{block, intersperse, PrettyHelper, PrettyPrint};
+use core::cmp::Ordering;
 use itertools::Itertools;
 use pretty::RcDoc;
+
+/// Tracks the context in the guards to only generate parens when inside an
+/// operator with stronger binding.
+#[derive(Debug, Clone, Copy, Eq, PartialEq)]
+enum ParenCtx {
+    Op,
+    Not,
+    And,
+    Or,
+    BAnd,
+    BOr,
+}
+
+impl From<&Binop> for ParenCtx {
+    fn from(s: &Binop) -> Self {
+        match s {
+            Binop::BitOr => ParenCtx::BOr,
+            Binop::BitAnd => ParenCtx::BAnd,
+            Binop::LogOr => ParenCtx::Or,
+            Binop::LogAnd => ParenCtx::And,
+            Binop::Add
+            | Binop::Mul
+            | Binop::Lt
+            | Binop::Gt
+            | Binop::Geq
+            | Binop::Leq
+            | Binop::Equal
+            | Binop::NotEqual
+            | Binop::IndexBit => ParenCtx::Op,
+        }
+    }
+}
+
+impl Ord for ParenCtx {
+    fn cmp(&self, other: &Self) -> Ordering {
+        use ParenCtx as P;
+        match (self, other) {
+            (P::Not, _) => Ordering::Greater,
+
+            (P::Op, P::Not) => Ordering::Less,
+            (P::Op, _) => Ordering::Greater,
+
+            (P::BAnd, P::Not) | (P::BAnd, P::Op) => Ordering::Less,
+            (P::BAnd, _) => Ordering::Greater,
+
+            (P::BOr, P::Not) | (P::BOr, P::Op) | (P::BOr, P::BAnd) => Ordering::Less,
+            (P::BOr, _) => Ordering::Greater,
+
+            (P::And, P::Not) | (P::And, P::Op) | (P::And, P::BAnd) | (P::And, P::BOr) => {
+                Ordering::Less
+            }
+            (P::And, _) => Ordering::Greater,
+
+            (P::Or, _) => Ordering::Less,
+        }
+    }
+}
+
+impl PartialOrd for ParenCtx {
+    fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
+        Some(self.cmp(other))
+    }
+}
+
+fn print_expr<'a>(e: &'a Expr, cur_ctx: ParenCtx) -> RcDoc<'a, ()> {
+    match e {
+        Expr::Binop(op, lhs, rhs) => {
+            let ctx = ParenCtx::from(op);
+            let doc = print_expr(lhs, ctx)
+                .append(RcDoc::space())
+                .append(op.to_doc())
+                .append(RcDoc::space())
+                .append(print_expr(rhs, ctx));
+            if cur_ctx > ctx {
+                doc.parens()
+            } else {
+                doc
+            }
+        }
+        e => e.to_doc(),
+    }
+}
 
 impl PrettyPrint for Unop {
     fn to_doc(&self) -> RcDoc<()> {
@@ -84,15 +167,11 @@ impl PrettyPrint for Expr {
                     path.to_doc()
                 }
             }
-            Expr::Unop(op, input) => op.to_doc().append(input.to_doc()),
-            Expr::Binop(Binop::IndexBit, lhs, rhs) => lhs.to_doc().append(rhs.to_doc().brackets()),
-            Expr::Binop(op, lhs, rhs) => lhs
-                .to_doc()
-                .append(RcDoc::space())
-                .append(op.to_doc())
-                .append(RcDoc::space())
-                .append(rhs.to_doc())
-                .parens(),
+            Expr::Unop(op, input) => op.to_doc().append(print_expr(input, ParenCtx::Not)),
+            Expr::Binop(Binop::IndexBit, lhs, rhs) => {
+                print_expr(lhs, ParenCtx::Not).append(rhs.to_doc().brackets())
+            }
+            Expr::Binop(_, _, _) => print_expr(self, ParenCtx::Or),
             Expr::Call(name, params) => RcDoc::as_string(name).append(
                 intersperse(
                     params.iter().map(RcDoc::as_string),
@@ -108,6 +187,11 @@ impl PrettyPrint for Expr {
                 .append(tru.to_doc())
                 .append(RcDoc::space())
                 .append(RcDoc::text(":"))
+                .append(if let Expr::Terop(Terop::Mux, _, _, _) = **fal {
+                    RcDoc::hardline()
+                } else {
+                    RcDoc::nil()
+                })
                 .append(RcDoc::space())
                 .append(fal.to_doc()),
             Expr::Terop(Terop::Slice, var, hi, lo) => var.to_doc().append(

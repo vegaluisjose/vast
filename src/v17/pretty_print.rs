@@ -1,3 +1,4 @@
+use crate::subset::ast::Terop;
 use crate::util::pretty_print::{block, block_with_parens, intersperse, PrettyHelper, PrettyPrint};
 use crate::v17::ast::*;
 use pretty::RcDoc;
@@ -292,6 +293,11 @@ impl PrettyPrint for Parallel {
                 .append(lexpr.to_doc())
                 .append(RcDoc::space())
                 .append(RcDoc::text("="))
+                .append(if let Expr::Terop(Terop::Mux, _, _, _) = rexpr {
+                    RcDoc::hardline()
+                } else {
+                    RcDoc::nil()
+                })
                 .append(RcDoc::space())
                 .append(rexpr.to_doc())
                 .append(RcDoc::text(";")),

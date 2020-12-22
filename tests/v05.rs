@@ -78,7 +78,7 @@ fn test_expr_mux() {
     let fal = Expr::new_ref("b");
     let mux = Expr::new_mux(cond, tru, fal);
     let res = mux.to_string();
-    let exp = "(a == b) ? a : b".to_string();
+    let exp = "a == b ? a : b".to_string();
     check!(res, exp);
 }
 
