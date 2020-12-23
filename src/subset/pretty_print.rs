@@ -39,6 +39,9 @@ impl From<&Binop> for ParenCtx {
 impl Ord for ParenCtx {
     fn cmp(&self, other: &Self) -> Ordering {
         use ParenCtx as P;
+        if self == other {
+            return Ordering::Equal;
+        }
         match (self, other) {
             (P::Not, _) => Ordering::Greater,
 
