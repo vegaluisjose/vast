@@ -189,6 +189,10 @@ impl Attribute {
     pub fn add_stmt(&mut self, id: &str, value: &str) {
         self.attrs.push(AttributeTy::new_stmt(id, value));
     }
+
+    pub fn add_attr(&mut self, attr: AttributeTy) {
+        self.attrs.push(attr);
+    }
 }
 
 impl Instance {
