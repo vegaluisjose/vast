@@ -78,7 +78,7 @@ pub enum Expr {
 #[derive(Clone, Debug)]
 pub enum AttributeTy {
     Val(String),
-    Stmt(Id, String),
+    Stmt(String, String),
 }
 
 /// Representation for attributes
