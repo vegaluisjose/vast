@@ -6,6 +6,7 @@ pub type Expr = subset::ast::Expr;
 pub type ExprConcat = subset::ast::ExprConcat;
 pub type EventTy = subset::ast::EventTy;
 pub type Attribute = subset::ast::Attribute;
+pub type AttributeTy = subset::ast::AttributeTy;
 pub type AssignTy = subset::ast::AssignTy;
 pub type Instance = subset::ast::Instance;
 pub type Stmt = subset::ast::GenericStmt<Decl, Parallel>;
