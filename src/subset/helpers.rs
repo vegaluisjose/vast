@@ -42,8 +42,11 @@ impl Expr {
         Expr::Ref(name.as_ref().to_string())
     }
 
-    pub fn new_signed_ref(name: &str) -> Expr {
-        Expr::Signed(Rc::new(Expr::Ref(name.to_string())))
+    pub fn new_signed_ref<S>(name: S) -> Expr
+    where
+        S: AsRef<str>,
+    {
+        Expr::Signed(Rc::new(Expr::Ref(name.as_ref().to_string())))
     }
 
     pub fn new_signed(expr: Expr) -> Expr {
