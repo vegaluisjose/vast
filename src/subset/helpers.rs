@@ -30,6 +30,7 @@ impl Expr {
     pub fn id(&self) -> String {
         match self {
             Expr::Ref(id) => id.to_string(),
+            Expr::Signed(e) => e.id(),
             _ => panic!("Error: do not support id"),
         }
     }
