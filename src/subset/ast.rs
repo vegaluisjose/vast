@@ -23,6 +23,7 @@ pub enum Binop {
     LogOr,
     LogAnd,
     Add,
+    Sub,
     Mul,
     Gt,
     Lt,
@@ -72,6 +73,7 @@ pub enum Expr {
     Binop(Binop, Rc<Expr>, Rc<Expr>),
     Terop(Terop, Rc<Expr>, Rc<Expr>, Rc<Expr>),
     Concat(ExprConcat),
+    Repeat(usize, Rc<Expr>),
     Call(Id, Vec<Expr>),
 }
 

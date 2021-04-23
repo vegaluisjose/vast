@@ -24,6 +24,7 @@ impl From<&Binop> for ParenCtx {
             Binop::LogOr => ParenCtx::Or,
             Binop::LogAnd => ParenCtx::And,
             Binop::Add
+            | Binop::Sub
             | Binop::Mul
             | Binop::Lt
             | Binop::Gt
@@ -112,6 +113,7 @@ impl PrettyPrint for Binop {
             Binop::LogOr => RcDoc::text("||"),
             Binop::LogAnd => RcDoc::text("&&"),
             Binop::Add => RcDoc::text("+"),
+            Binop::Sub => RcDoc::text("-"),
             Binop::Mul => RcDoc::text("*"),
             Binop::Lt => RcDoc::text("<"),
             Binop::Gt => RcDoc::text(">"),
@@ -213,6 +215,9 @@ impl PrettyPrint for Expr {
                     .brackets(),
             ),
             Expr::Concat(concat) => concat.to_doc(),
+            Expr::Repeat(times, expr) => RcDoc::text(times.to_string())
+                .append(expr.to_doc().braces())
+                .braces(),
         }
     }
 }

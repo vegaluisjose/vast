@@ -12,6 +12,9 @@ pub type Instance = subset::ast::Instance;
 pub type Stmt = subset::ast::GenericStmt<Decl, Parallel>;
 pub type Port = subset::ast::GenericPort<Decl>;
 pub type Module = subset::ast::GenericModule<Decl, Parallel>;
+pub type CaseBranch = subset::ast::GenericCaseBranch<Sequential>;
+pub type CaseDefault = subset::ast::GenericCaseDefault<Sequential>;
+pub type Case = subset::ast::GenericCase<Sequential>;
 
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 pub enum Ty {
@@ -41,6 +44,7 @@ pub enum Sequential {
     Event(EventTy, Expr),
     Assign(Expr, Expr, AssignTy),
     IfElse(SequentialIfElse),
+    SeqCase(Case),
 }
 
 #[derive(Clone, Debug)]

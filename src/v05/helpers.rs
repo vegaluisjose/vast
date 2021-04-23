@@ -104,6 +104,10 @@ impl Sequential {
     pub fn new_nonblk_assign(lexpr: Expr, rexpr: Expr) -> Sequential {
         Sequential::Assign(lexpr, rexpr, AssignTy::NonBlocking)
     }
+
+    pub fn new_case(case: Case) -> Sequential {
+        Sequential::SeqCase(case)
+    }
 }
 
 impl ParallelProcess {
@@ -224,11 +228,85 @@ impl Module {
         self.body.push(Stmt::from(decl));
     }
 
-    pub fn add_stmt(&mut self, stmt: Stmt) {
-        self.body.push(stmt);
+    pub fn add_stmt<S>(&mut self, stmt: S)
+    where
+        S: Into<Stmt>,
+    {
+        self.body.push(stmt.into());
     }
 
     pub fn set_attr(&mut self, attr: Attribute) {
         self.attr = attr;
+    }
+}
+
+impl CaseBranch {
+    pub fn new(cond: Expr) -> CaseBranch {
+        CaseBranch {
+            cond,
+            body: Vec::new(),
+        }
+    }
+
+    pub fn add_seq(&mut self, seq: Sequential) -> &mut Self {
+        self.body.push(seq);
+        self
+    }
+
+    pub fn add_case(&mut self, case: Case) -> &mut Self {
+        self.body.push(Sequential::new_case(case));
+        self
+    }
+
+    pub fn body(&self) -> &Vec<Sequential> {
+        &self.body
+    }
+}
+
+impl CaseDefault {
+    pub fn add_seq(&mut self, seq: Sequential) -> &mut Self {
+        self.body.push(seq);
+        self
+    }
+
+    pub fn body(&self) -> &Vec<Sequential> {
+        &self.body
+    }
+}
+
+impl Default for CaseDefault {
+    fn default() -> CaseDefault {
+        CaseDefault { body: Vec::new() }
+    }
+}
+
+impl Case {
+    pub fn new(cond: Expr) -> Case {
+        Case {
+            cond,
+            branches: Vec::new(),
+            default: None,
+        }
+    }
+
+    pub fn add_branch(&mut self, branch: CaseBranch) -> &mut Self {
+        self.branches.push(branch);
+        self
+    }
+
+    pub fn set_default(&mut self, branch: CaseDefault) {
+        self.default = Some(branch);
+    }
+
+    pub fn branches(&self) -> &Vec<CaseBranch> {
+        &self.branches
+    }
+
+    pub fn default(&self) -> &CaseDefault {
+        if let Some(default) = &self.default {
+            &default
+        } else {
+            panic!("Default branch has not been set");
+        }
     }
 }

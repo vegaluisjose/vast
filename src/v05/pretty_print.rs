@@ -103,6 +103,7 @@ impl PrettyPrint for Sequential {
                 .append(RcDoc::space())
                 .append(rexpr.to_doc())
                 .append(RcDoc::text(";")),
+            Sequential::SeqCase(case) => case.to_doc(),
         }
     }
 }
@@ -241,5 +242,67 @@ impl PrettyPrint for Module {
             .module_endmodule()
             .append(RcDoc::hardline());
         attr.append(module)
+    }
+}
+
+impl PrettyPrint for CaseBranch {
+    fn to_doc(&self) -> RcDoc<()> {
+        let cond = self
+            .cond
+            .to_doc()
+            .append(RcDoc::space())
+            .append(RcDoc::text(":"))
+            .append(RcDoc::space());
+        let body = if self.body().is_empty() {
+            RcDoc::nil()
+        } else {
+            block(intersperse(
+                self.body().iter().map(|x| x.to_doc()),
+                RcDoc::hardline(),
+            ))
+            .begin_end()
+        };
+        cond.append(body)
+    }
+}
+
+impl PrettyPrint for CaseDefault {
+    fn to_doc(&self) -> RcDoc<()> {
+        let default = RcDoc::text("default")
+            .append(RcDoc::space())
+            .append(RcDoc::text(":"))
+            .append(RcDoc::space());
+        let body = if self.body().is_empty() {
+            RcDoc::nil()
+        } else {
+            block(intersperse(
+                self.body().iter().map(|x| x.to_doc()),
+                RcDoc::hardline(),
+            ))
+            .begin_end()
+        };
+        default.append(body)
+    }
+}
+
+impl PrettyPrint for Case {
+    fn to_doc(&self) -> RcDoc<()> {
+        let branches = if self.branches().is_empty() {
+            RcDoc::nil()
+        } else {
+            intersperse(
+                self.branches().iter().map(|x| x.to_doc()),
+                RcDoc::hardline(),
+            )
+        };
+        let branches = if let Some(default) = &self.default {
+            branches.append(RcDoc::hardline()).append(default.to_doc())
+        } else {
+            branches
+        };
+        RcDoc::space()
+            .append(self.cond.to_doc().parens())
+            .append(block(branches))
+            .case_endcase()
     }
 }
