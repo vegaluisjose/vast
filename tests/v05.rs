@@ -270,6 +270,15 @@ end"#;
 }
 
 #[test]
+fn test_attribute_decl() {
+    let mut attr = Attribute::default();
+    attr.add_stmt("ram_style", "block");
+    let decl = Decl::new_attribute_decl(attr, Decl::new_reg("ram", 32)).to_string();
+    let gold = r#"(*ram_style = "block"*) reg [31:0] ram"#;
+    check!(decl, gold);
+}
+
+#[test]
 fn test_module_simple() {
     let mut module = Module::new("foo");
     module.add_input("a", 32);

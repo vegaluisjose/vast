@@ -43,6 +43,10 @@ impl Decl {
     pub fn new_param_str(name: &str, value: &str) -> Decl {
         Decl::Param(name.to_string(), Expr::new_str(value))
     }
+
+    pub fn new_attribute_decl(attr: Attribute, decl: Decl) -> Decl {
+        Decl::AttributeDecl(attr, Rc::new(decl))
+    }
 }
 
 impl Port {
