@@ -28,7 +28,9 @@ pub enum Decl {
     Int(Id, Ty),
     Wire(Id, Ty),
     Reg(Id, Ty),
+    Array(Id, Ty, Ty),
     Param(Id, Expr),
+    AttributeDecl(Attribute, Rc<Decl>),
 }
 
 #[derive(Clone, Debug, Default)]

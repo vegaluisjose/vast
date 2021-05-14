@@ -32,7 +32,8 @@ impl From<&Binop> for ParenCtx {
             | Binop::Leq
             | Binop::Equal
             | Binop::NotEqual
-            | Binop::IndexBit => ParenCtx::Op,
+            | Binop::IndexBit
+            | Binop::ShiftLeft => ParenCtx::Op,
         }
     }
 }
@@ -121,6 +122,7 @@ impl PrettyPrint for Binop {
             Binop::Leq => RcDoc::text("<="),
             Binop::Equal => RcDoc::text("=="),
             Binop::NotEqual => RcDoc::text("!="),
+            Binop::ShiftLeft => RcDoc::text("<<"),
             Binop::IndexBit => RcDoc::nil(),
         }
     }

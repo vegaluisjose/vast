@@ -48,6 +48,23 @@ impl PrettyPrint for Decl {
                     .append(extra_space)
                     .append(RcDoc::as_string(name))
             }
+            Decl::Array(name, width, depth) => {
+                let width_space = match width.width() {
+                    1 => RcDoc::nil(),
+                    _ => RcDoc::space(),
+                };
+                let depth_space = match depth.width() {
+                    1 => RcDoc::nil(),
+                    _ => RcDoc::space(),
+                };
+                RcDoc::text("reg")
+                    .append(RcDoc::space())
+                    .append(width.to_doc())
+                    .append(width_space)
+                    .append(RcDoc::as_string(name))
+                    .append(depth_space)
+                    .append(depth.to_doc())
+            }
             Decl::Param(name, expr) => RcDoc::text("parameter")
                 .append(RcDoc::space())
                 .append(RcDoc::as_string(name))
@@ -55,6 +72,9 @@ impl PrettyPrint for Decl {
                 .append(RcDoc::text("="))
                 .append(RcDoc::space())
                 .append(expr.to_doc()),
+            Decl::AttributeDecl(attr, decl) => {
+                attr.to_doc().append(RcDoc::space()).append(decl.to_doc())
+            }
         }
     }
 }
