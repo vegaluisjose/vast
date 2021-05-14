@@ -21,10 +21,7 @@ impl ExprConcat {
         &self.exprs
     }
 
-    pub fn add_expr<E>(&mut self, expr: E)
-    where
-        E: Into<Expr>,
-    {
+    pub fn add_expr(&mut self, expr: Expr) {
         self.exprs.push(expr.into());
     }
 }
@@ -277,7 +274,7 @@ impl Instance {
     }
 
     pub fn connect(&mut self, port: &str, expr: Expr) {
-        self.ports.insert(port.to_string(), expr.into());
+        self.ports.insert(port.to_string(), expr);
     }
 
     pub fn connect_ref(&mut self, port: &str, id: &str) {

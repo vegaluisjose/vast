@@ -233,7 +233,7 @@ impl Module {
     }
 
     pub fn add_stmt(&mut self, stmt: Stmt) {
-        self.body.push(stmt.into());
+        self.body.push(stmt);
     }
 
     pub fn set_attr(&mut self, attr: Attribute) {
