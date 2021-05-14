@@ -415,7 +415,7 @@ fn test_seq_if_else() {
     let mut else_s = SequentialIfElse::default();
     i0.add_seq(s0);
     else_s.add_seq(s1);
-    i0.set_else(else_s);
+    i0.set_else(else_s.into());
     let exp = r#"if(reset) begin
     y <= 0;
 end else begin
@@ -438,7 +438,7 @@ fn test_seq_if_else_if() {
     let mut fbr = SequentialIfElse::new(c1);
     tbr.add_seq(s0);
     fbr.add_seq(s1);
-    tbr.set_else(fbr);
+    tbr.set_else(fbr.into());
     let exp = r#"if(reset) begin
     y <= 0;
 end else if(en) begin

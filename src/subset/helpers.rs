@@ -52,11 +52,8 @@ impl Expr {
         Expr::Signed(Rc::new(Expr::Ref(name.as_ref().to_string())))
     }
 
-    pub fn new_signed<E>(expr: E) -> Expr
-    where
-        E: Into<Expr>,
-    {
-        Expr::Signed(Rc::new(expr.into()))
+    pub fn new_signed(expr: Expr) -> Expr {
+        Expr::Signed(Rc::new(expr))
     }
 
     pub fn new_str(value: &str) -> Expr {
@@ -78,160 +75,84 @@ impl Expr {
         Expr::ULit(width, Radix::Bin, value.to_string())
     }
 
-    pub fn new_bit_or<L, R>(lhs: L, rhs: R) -> Expr
-    where
-        L: Into<Expr>,
-        R: Into<Expr>,
-    {
-        Expr::Binop(Binop::BitOr, Rc::new(lhs.into()), Rc::new(rhs.into()))
+    pub fn new_bit_or(lhs: Expr, rhs: Expr) -> Expr {
+        Expr::Binop(Binop::BitOr, Rc::new(lhs), Rc::new(rhs))
     }
 
-    pub fn new_bit_and<L, R>(lhs: L, rhs: R) -> Expr
-    where
-        L: Into<Expr>,
-        R: Into<Expr>,
-    {
-        Expr::Binop(Binop::BitAnd, Rc::new(lhs.into()), Rc::new(rhs.into()))
+    pub fn new_bit_and(lhs: Expr, rhs: Expr) -> Expr {
+        Expr::Binop(Binop::BitAnd, Rc::new(lhs), Rc::new(rhs))
     }
 
-    pub fn new_logical_or<L, R>(lhs: L, rhs: R) -> Expr
-    where
-        L: Into<Expr>,
-        R: Into<Expr>,
-    {
-        Expr::Binop(Binop::LogOr, Rc::new(lhs.into()), Rc::new(rhs.into()))
+    pub fn new_logical_or(lhs: Expr, rhs: Expr) -> Expr {
+        Expr::Binop(Binop::LogOr, Rc::new(lhs), Rc::new(rhs))
     }
 
-    pub fn new_logical_and<L, R>(lhs: L, rhs: R) -> Expr
-    where
-        L: Into<Expr>,
-        R: Into<Expr>,
-    {
-        Expr::Binop(Binop::LogAnd, Rc::new(lhs.into()), Rc::new(rhs.into()))
+    pub fn new_logical_and(lhs: Expr, rhs: Expr) -> Expr {
+        Expr::Binop(Binop::LogAnd, Rc::new(lhs), Rc::new(rhs))
     }
 
-    pub fn new_add<L, R>(lhs: L, rhs: R) -> Expr
-    where
-        L: Into<Expr>,
-        R: Into<Expr>,
-    {
-        Expr::Binop(Binop::Add, Rc::new(lhs.into()), Rc::new(rhs.into()))
+    pub fn new_add(lhs: Expr, rhs: Expr) -> Expr {
+        Expr::Binop(Binop::Add, Rc::new(lhs), Rc::new(rhs))
     }
 
-    pub fn new_shift_left<L, R>(lhs: L, rhs: R) -> Expr
-    where
-        L: Into<Expr>,
-        R: Into<Expr>,
-    {
-        Expr::Binop(Binop::ShiftLeft, Rc::new(lhs.into()), Rc::new(rhs.into()))
+    pub fn new_shift_left(lhs: Expr, rhs: Expr) -> Expr {
+        Expr::Binop(Binop::ShiftLeft, Rc::new(lhs), Rc::new(rhs))
     }
 
-    pub fn new_sub<L, R>(lhs: L, rhs: R) -> Expr
-    where
-        L: Into<Expr>,
-        R: Into<Expr>,
-    {
-        Expr::Binop(Binop::Sub, Rc::new(lhs.into()), Rc::new(rhs.into()))
+    pub fn new_sub(lhs: Expr, rhs: Expr) -> Expr {
+        Expr::Binop(Binop::Sub, Rc::new(lhs), Rc::new(rhs))
     }
 
-    pub fn new_gt<L, R>(lhs: L, rhs: R) -> Expr
-    where
-        L: Into<Expr>,
-        R: Into<Expr>,
-    {
-        Expr::Binop(Binop::Gt, Rc::new(lhs.into()), Rc::new(rhs.into()))
+    pub fn new_gt(lhs: Expr, rhs: Expr) -> Expr {
+        Expr::Binop(Binop::Gt, Rc::new(lhs), Rc::new(rhs))
     }
 
-    pub fn new_lt<L, R>(lhs: L, rhs: R) -> Expr
-    where
-        L: Into<Expr>,
-        R: Into<Expr>,
-    {
-        Expr::Binop(Binop::Lt, Rc::new(lhs.into()), Rc::new(rhs.into()))
+    pub fn new_lt(lhs: Expr, rhs: Expr) -> Expr {
+        Expr::Binop(Binop::Lt, Rc::new(lhs), Rc::new(rhs))
     }
 
-    pub fn new_geq<L, R>(lhs: L, rhs: R) -> Expr
-    where
-        L: Into<Expr>,
-        R: Into<Expr>,
-    {
-        Expr::Binop(Binop::Geq, Rc::new(lhs.into()), Rc::new(rhs.into()))
+    pub fn new_geq(lhs: Expr, rhs: Expr) -> Expr {
+        Expr::Binop(Binop::Geq, Rc::new(lhs), Rc::new(rhs))
     }
 
-    pub fn new_leq<L, R>(lhs: L, rhs: R) -> Expr
-    where
-        R: Into<Expr>,
-        L: Into<Expr>,
-    {
-        Expr::Binop(Binop::Leq, Rc::new(lhs.into()), Rc::new(rhs.into()))
+    pub fn new_leq(lhs: Expr, rhs: Expr) -> Expr {
+        Expr::Binop(Binop::Leq, Rc::new(lhs), Rc::new(rhs))
     }
 
-    pub fn new_eq<L, R>(lhs: L, rhs: R) -> Expr
-    where
-        L: Into<Expr>,
-        R: Into<Expr>,
-    {
-        Expr::Binop(Binop::Equal, Rc::new(lhs.into()), Rc::new(rhs.into()))
+    pub fn new_eq(lhs: Expr, rhs: Expr) -> Expr {
+        Expr::Binop(Binop::Equal, Rc::new(lhs), Rc::new(rhs))
     }
 
-    pub fn new_neq<L, R>(lhs: L, rhs: R) -> Expr
-    where
-        L: Into<Expr>,
-        R: Into<Expr>,
-    {
-        Expr::Binop(Binop::NotEqual, Rc::new(lhs.into()), Rc::new(rhs.into()))
+    pub fn new_neq(lhs: Expr, rhs: Expr) -> Expr {
+        Expr::Binop(Binop::NotEqual, Rc::new(lhs), Rc::new(rhs))
     }
 
-    pub fn new_mul<L, R>(lhs: L, rhs: R) -> Expr
-    where
-        L: Into<Expr>,
-        R: Into<Expr>,
-    {
-        Expr::Binop(Binop::Mul, Rc::new(lhs.into()), Rc::new(rhs.into()))
+    pub fn new_mul(lhs: Expr, rhs: Expr) -> Expr {
+        Expr::Binop(Binop::Mul, Rc::new(lhs), Rc::new(rhs))
     }
 
-    pub fn new_mux<C, T, F>(cond: C, tru: T, fal: F) -> Expr
-    where
-        C: Into<Expr>,
-        T: Into<Expr>,
-        F: Into<Expr>,
-    {
-        Expr::Terop(
-            Terop::Mux,
-            Rc::new(cond.into()),
-            Rc::new(tru.into()),
-            Rc::new(fal.into()),
-        )
+    pub fn new_mux(cond: Expr, tru: Expr, fal: Expr) -> Expr {
+        Expr::Terop(Terop::Mux, Rc::new(cond), Rc::new(tru), Rc::new(fal))
     }
 
-    pub fn new_not<E>(exp: E) -> Expr
-    where
-        E: Into<Expr>,
-    {
-        Expr::Unop(Unop::Not, Rc::new(exp.into()))
+    pub fn new_not(exp: Expr) -> Expr {
+        Expr::Unop(Unop::Not, Rc::new(exp))
     }
 
-    pub fn new_slice<H, L>(var: &str, hi: H, lo: L) -> Expr
-    where
-        H: Into<Expr>,
-        L: Into<Expr>,
-    {
+    pub fn new_slice(var: &str, hi: Expr, lo: Expr) -> Expr {
         Expr::Terop(
             Terop::Slice,
             Rc::new(Expr::new_ref(var)),
-            Rc::new(hi.into()),
-            Rc::new(lo.into()),
+            Rc::new(hi),
+            Rc::new(lo),
         )
     }
 
-    pub fn new_index_slice<E>(var: &str, lo: E, width: u32) -> Expr
-    where
-        E: Into<Expr>,
-    {
+    pub fn new_index_slice(var: &str, lo: Expr, width: u32) -> Expr {
         Expr::Terop(
             Terop::IndexSlice,
             Rc::new(Expr::new_ref(var)),
-            Rc::new(lo.into()),
+            Rc::new(lo),
             Rc::new(Expr::new_int(width as i32)),
         )
     }
@@ -244,11 +165,8 @@ impl Expr {
         )
     }
 
-    pub fn new_index_expr<E>(var: &str, expr: E) -> Expr
-    where
-        E: Into<Expr>,
-    {
-        Expr::Binop(Binop::IndexBit, Rc::new(var.into()), Rc::new(expr.into()))
+    pub fn new_index_expr(var: &str, expr: Expr) -> Expr {
+        Expr::Binop(Binop::IndexBit, Rc::new(var.into()), Rc::new(expr))
     }
 
     pub fn new_int(value: i32) -> Expr {
@@ -267,11 +185,8 @@ impl Expr {
         Expr::Call(name.to_string(), params)
     }
 
-    pub fn new_repeat<E>(times: u64, expr: E) -> Expr
-    where
-        E: Into<Expr>,
-    {
-        Expr::Repeat(times, Rc::new(expr.into()))
+    pub fn new_repeat(times: u64, expr: Expr) -> Expr {
+        Expr::Repeat(times, Rc::new(expr))
     }
 }
 
@@ -346,11 +261,8 @@ impl Instance {
         self.attr = attr;
     }
 
-    pub fn add_param<E>(&mut self, param: &str, value: E)
-    where
-        E: Into<Expr>,
-    {
-        self.params.insert(param.to_string(), value.into());
+    pub fn add_param(&mut self, param: &str, value: Expr) {
+        self.params.insert(param.to_string(), value);
     }
 
     pub fn add_param_uint(&mut self, param: &str, value: u32) {
@@ -364,10 +276,7 @@ impl Instance {
         self.params.insert(param.to_string(), Expr::new_str(value));
     }
 
-    pub fn connect<E>(&mut self, port: &str, expr: E)
-    where
-        E: Into<Expr>,
-    {
+    pub fn connect(&mut self, port: &str, expr: Expr) {
         self.ports.insert(port.to_string(), expr.into());
     }
 

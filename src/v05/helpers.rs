@@ -66,12 +66,9 @@ impl Port {
 }
 
 impl SequentialIfElse {
-    pub fn new<E>(cond: E) -> Self
-    where
-        E: Into<Expr>,
-    {
+    pub fn new(cond: Expr) -> Self {
         SequentialIfElse {
-            cond: Some(cond.into()),
+            cond: Some(cond),
             body: Vec::new(),
             elsebr: None,
         }
@@ -89,18 +86,12 @@ impl SequentialIfElse {
         self.elsebr.as_deref()
     }
 
-    pub fn add_seq<S>(&mut self, seq: S)
-    where
-        S: Into<Sequential>,
-    {
-        self.body.push(seq.into());
+    pub fn add_seq(&mut self, seq: Sequential) {
+        self.body.push(seq);
     }
 
-    pub fn set_else<S>(&mut self, seq: S)
-    where
-        S: Into<Sequential>,
-    {
-        self.elsebr = Some(Rc::new(seq.into()));
+    pub fn set_else(&mut self, seq: Sequential) {
+        self.elsebr = Some(Rc::new(seq));
     }
 }
 
@@ -110,20 +101,12 @@ impl Sequential {
         Sequential::Event(EventTy::Posedge, expr)
     }
 
-    pub fn new_blk_assign<L, R>(lexpr: L, rexpr: R) -> Sequential
-    where
-        L: Into<Expr>,
-        R: Into<Expr>,
-    {
-        Sequential::Assign(lexpr.into(), rexpr.into(), AssignTy::Blocking)
+    pub fn new_blk_assign(lexpr: Expr, rexpr: Expr) -> Sequential {
+        Sequential::Assign(lexpr, rexpr, AssignTy::Blocking)
     }
 
-    pub fn new_nonblk_assign<L, R>(lexpr: L, rexpr: R) -> Sequential
-    where
-        L: Into<Expr>,
-        R: Into<Expr>,
-    {
-        Sequential::Assign(lexpr.into(), rexpr.into(), AssignTy::NonBlocking)
+    pub fn new_nonblk_assign(lexpr: Expr, rexpr: Expr) -> Sequential {
+        Sequential::Assign(lexpr, rexpr, AssignTy::NonBlocking)
     }
 
     pub fn new_case(case: Case) -> Sequential {
@@ -152,19 +135,13 @@ impl ParallelProcess {
         &self.body
     }
 
-    pub fn add_seq<S>(&mut self, seq: S) -> &mut Self
-    where
-        S: Into<Sequential>,
-    {
-        self.body.push(seq.into());
+    pub fn add_seq(&mut self, seq: Sequential) -> &mut Self {
+        self.body.push(seq);
         self
     }
 
-    pub fn set_event<S>(&mut self, seq: S)
-    where
-        S: Into<Sequential>,
-    {
-        self.event = Some(seq.into())
+    pub fn set_event(&mut self, seq: Sequential) {
+        self.event = Some(seq)
     }
 }
 
@@ -255,10 +232,7 @@ impl Module {
         self.body.push(Stmt::from(decl));
     }
 
-    pub fn add_stmt<S>(&mut self, stmt: S)
-    where
-        S: Into<Stmt>,
-    {
+    pub fn add_stmt(&mut self, stmt: Stmt) {
         self.body.push(stmt.into());
     }
 
@@ -268,21 +242,15 @@ impl Module {
 }
 
 impl CaseBranch {
-    pub fn new<E>(cond: E) -> CaseBranch
-    where
-        E: Into<Expr>,
-    {
+    pub fn new(cond: Expr) -> CaseBranch {
         CaseBranch {
-            cond: cond.into(),
+            cond,
             body: Vec::new(),
         }
     }
 
-    pub fn add_seq<S>(&mut self, seq: S) -> &mut Self
-    where
-        S: Into<Sequential>,
-    {
-        self.body.push(seq.into());
+    pub fn add_seq(&mut self, seq: Sequential) -> &mut Self {
+        self.body.push(seq);
         self
     }
 
@@ -297,11 +265,8 @@ impl CaseBranch {
 }
 
 impl CaseDefault {
-    pub fn add_seq<S>(&mut self, seq: S) -> &mut Self
-    where
-        S: Into<Sequential>,
-    {
-        self.body.push(seq.into());
+    pub fn add_seq(&mut self, seq: Sequential) -> &mut Self {
+        self.body.push(seq);
         self
     }
 
@@ -317,12 +282,9 @@ impl Default for CaseDefault {
 }
 
 impl Case {
-    pub fn new<E>(cond: E) -> Case
-    where
-        E: Into<Expr>,
-    {
+    pub fn new(cond: Expr) -> Case {
         Case {
-            cond: cond.into(),
+            cond,
             branches: Vec::new(),
             default: None,
         }
