@@ -22,7 +22,7 @@ impl ExprConcat {
     }
 
     pub fn add_expr(&mut self, expr: Expr) {
-        self.exprs.push(expr.into());
+        self.exprs.push(expr);
     }
 }
 
