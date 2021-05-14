@@ -160,6 +160,13 @@ fn test_decl_param_uint() {
 }
 
 #[test]
+fn test_decl_array() {
+    let decl = Decl::new_array("ram", 32, 32).to_string();
+    let exp = "reg [31:0] ram [31:0]".to_string();
+    check!(decl, exp);
+}
+
+#[test]
 fn test_event_ty_posedge() {
     let event = EventTy::Posedge;
     let exp = "posedge".to_string();
