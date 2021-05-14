@@ -163,7 +163,7 @@ impl Expr {
     }
 
     pub fn new_index_expr(var: &str, expr: Expr) -> Expr {
-        Expr::Binop(Binop::IndexBit, Rc::new(var.into()), Rc::new(expr))
+        Expr::Binop(Binop::IndexBit, Rc::new(Expr::new_ref(var)), Rc::new(expr))
     }
 
     pub fn new_int(value: i32) -> Expr {
