@@ -70,9 +70,12 @@ impl Port {
 }
 
 impl SequentialIfElse {
-    pub fn new(cond: Expr) -> Self {
+    pub fn new<E>(cond: E) -> Self
+    where
+        E: Into<Expr>,
+    {
         SequentialIfElse {
-            cond: Some(cond),
+            cond: Some(cond.into()),
             body: Vec::new(),
             elsebr: None,
         }
@@ -90,27 +93,40 @@ impl SequentialIfElse {
         self.elsebr.as_deref()
     }
 
-    pub fn add_seq(&mut self, seq: Sequential) {
-        self.body.push(seq);
+    pub fn add_seq<S>(&mut self, seq: S)
+    where
+        S: Into<Sequential>,
+    {
+        self.body.push(seq.into());
     }
 
-    pub fn set_else(&mut self, seq: Sequential) {
-        self.elsebr = Some(Rc::new(seq));
+    pub fn set_else<S>(&mut self, seq: S)
+    where
+        S: Into<Sequential>,
+    {
+        self.elsebr = Some(Rc::new(seq.into()));
     }
 }
 
 impl Sequential {
     pub fn new_posedge(name: &str) -> Self {
-        let expr = Expr::new_ref(name);
-        Sequential::Event(EventTy::Posedge, expr)
+        Sequential::Event(EventTy::Posedge, name.into())
     }
 
-    pub fn new_blk_assign(lexpr: Expr, rexpr: Expr) -> Sequential {
-        Sequential::Assign(lexpr, rexpr, AssignTy::Blocking)
+    pub fn new_blk_assign<L, R>(lexpr: L, rexpr: R) -> Sequential
+    where
+        L: Into<Expr>,
+        R: Into<Expr>,
+    {
+        Sequential::Assign(lexpr.into(), rexpr.into(), AssignTy::Blocking)
     }
 
-    pub fn new_nonblk_assign(lexpr: Expr, rexpr: Expr) -> Sequential {
-        Sequential::Assign(lexpr, rexpr, AssignTy::NonBlocking)
+    pub fn new_nonblk_assign<L, R>(lexpr: L, rexpr: R) -> Sequential
+    where
+        L: Into<Expr>,
+        R: Into<Expr>,
+    {
+        Sequential::Assign(lexpr.into(), rexpr.into(), AssignTy::NonBlocking)
     }
 
     pub fn new_case(case: Case) -> Sequential {
@@ -139,13 +155,19 @@ impl ParallelProcess {
         &self.body
     }
 
-    pub fn add_seq(&mut self, seq: Sequential) -> &mut Self {
-        self.body.push(seq);
+    pub fn add_seq<S>(&mut self, seq: S) -> &mut Self
+    where
+        S: Into<Sequential>,
+    {
+        self.body.push(seq.into());
         self
     }
 
-    pub fn set_event(&mut self, seq: Sequential) {
-        self.event = Some(seq)
+    pub fn set_event<S>(&mut self, seq: S)
+    where
+        S: Into<Sequential>,
+    {
+        self.event = Some(seq.into())
     }
 }
 
@@ -164,8 +186,11 @@ impl Parallel {
 }
 
 impl Stmt {
-    pub fn new_parallel(par: Parallel) -> Stmt {
-        Stmt::Parallel(par)
+    pub fn new_parallel<P>(par: P) -> Stmt
+    where
+        P: Into<Parallel>,
+    {
+        Stmt::Parallel(par.into())
     }
 
     pub fn new_decl(decl: Decl) -> Stmt {
@@ -236,8 +261,11 @@ impl Module {
         self.body.push(Stmt::from(decl));
     }
 
-    pub fn add_stmt(&mut self, stmt: Stmt) {
-        self.body.push(stmt);
+    pub fn add_stmt<S>(&mut self, stmt: S)
+    where
+        S: Into<Stmt>,
+    {
+        self.body.push(stmt.into());
     }
 
     pub fn set_attr(&mut self, attr: Attribute) {
@@ -246,15 +274,21 @@ impl Module {
 }
 
 impl CaseBranch {
-    pub fn new(cond: Expr) -> CaseBranch {
+    pub fn new<E>(cond: E) -> CaseBranch
+    where
+        E: Into<Expr>,
+    {
         CaseBranch {
-            cond,
+            cond: cond.into(),
             body: Vec::new(),
         }
     }
 
-    pub fn add_seq(&mut self, seq: Sequential) -> &mut Self {
-        self.body.push(seq);
+    pub fn add_seq<S>(&mut self, seq: S) -> &mut Self
+    where
+        S: Into<Sequential>,
+    {
+        self.body.push(seq.into());
         self
     }
 
@@ -269,8 +303,11 @@ impl CaseBranch {
 }
 
 impl CaseDefault {
-    pub fn add_seq(&mut self, seq: Sequential) -> &mut Self {
-        self.body.push(seq);
+    pub fn add_seq<S>(&mut self, seq: S) -> &mut Self
+    where
+        S: Into<Sequential>,
+    {
+        self.body.push(seq.into());
         self
     }
 
@@ -286,9 +323,12 @@ impl Default for CaseDefault {
 }
 
 impl Case {
-    pub fn new(cond: Expr) -> Case {
+    pub fn new<E>(cond: E) -> Case
+    where
+        E: Into<Expr>,
+    {
         Case {
-            cond,
+            cond: cond.into(),
             branches: Vec::new(),
             default: None,
         }
