@@ -23,6 +23,7 @@ pub enum Binop {
     LogOr,
     LogAnd,
     Add,
+    Sub,
     Mul,
     Gt,
     Lt,
@@ -33,6 +34,7 @@ pub enum Binop {
     IndexBit,
     BitAnd,
     BitOr,
+    ShiftLeft,
 }
 
 /// Ternaray operations
@@ -72,17 +74,18 @@ pub enum Expr {
     Binop(Binop, Rc<Expr>, Rc<Expr>),
     Terop(Terop, Rc<Expr>, Rc<Expr>, Rc<Expr>),
     Concat(ExprConcat),
+    Repeat(u64, Rc<Expr>),
     Call(Id, Vec<Expr>),
 }
 
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, PartialEq, Eq, Hash)]
 pub enum AttributeTy {
     Val(String),
     Stmt(String, String),
 }
 
 /// Representation for attributes
-#[derive(Clone, Debug, Default)]
+#[derive(Clone, Debug, Default, PartialEq, Eq, Hash)]
 pub struct Attribute {
     pub attrs: Vec<AttributeTy>,
 }

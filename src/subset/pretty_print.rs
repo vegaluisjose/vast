@@ -24,6 +24,7 @@ impl From<&Binop> for ParenCtx {
             Binop::LogOr => ParenCtx::Or,
             Binop::LogAnd => ParenCtx::And,
             Binop::Add
+            | Binop::Sub
             | Binop::Mul
             | Binop::Lt
             | Binop::Gt
@@ -31,7 +32,8 @@ impl From<&Binop> for ParenCtx {
             | Binop::Leq
             | Binop::Equal
             | Binop::NotEqual
-            | Binop::IndexBit => ParenCtx::Op,
+            | Binop::IndexBit
+            | Binop::ShiftLeft => ParenCtx::Op,
         }
     }
 }
@@ -112,6 +114,7 @@ impl PrettyPrint for Binop {
             Binop::LogOr => RcDoc::text("||"),
             Binop::LogAnd => RcDoc::text("&&"),
             Binop::Add => RcDoc::text("+"),
+            Binop::Sub => RcDoc::text("-"),
             Binop::Mul => RcDoc::text("*"),
             Binop::Lt => RcDoc::text("<"),
             Binop::Gt => RcDoc::text(">"),
@@ -119,6 +122,7 @@ impl PrettyPrint for Binop {
             Binop::Leq => RcDoc::text("<="),
             Binop::Equal => RcDoc::text("=="),
             Binop::NotEqual => RcDoc::text("!="),
+            Binop::ShiftLeft => RcDoc::text("<<"),
             Binop::IndexBit => RcDoc::nil(),
         }
     }
@@ -213,6 +217,9 @@ impl PrettyPrint for Expr {
                     .brackets(),
             ),
             Expr::Concat(concat) => concat.to_doc(),
+            Expr::Repeat(times, expr) => RcDoc::text(times.to_string())
+                .append(expr.to_doc().braces())
+                .braces(),
         }
     }
 }
