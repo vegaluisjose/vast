@@ -11,7 +11,7 @@ VAST is a Rust library for building and manipulating Verilog ASTs. The goal is t
 Add `vast` to your `Cargo.toml` like this:
 ```toml
 [dependencies]
-vast = "0.1.0"
+vast = "0.3.0"
 ```
 
 ## Creating a module in Verilog-2005
