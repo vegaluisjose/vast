@@ -1,7 +1,7 @@
 [package]
 name = "vast"
 version = "0.3.0"
-authors = ["Luis Vega <vegaluis@cs.washington.edu>"]
+authors = ["The VAST Developers"]
 edition = "2018"
 description = "Verilog AST library"
 repository = "https://github.com/vegaluisjose/vast"
