@@ -214,6 +214,11 @@ impl PrettyPrint for Sequential {
 
 impl PrettyPrint for SequentialIfElse {
     fn to_doc(&self) -> RcDoc<()> {
+        let ann = if self.unique {
+            RcDoc::text("unique").append(RcDoc::space())
+        } else {
+            RcDoc::nil()
+        };
         let cond = if let Some(c) = &self.cond {
             RcDoc::text("if")
                 .append(c.to_doc().parens())
@@ -238,7 +243,7 @@ impl PrettyPrint for SequentialIfElse {
         } else {
             RcDoc::nil()
         };
-        cond.append(body).append(else_branch)
+        ann.append(cond).append(body).append(else_branch)
     }
 }
 

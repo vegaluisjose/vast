@@ -45,6 +45,7 @@ pub struct SequentialIfElse {
     pub cond: Option<Expr>,
     pub body: Vec<Sequential>,
     pub else_branch: Option<Rc<Sequential>>,
+    pub unique: bool,
 }
 
 #[derive(Clone, Debug)]

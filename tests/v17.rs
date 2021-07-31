@@ -449,6 +449,30 @@ end"#;
 }
 
 #[test]
+fn test_sequential_if_else_if_unique() {
+    let c0 = Expr::new_ref("reset");
+    let c1 = Expr::new_ref("en");
+    let y = Expr::new_ref("y");
+    let a = Expr::new_ref("a");
+    let val = Expr::new_int(0);
+    let s0 = Sequential::new_nonblk_assign(y.clone(), val);
+    let s1 = Sequential::new_nonblk_assign(y, a);
+    let mut i0 = SequentialIfElse::new(c0);
+    let mut i1 = SequentialIfElse::new(c1);
+    i0.add_seq(s0);
+    i1.add_seq(s1);
+    i0.set_else(i1);
+    i0.set_unique();
+    let exp = r#"unique if(reset) begin
+    y <= 0;
+end else if(en) begin
+    y <= a;
+end"#;
+    let res = i0.to_string();
+    check!(res, exp);
+}
+
+#[test]
 fn test_port_input_width_1() {
     let input = Port::Input(Decl::Logic("foo".to_string(), Ty::Width(1)));
     let res = input.to_string();

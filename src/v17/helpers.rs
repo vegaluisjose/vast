@@ -196,9 +196,19 @@ impl SequentialIfElse {
             cond: Some(cond.into()),
             body: vec![],
             else_branch: None,
+            unique: false,
         }
     }
 
+    /// Marks the branches of this if-else chain with the `unique` annotation
+    /// in Verilog.
+    pub fn set_unique(&mut self) -> &mut Self {
+        self.unique = true;
+        self
+    }
+
+    /// Add a new statement in to the body of the true statement for this
+    /// conditional block.
     pub fn add_seq<S>(&mut self, seq: S) -> &mut Self
     where
         S: Into<Sequential>,
@@ -207,6 +217,7 @@ impl SequentialIfElse {
         self
     }
 
+    /// Set the alternate branch for this conditional.
     pub fn set_else<S>(&mut self, seq: S)
     where
         S: Into<Sequential>,
