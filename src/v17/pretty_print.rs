@@ -1,5 +1,7 @@
 use crate::subset::ast::Terop;
-use crate::util::pretty_print::{block, block_with_parens, intersperse, PrettyHelper, PrettyPrint};
+use crate::util::pretty_print::{
+    block, block_with_parens, intersperse, PrettyHelper, PrettyPrint,
+};
 use crate::v17::ast::*;
 use pretty::RcDoc;
 
@@ -106,7 +108,10 @@ impl PrettyPrint for Function {
         let body = if self.body().is_empty() {
             RcDoc::nil()
         } else {
-            intersperse(self.body().iter().map(|x| x.to_doc()), RcDoc::hardline())
+            intersperse(
+                self.body().iter().map(|x| x.to_doc()),
+                RcDoc::hardline(),
+            )
         };
         let args = RcDoc::space()
             .append(self.ret.to_doc())
@@ -195,7 +200,9 @@ impl PrettyPrint for Sequential {
                 .append(RcDoc::text(";")),
             Sequential::SeqCase(case) => case.to_doc(),
             Sequential::Call(call) => call.to_doc().append(RcDoc::text(";")),
-            Sequential::Event(ty, expr) => ty.to_doc().append(RcDoc::space()).append(expr.to_doc()),
+            Sequential::Event(ty, expr) => {
+                ty.to_doc().append(RcDoc::space()).append(expr.to_doc())
+            }
             Sequential::Assert(expr, branch) => {
                 let cond = RcDoc::text("assert").append(expr.to_doc().parens());
                 if let Some(block) = branch {

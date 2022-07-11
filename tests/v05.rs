@@ -170,7 +170,7 @@ fn test_decl_array() {
 fn test_bit_shift_order_of_operations() {
     let bin1 = Expr::new_ulit_bin(4, "1000");
     let bin2 = Expr::new_ulit_bin(4, "0100");
-    let shift_by :i32 = 2;
+    let shift_by: i32 = 2;
     let shift = Expr::new_shift_left(bin1, shift_by);
     let add = Expr::new_add(bin2, shift);
     let exp = "4'b0100 + (4'b1000 << 2)".to_string();
@@ -196,7 +196,8 @@ fn test_event_ty_negedge() {
 
 #[test]
 fn test_sequential_event_posedge_clock() {
-    let seq = Sequential::Event(EventTy::Posedge, Expr::Ref("clock".to_string()));
+    let seq =
+        Sequential::Event(EventTy::Posedge, Expr::Ref("clock".to_string()));
     let exp = "posedge clock".to_string();
     let res = seq.to_string();
     check!(res, exp);
@@ -292,7 +293,8 @@ end"#;
 fn test_attribute_decl() {
     let mut attr = Attribute::default();
     attr.add_stmt("ram_style", "block");
-    let decl = Decl::new_attribute_decl(attr, Decl::new_reg("ram", 32)).to_string();
+    let decl =
+        Decl::new_attribute_decl(attr, Decl::new_reg("ram", 32)).to_string();
     let gold = r#"(*ram_style = "block"*) reg [31:0] ram"#;
     check!(decl, gold);
 }

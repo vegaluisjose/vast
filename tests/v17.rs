@@ -324,7 +324,8 @@ end"#;
 
 #[test]
 fn test_seq_event_posedge_clock() {
-    let event = Sequential::Event(EventTy::Posedge, Expr::Ref("clock".to_string()));
+    let event =
+        Sequential::Event(EventTy::Posedge, Expr::Ref("clock".to_string()));
     let res = event.to_string();
     let exp = "posedge clock".to_string();
     check!(res, exp);
@@ -623,7 +624,8 @@ fn test_module_with_always_comb() {
 #[test]
 fn test_module_with_always_ff() {
     let exp = read_to_string("regression/v17/module_with_always_ff.v");
-    let event = Sequential::Event(EventTy::Posedge, Expr::Ref("clock".to_string()));
+    let event =
+        Sequential::Event(EventTy::Posedge, Expr::Ref("clock".to_string()));
     let mut always = ParallelProcess::new_always_ff();
     always.add_seq(Sequential::new_display("hello sync world"));
     always.set_event(event);

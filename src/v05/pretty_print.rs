@@ -1,5 +1,7 @@
 // use crate::util::pretty_print::{PrettyHelper, PrettyPrint, PRETTY_INDENT};
-use crate::util::pretty_print::{block, block_with_parens, intersperse, PrettyHelper, PrettyPrint};
+use crate::util::pretty_print::{
+    block, block_with_parens, intersperse, PrettyHelper, PrettyPrint,
+};
 use crate::v05::ast::*;
 use pretty::RcDoc;
 
@@ -114,7 +116,9 @@ impl PrettyPrint for Sequential {
         match self {
             // wildcard for sensitivity list
             Sequential::Wildcard => RcDoc::text("*"),
-            Sequential::Event(ty, expr) => ty.to_doc().append(RcDoc::space()).append(expr.to_doc()),
+            Sequential::Event(ty, expr) => {
+                ty.to_doc().append(RcDoc::space()).append(expr.to_doc())
+            }
             Sequential::IfElse(ifelse) => ifelse.to_doc(),
             Sequential::Assign(lexpr, rexpr, ty) => lexpr
                 .to_doc()

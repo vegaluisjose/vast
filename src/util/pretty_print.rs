@@ -63,7 +63,10 @@ impl<'a, A> PrettyHelper<'a> for RcDoc<'a, A> {
     }
 }
 
-pub fn intersperse<'a>(iter: impl Iterator<Item = RcDoc<'a>>, separator: RcDoc<'a>) -> RcDoc<'a> {
+pub fn intersperse<'a>(
+    iter: impl Iterator<Item = RcDoc<'a>>,
+    separator: RcDoc<'a>,
+) -> RcDoc<'a> {
     RcDoc::intersperse(iter, separator)
 }
 
