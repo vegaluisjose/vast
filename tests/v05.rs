@@ -167,6 +167,18 @@ fn test_decl_array() {
 }
 
 #[test]
+fn test_bit_shift_order_of_operations() {
+    let bin1 = Expr::new_ulit_bin(4, "1000");
+    let bin2 = Expr::new_ulit_bin(4, "0100");
+    let shift_by :i32 = 2;
+    let shift = Expr::new_shift_left(bin1, shift_by);
+    let add = Expr::new_add(bin2, shift);
+    let exp = "4'b0100 + (4'b1000 << 2)".to_string();
+    let res = add.to_string();
+    check!(res, exp);
+}
+
+#[test]
 fn test_event_ty_posedge() {
     let event = EventTy::Posedge;
     let exp = "posedge".to_string();
