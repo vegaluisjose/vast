@@ -52,60 +52,65 @@ impl Ord for ParenCtx {
             (P::Index, P::Not) => Ordering::Less,
             (P::Index, _) => Ordering::Greater,
 
-            (P::Mul, P::Not) | (P::Mul, P::Index) => Ordering::Less,
+            (P::Mul, P::Not | P::Index) => Ordering::Less,
             (P::Mul, _) => Ordering::Greater,
 
-            (P::AddSub, P::Not)
-            | (P::AddSub, P::Index)
-            | (P::AddSub, P::Mul) => Ordering::Less,
+            (P::AddSub, P::Not | P::Index | P::Mul) => Ordering::Less,
             (P::AddSub, _) => Ordering::Greater,
 
-            (P::Shift, P::Not)
-            | (P::Shift, P::Index)
-            | (P::Shift, P::Mul)
-            | (P::Shift, P::AddSub) => Ordering::Less,
+            (P::Shift, P::Not | P::Index | P::Mul | P::AddSub) => {
+                Ordering::Less
+            }
             (P::Shift, _) => Ordering::Greater,
 
-            (P::Cmp, P::Not)
-            | (P::Cmp, P::Index)
-            | (P::Cmp, P::Mul)
-            | (P::Cmp, P::AddSub)
-            | (P::Cmp, P::Shift) => Ordering::Greater,
+            (P::Cmp, P::Not | P::Index | P::Mul | P::AddSub | P::Shift) => {
+                Ordering::Greater
+            }
             (P::Cmp, _) => Ordering::Less,
 
-            (P::Equal, P::Not)
-            | (P::Equal, P::Index)
-            | (P::Equal, P::Mul)
-            | (P::Equal, P::AddSub)
-            | (P::Equal, P::Shift)
-            | (P::Equal, P::Cmp) => Ordering::Greater,
+            (
+                P::Equal,
+                P::Not | P::Index | P::Mul | P::AddSub | P::Shift | P::Cmp,
+            ) => Ordering::Greater,
             (P::Equal, _) => Ordering::Less,
 
-            (P::BAnd, P::Not)
-            | (P::BAnd, P::Mul)
-            | (P::BAnd, P::AddSub)
-            | (P::BAnd, P::Shift)
-            | (P::BAnd, P::Cmp)
-            | (P::BAnd, P::Equal) => Ordering::Less,
+            (
+                P::BAnd,
+                P::Not
+                | P::Index
+                | P::Mul
+                | P::AddSub
+                | P::Shift
+                | P::Cmp
+                | P::Equal,
+            ) => Ordering::Less,
             (P::BAnd, _) => Ordering::Greater,
 
-            (P::BOr, P::Not)
-            | (P::BOr, P::Mul)
-            | (P::BOr, P::AddSub)
-            | (P::BOr, P::Shift)
-            | (P::BOr, P::Cmp)
-            | (P::BOr, P::Equal)
-            | (P::BOr, P::BAnd) => Ordering::Less,
+            (
+                P::BOr,
+                P::Not
+                | P::Index
+                | P::Mul
+                | P::AddSub
+                | P::Shift
+                | P::Cmp
+                | P::Equal
+                | P::BAnd,
+            ) => Ordering::Less,
             (P::BOr, _) => Ordering::Greater,
 
-            (P::And, P::Not)
-            | (P::And, P::Mul)
-            | (P::And, P::AddSub)
-            | (P::And, P::Shift)
-            | (P::And, P::Cmp)
-            | (P::And, P::Equal)
-            | (P::And, P::BOr)
-            | (P::And, P::BAnd) => Ordering::Less,
+            (
+                P::And,
+                P::Not
+                | P::Index
+                | P::Mul
+                | P::AddSub
+                | P::Shift
+                | P::Cmp
+                | P::Equal
+                | P::BAnd
+                | P::BOr,
+            ) => Ordering::Less,
             (P::And, _) => Ordering::Greater,
 
             (P::Or, _) => Ordering::Less,
