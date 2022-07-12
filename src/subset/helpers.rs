@@ -264,10 +264,7 @@ impl Expr {
     }
 
     pub fn new_ipath_with_index(path: &str, index: &str) -> Expr {
-        Expr::IPath(
-            InstancePath::new(path),
-            Some(Rc::new(Expr::new_ref(index))),
-        )
+        Expr::IPath(InstancePath::new(path), Some(Rc::new(Expr::new_ref(index))))
     }
 
     pub fn new_call(name: &str, params: Vec<Expr>) -> Expr {

@@ -33,18 +33,11 @@ impl Decl {
     }
 
     pub fn new_array(name: &str, width: u64, depth: u64) -> Decl {
-        Decl::Array(
-            name.to_string(),
-            Ty::new_width(width),
-            Ty::new_width(depth),
-        )
+        Decl::Array(name.to_string(), Ty::new_width(width), Ty::new_width(depth))
     }
 
     pub fn new_param_uint(name: &str, value: u32) -> Decl {
-        Decl::Param(
-            name.to_string(),
-            Expr::new_ulit_dec(32, &value.to_string()),
-        )
+        Decl::Param(name.to_string(), Expr::new_ulit_dec(32, &value.to_string()))
     }
 
     pub fn new_param_str(name: &str, value: &str) -> Decl {
