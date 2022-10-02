@@ -157,6 +157,7 @@ impl PrettyPrint for ExprConcat {
 impl PrettyPrint for Expr {
     fn to_doc(&self) -> RcDoc<()> {
         match self {
+            Expr::X => RcDoc::text("'x"),
             Expr::Ref(name) => RcDoc::as_string(name),
             Expr::Int(num) => RcDoc::as_string(num),
             Expr::ULit(width, radix, value) => RcDoc::as_string(width)

@@ -64,6 +64,7 @@ pub struct ExprConcat {
 
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 pub enum Expr {
+    X,
     Ref(Id),
     Int(i32),
     ULit(u32, Radix, String),
