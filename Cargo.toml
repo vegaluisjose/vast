@@ -1,6 +1,6 @@
 [package]
 name = "vast"
-version = "0.3.0"
+version = "0.3.1"
 authors = ["The VAST Developers"]
 edition = "2018"
 description = "Verilog AST library"
