@@ -72,7 +72,7 @@ impl PartialOrd for ParenCtx {
     }
 }
 
-fn print_expr<'a>(e: &'a Expr, cur_ctx: ParenCtx) -> RcDoc<'a, ()> {
+fn print_expr(e: &Expr, cur_ctx: ParenCtx) -> RcDoc<()> {
     match e {
         Expr::Binop(op, lhs, rhs) => {
             let ctx = ParenCtx::from(op);

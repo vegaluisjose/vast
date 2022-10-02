@@ -225,9 +225,7 @@ fn test_expr_return() {
 
 #[test]
 fn test_expr_call() {
-    let mut params: Vec<Expr> = Vec::new();
-    params.push(Expr::new_ref("a"));
-    params.push(Expr::new_ref("b"));
+    let params: Vec<Expr> = vec![Expr::new_ref("a"), Expr::new_ref("b")];
     let call = Expr::new_call("func", params);
     let res = call.to_string();
     let exp = "func(a, b)".to_string();

@@ -113,11 +113,9 @@ impl Case {
     }
 
     pub fn default(&self) -> &CaseDefault {
-        if let Some(default) = &self.default {
-            &default
-        } else {
-            panic!("Default branch has not been set");
-        }
+        self.default
+            .as_ref()
+            .unwrap_or_else(|| panic!("Default branch has not been set"))
     }
 }
 
