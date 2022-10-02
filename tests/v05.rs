@@ -29,6 +29,14 @@ fn test_expr_ulit_bin() {
 }
 
 #[test]
+fn test_expr_x() {
+    let expr = Expr::X;
+    let exp = "'x".to_string();
+    let res = expr.to_string();
+    check!(res, exp);
+}
+
+#[test]
 fn test_expr_ulit_hex() {
     let expr = Expr::new_ulit_hex(8, "ff");
     let exp = "8'hff".to_string();
