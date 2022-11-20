@@ -1,6 +1,6 @@
 [package]
 name = "vast"
-version = "0.3.2"
+version = "0.3.3"
 authors = ["The VAST Developers"]
 edition = "2018"
 description = "Verilog AST library"
@@ -11,5 +11,5 @@ keywords = ["verilog"]
 categories = ["development-tools","data-structures"]
 
 [dependencies]
-pretty = "0.10"
-itertools = "0.9"
+pretty = "0.11"
+itertools = "0.10"
