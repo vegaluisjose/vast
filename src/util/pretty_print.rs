@@ -15,6 +15,11 @@ pub trait PrettyPrint {
     fn to_pretty(&self) -> String {
         self.to_pretty_with_width(PRETTY_WIDTH)
     }
+
+    fn render_fmt(&self, f: &mut impl std::fmt::Write) -> std::fmt::Result {
+        let doc = self.to_doc();
+        doc.render_fmt(PRETTY_WIDTH, f)
+    }
 }
 
 pub trait PrettyHelper<'a>: Sized {
