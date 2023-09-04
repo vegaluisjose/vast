@@ -1,5 +1,7 @@
 use crate::subset::ast::*;
-use crate::util::pretty_print::{block, intersperse, PrettyHelper, PrettyPrint};
+use crate::util::pretty_print::{
+    block, intersperse, PrettyHelper, PrettyPrint,
+};
 use core::cmp::Ordering;
 use itertools::Itertools;
 use pretty::RcDoc;
@@ -8,32 +10,32 @@ use pretty::RcDoc;
 /// operator with stronger binding.
 #[derive(Debug, Clone, Copy, Eq, PartialEq)]
 enum ParenCtx {
-    Op,
     Not,
-    And,
-    Or,
+    Index,
+    Mul,
+    AddSub,
+    Shift,
+    Cmp,
+    Equal,
     BAnd,
     BOr,
+    And,
+    Or,
 }
 
 impl From<&Binop> for ParenCtx {
     fn from(s: &Binop) -> Self {
         match s {
-            Binop::BitOr => ParenCtx::BOr,
+            Binop::IndexBit => ParenCtx::Index,
+            Binop::Mul => ParenCtx::Mul,
+            Binop::Add | Binop::Sub => ParenCtx::AddSub,
+            Binop::ShiftLeft => ParenCtx::Shift,
+            Binop::Lt | Binop::Gt | Binop::Geq | Binop::Leq => ParenCtx::Cmp,
+            Binop::Equal | Binop::NotEqual => ParenCtx::Equal,
             Binop::BitAnd => ParenCtx::BAnd,
-            Binop::LogOr => ParenCtx::Or,
+            Binop::BitOr => ParenCtx::BOr,
             Binop::LogAnd => ParenCtx::And,
-            Binop::Add
-            | Binop::Sub
-            | Binop::Mul
-            | Binop::Lt
-            | Binop::Gt
-            | Binop::Geq
-            | Binop::Leq
-            | Binop::Equal
-            | Binop::NotEqual
-            | Binop::IndexBit
-            | Binop::ShiftLeft => ParenCtx::Op,
+            Binop::LogOr => ParenCtx::Or,
         }
     }
 }
@@ -47,18 +49,68 @@ impl Ord for ParenCtx {
         match (self, other) {
             (P::Not, _) => Ordering::Greater,
 
-            (P::Op, P::Not) => Ordering::Less,
-            (P::Op, _) => Ordering::Greater,
+            (P::Index, P::Not) => Ordering::Less,
+            (P::Index, _) => Ordering::Greater,
 
-            (P::BAnd, P::Not) | (P::BAnd, P::Op) => Ordering::Less,
-            (P::BAnd, _) => Ordering::Greater,
+            (P::Mul, P::Not | P::Index) => Ordering::Less,
+            (P::Mul, _) => Ordering::Greater,
 
-            (P::BOr, P::Not) | (P::BOr, P::Op) | (P::BOr, P::BAnd) => Ordering::Less,
-            (P::BOr, _) => Ordering::Greater,
+            (P::AddSub, P::Not | P::Index | P::Mul) => Ordering::Less,
+            (P::AddSub, _) => Ordering::Greater,
 
-            (P::And, P::Not) | (P::And, P::Op) | (P::And, P::BAnd) | (P::And, P::BOr) => {
+            (P::Shift, P::Not | P::Index | P::Mul | P::AddSub) => {
                 Ordering::Less
             }
+            (P::Shift, _) => Ordering::Greater,
+
+            (P::Cmp, P::Not | P::Index | P::Mul | P::AddSub | P::Shift) => {
+                Ordering::Greater
+            }
+            (P::Cmp, _) => Ordering::Less,
+
+            (
+                P::Equal,
+                P::Not | P::Index | P::Mul | P::AddSub | P::Shift | P::Cmp,
+            ) => Ordering::Greater,
+            (P::Equal, _) => Ordering::Less,
+
+            (
+                P::BAnd,
+                P::Not
+                | P::Index
+                | P::Mul
+                | P::AddSub
+                | P::Shift
+                | P::Cmp
+                | P::Equal,
+            ) => Ordering::Less,
+            (P::BAnd, _) => Ordering::Greater,
+
+            (
+                P::BOr,
+                P::Not
+                | P::Index
+                | P::Mul
+                | P::AddSub
+                | P::Shift
+                | P::Cmp
+                | P::Equal
+                | P::BAnd,
+            ) => Ordering::Less,
+            (P::BOr, _) => Ordering::Greater,
+
+            (
+                P::And,
+                P::Not
+                | P::Index
+                | P::Mul
+                | P::AddSub
+                | P::Shift
+                | P::Cmp
+                | P::Equal
+                | P::BAnd
+                | P::BOr,
+            ) => Ordering::Less,
             (P::And, _) => Ordering::Greater,
 
             (P::Or, _) => Ordering::Less,
@@ -175,7 +227,9 @@ impl PrettyPrint for Expr {
                     path.to_doc()
                 }
             }
-            Expr::Unop(op, input) => op.to_doc().append(print_expr(input, ParenCtx::Not)),
+            Expr::Unop(op, input) => {
+                op.to_doc().append(print_expr(input, ParenCtx::Not))
+            }
             Expr::Binop(Binop::IndexBit, lhs, rhs) => {
                 print_expr(lhs, ParenCtx::Not).append(rhs.to_doc().brackets())
             }
@@ -208,15 +262,17 @@ impl PrettyPrint for Expr {
                     .append(lo.to_doc())
                     .brackets(),
             ),
-            Expr::Terop(Terop::IndexSlice, var, lo, width) => var.to_doc().append(
-                lo.to_doc()
-                    .append(RcDoc::space())
-                    .append(RcDoc::text("+"))
-                    .append(RcDoc::text(":"))
-                    .append(RcDoc::space())
-                    .append(width.to_doc())
-                    .brackets(),
-            ),
+            Expr::Terop(Terop::IndexSlice, var, lo, width) => {
+                var.to_doc().append(
+                    lo.to_doc()
+                        .append(RcDoc::space())
+                        .append(RcDoc::text("+"))
+                        .append(RcDoc::text(":"))
+                        .append(RcDoc::space())
+                        .append(width.to_doc())
+                        .brackets(),
+                )
+            }
             Expr::Concat(concat) => concat.to_doc(),
             Expr::Repeat(times, expr) => RcDoc::text(times.to_string())
                 .append(expr.to_doc().braces())
@@ -270,13 +326,13 @@ impl PrettyPrint for AssignTy {
 impl PrettyPrint for Map {
     fn to_doc(&self) -> RcDoc<()> {
         intersperse(
-            self.iter()
-                .sorted_by_key(|(id, _)| (*id).clone())
-                .map(|(id, expr)| {
+            self.iter().sorted_by_key(|(id, _)| (*id).clone()).map(
+                |(id, expr)| {
                     RcDoc::text(".")
                         .append(RcDoc::as_string(id))
                         .append(expr.to_doc().parens())
-                }),
+                },
+            ),
             RcDoc::text(",").append(RcDoc::hardline()),
         )
     }
