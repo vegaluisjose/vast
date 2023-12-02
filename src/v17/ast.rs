@@ -16,6 +16,9 @@ pub type Stmt = subset::ast::GenericStmt<Decl, Parallel>;
 pub type Port = subset::ast::GenericPort<Decl>;
 pub type Module = subset::ast::GenericModule<Decl, Parallel>;
 pub type ExprConcat = subset::ast::ExprConcat;
+pub type Unop = subset::ast::Unop;
+pub type Binop = subset::ast::Binop;
+pub type Terop = subset::ast::Terop;
 
 #[derive(Clone, Debug)]
 pub enum Ty {
