@@ -211,6 +211,13 @@ impl Expr {
         Expr::Unop(Unop::Not, Rc::new(exp.into()))
     }
 
+    pub fn new_logical_not<E>(exp: E) -> Expr
+    where
+        E: Into<Expr>,
+    {
+        Expr::Unop(Unop::LogNot, Rc::new(exp.into()))
+    }
+
     pub fn new_slice<H, L>(var: &str, hi: H, lo: L) -> Expr
     where
         H: Into<Expr>,
